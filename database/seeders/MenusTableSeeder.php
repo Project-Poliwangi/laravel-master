@@ -81,5 +81,54 @@ class MenusTableSeeder extends Seeder
             'parent_id' => 4,
             'active' => serialize(['permissions','permissions*']),
         ]);
+
+        // monitoring anggaran
+        Menu::create([
+            'id' => 7,
+            'modul' => 'Core',
+            'label' => 'Monitoring Anggaran',
+            'url' => '',
+            'can' => serialize(['admin']),
+            'icon' => 'fas fa-money-check-alt',
+            'urut' => 3,
+            'parent_id' => 0,
+            'active' => '',
+        ]);
+        
+        Menu::create([
+            'id' => 8,
+            'modul' => 'Core',
+            'label' => 'Perencanaan',
+            'url' => 'monitoring/perencanaan',
+            'can' => serialize(['admin']),
+            'icon' => 'fas fa-file-alt',
+            'urut' => 1,
+            'parent_id' => 7,
+            'active' => serialize(['perencanaan','perencanaan*']),
+        ]);
+        
+        Menu::create([
+            'id' => 9,
+            'modul' => 'Core',
+            'label' => 'Realisasi',
+            'url' => 'monitoring/realisasi',
+            'can' => serialize(['admin']),
+            'icon' => 'fas fa-tasks',
+            'urut' => 2,
+            'parent_id' => 7,
+            'active' => serialize(['realisasi','realisasi*']),
+        ]);
+        
+        Menu::create([
+            'id' => 10,
+            'modul' => 'Core',
+            'label' => 'Laporan',
+            'url' => 'monitoring/laporan',
+            'can' => serialize(['admin']),
+            'icon' => 'far fa-chart-bar',
+            'urut' => 3,
+            'parent_id' => 7,
+            'active' => serialize(['laporan','laporan*']),
+        ]);
     }
 }

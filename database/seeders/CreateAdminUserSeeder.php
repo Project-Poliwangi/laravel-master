@@ -25,7 +25,7 @@ class CreateAdminUserSeeder extends Seeder
             'name' => 'Administrator',
 			'email' => 'ncadvertise@gmail.com',
 			'username' => 'super',
-			'password' => Hash::make('admin!@#123'),
+			'password' => Hash::make('12345678'),
 			'unit' => 0,
 			'staff' => 0,
 			'status' => 2
