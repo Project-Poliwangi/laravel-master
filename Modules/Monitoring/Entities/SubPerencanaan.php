@@ -11,6 +11,7 @@ class SubPerencanaan extends Model
 
     protected $fillable = [
         'kegiatan',
+        'metode_pengadaan',
         'satuan',
         'volume',
         'harga_satuan',
@@ -21,6 +22,8 @@ class SubPerencanaan extends Model
         'file_kak',
         'pic_id',
         'ppk_id',
+        'pp_id',
+        'jenis',
         'perencanaan_id'
     ];
 
