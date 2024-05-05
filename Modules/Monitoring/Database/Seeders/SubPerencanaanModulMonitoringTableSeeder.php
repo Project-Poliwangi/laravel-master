@@ -20,6 +20,7 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
         for ($i = 1; $i <= 5; $i++) {
             SubPerencanaan::create([
                 'kegiatan' => 'Kegiatan ' . $i,
+                'metode_pengadaan' => 'Pengadaan Langsung',
                 'satuan' => 'Satuan ' . $i,
                 'volume' => rand(1, 10), // Angka acak antara 1 dan 10
                 'harga_satuan' => rand(10000, 50000), // Angka acak antara 10000 dan 50000
@@ -28,8 +29,9 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
                 'rencana_bayar' => now(),
                 'file_hps' => 'file_hps_' . $i . '.pdf',
                 'file_kak' => 'file_kak_' . $i . '.pdf',
-                'pic_id' => $i,
-                'ppk_id' => $i,
+                'pic_id' => 1,
+                'ppk_id' => 1,
+                'jenis' => 'Operasional',
                 'perencanaan_id' => 1,
             ]);
         }
@@ -37,6 +39,7 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
         for ($i = 1; $i <= 4; $i++) {
             SubPerencanaan::create([
                 'kegiatan' => 'Kegiatan ' . $i,
+                'metode_pengadaan' => 'Swakelola',
                 'satuan' => 'Satuan ' . $i,
                 'volume' => rand(1, 10), // Angka acak antara 1 dan 10
                 'harga_satuan' => rand(10000, 50000), // Angka acak antara 10000 dan 50000
@@ -47,7 +50,8 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
                 'file_kak' => 'file_kak_' . $i . '.pdf',
                 'pic_id' => $i,
                 'ppk_id' => $i,
-                'perencanaan_id' => 2,
+                'jenis' => 'Barang',
+                'perencanaan_id' => 1,
             ]);
         }
     }

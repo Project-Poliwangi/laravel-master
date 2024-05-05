@@ -9,6 +9,9 @@ class Realisasi extends Model
 {
     use HasFactory;
 
+    protected $table = 'realisasis';
+    protected $primary = 'id';
+
     protected $fillable = [
         'progres',
         'realisasi',
