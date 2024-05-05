@@ -9,16 +9,15 @@ class Perencanaan extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nama', 
-        'kode', 
-        'sumber', 
-        'revisi',
-        'unit_id'
-    ];
+    protected $primary = 'id';
 
     public function subPerencanaan()
     {
         return $this->hasMany('Modules\Monitoring\Entities\SubPerencanaan');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo('Models\Core\Unit');
     }
 }

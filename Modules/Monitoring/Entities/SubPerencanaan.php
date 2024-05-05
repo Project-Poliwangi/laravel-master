@@ -9,6 +9,9 @@ class SubPerencanaan extends Model
 {
     use HasFactory;
 
+    protected $table = 'sub_perencanaans';
+    protected $primary = 'id';
+
     protected $fillable = [
         'kegiatan',
         'metode_pengadaan',

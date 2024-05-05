@@ -51,7 +51,7 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
                 'pic_id' => $i,
                 'ppk_id' => $i,
                 'jenis' => 'Barang',
-                'perencanaan_id' => 2,
+                'perencanaan_id' => 1,
             ]);
         }
     }

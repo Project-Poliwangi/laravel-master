@@ -100,13 +100,17 @@ Anda dapat merubah kode apapun tapi jangan hilangkan link repo kode ini berasal.
 Dibuat oleh [BangCholik](https://github.com/ncholik) [Channel Youtube](https://www.youtube.com/@bangcholik)
 
 
+<!-- migrate database -->
+php artisan migrate:fresh --seed
 
+<!-- memasukkan menu kepegawaian -->
+php artisan module:seed --class=MenuModulKepegawaianTableSeeder Kepegawaian 
 
+<!-- memasukkan menu monitoring -->
+php artisan module:seed --class=MenuModulMonitoringTableSeeder Monitoring
 
+<!-- seeder perencanaan -->
+php artisan module:seed --class=PerencanaanModulMonitoringTableSeeder Monitoring
 
-
-
-
-
-
-
+<!-- seeder subPerencanaan -->
+php artisan module:seed --class=SubPerencanaanModulMonitoringTableSeeder
