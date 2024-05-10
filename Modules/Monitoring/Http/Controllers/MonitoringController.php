@@ -5,6 +5,8 @@ namespace Modules\Monitoring\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class MonitoringController extends Controller
 {
@@ -14,7 +16,13 @@ class MonitoringController extends Controller
      */
     public function index()
     {
-        return view('monitoring::index');
+        $user = Auth::user();
+        $view = 'dashboard.' . $user->roles->pluck('name')->implode(', ');
+        if ($user) {
+            if (View::exists($view))
+                return view($view);
+            // dd($view);
+        }
     }
 
     /**

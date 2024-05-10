@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +15,7 @@
 Route::group(['middleware' => ['auth', 'permission']], function () {
     Route::prefix('monitoring')->group(function () {
         Route::get('/', 'MonitoringController@index');
-        
+
         // perencanaan
         Route::get('/perencanaan', 'PerencanaanController@index')->name('perencanaan.index');
         Route::get('/perencanaan/create', 'PerencanaanController@create')->name('perencanaan.create');
