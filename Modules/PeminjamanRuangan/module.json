@@ -1,0 +1,13 @@
+{
+    "name": "PeminjamanRuangan",
+    "alias": "peminjamanruangan",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PeminjamanRuangan\\Providers\\PeminjamanRuanganServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
