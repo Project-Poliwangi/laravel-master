@@ -48,10 +48,10 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
                 'rencana_bayar' => now(),
                 'file_hps' => 'file_hps_' . $i . '.pdf',
                 'file_kak' => 'file_kak_' . $i . '.pdf',
-                'pic_id' => $i,
-                'ppk_id' => $i,
+                'pic_id' => 1,
+                'ppk_id' => 1,
                 'jenis' => 'Barang',
-                'perencanaan_id' => 1,
+                'perencanaan_id' => 2,
             ]);
         }
     }

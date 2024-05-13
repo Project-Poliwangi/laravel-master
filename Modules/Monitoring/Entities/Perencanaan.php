@@ -18,6 +18,6 @@ class Perencanaan extends Model
 
     public function unit()
     {
-        return $this->belongsTo('Models\Core\Unit');
+        return $this->belongsTo('App\Models\Core\Unit');
     }
 }
