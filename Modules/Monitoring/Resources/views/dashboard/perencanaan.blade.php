@@ -84,36 +84,23 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <p class="text-center">
                                 <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
                             </p>
-                            <!-- BAR CHART -->
-                            <div class="card card-success">
-                                <div class="card-header">
-                                    <h3 class="card-title">Bar Chart</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart">
-                                        <canvas id="barChart"
-                                            style="min-height: 300px; max-height: 250px; max-width: 100%;"></canvas>
-                                    </div>
-                                </div>
+
+                            <div class="chart">
+                                <!-- Sales Chart Canvas -->
+                                <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                             </div>
+                            <!-- /.chart-responsive -->
                         </div>
-                        <div class="col-md-8">
+                        <!-- /.col -->
+                        <div class="col-md-4">
                             <p class="text-center">
                                 <strong>Goal Completion</strong>
                             </p>
-    
+
                             <div class="progress-group">
                                 Add Products to Cart
                                 <span class="float-right"><b>160</b>/200</span>
@@ -122,7 +109,7 @@
                                 </div>
                             </div>
                             <!-- /.progress-group -->
-    
+
                             <div class="progress-group">
                                 Complete Purchase
                                 <span class="float-right"><b>310</b>/400</span>
@@ -130,7 +117,7 @@
                                     <div class="progress-bar bg-danger" style="width: 75%"></div>
                                 </div>
                             </div>
-    
+
                             <!-- /.progress-group -->
                             <div class="progress-group">
                                 <span class="progress-text">Visit Premium Page</span>
@@ -139,7 +126,7 @@
                                     <div class="progress-bar bg-success" style="width: 60%"></div>
                                 </div>
                             </div>
-    
+
                             <!-- /.progress-group -->
                             <div class="progress-group">
                                 Send Inquiries
@@ -150,6 +137,7 @@
                             </div>
                             <!-- /.progress-group -->
                         </div>
+                        <!-- /.col -->
                     </div>
                     <!-- /.row -->
                 </div>
@@ -319,32 +307,29 @@
 @stop
 
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
     {{-- <script src="{{ asset('modules/Monitoring/js/script.js') }}"></script> --}}
 
     <script>
-        const ctx = document.getElementById('barChart');
-        const labels = {!! json_encode($labels) !!};
-        const data = {!! json_encode($data) !!};
+        // Mendapatkan referensi ke elemen canvas
+        var ctx = document.getElementById('pieChart').getContext('2d');
 
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Perencanaan',
-                    data: data,
-                    borderWidth: 1,
-                    backgroundColor: '#36A2EB',
-                },
-                {
-                    label: 'Realisasi',
-                    data: data,
-                    borderWidth: 1,
-                    backgroundColor: '#FF6384',
-                }
-            ]
-            },
+        // Mendefinisikan data untuk grafik
+        var data = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Perencanaan Realisasi',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: [65, 59, 80, 81, 56, 55, 40]
+            }]
+        };
+
+        // Membuat instance chart baru
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
             options: {
                 scales: {
                     y: {
