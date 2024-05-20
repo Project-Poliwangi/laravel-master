@@ -18,6 +18,7 @@ class MenuModulKepegawaianTableSeeder extends Seeder
         Model::unguard();
         Menu::where('modul','Kepegawaian')->delete();
         $menu = Menu::create([
+            'id' => 7,
             'modul' => 'Kepegawaian',
             'label' => 'Kepegawaian',
             'url' => '',
@@ -29,13 +30,14 @@ class MenuModulKepegawaianTableSeeder extends Seeder
         ]);
         if($menu){
             Menu::create([
+                'id' => 8,
                 'modul' => 'Kepegawaian',
                 'label' => 'Master Pegawai',
                 'url' => 'kepegawaian/pegawai',
                 'can' => serialize(['admin']),
                 'icon' => 'far fa-circle',
                 'urut' => 1,
-                'parent_id' => $menu->id,
+                'parent_id' => 7,
                 'active' => serialize(['kepegawaian/pegawai','kepegawaian/pegawai*']),
             ]);
         }
