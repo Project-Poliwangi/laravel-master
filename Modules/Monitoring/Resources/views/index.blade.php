@@ -84,120 +84,38 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4">
-                            <p class="text-center">
-                                <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
-                            </p>
+                        <div class="col-md-7">
                             <!-- BAR CHART -->
-                            <div class="card card-success">
-                                <div class="card-header">
-                                    <h3 class="card-title">Bar Chart</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart">
-                                        <canvas id="barChart"
-                                            style="min-height: 300px; max-height: 250px; max-width: 100%;"></canvas>
-                                    </div>
-                                </div>
+                            <div class="chart">
+                                <canvas id="doughnut"
+                                    style="min-height: 300px; max-height: 400px; max-width: 100%;"></canvas>
                             </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-5">
                             <p class="text-center">
-                                <strong>Goal Completion</strong>
+                                <strong>Perencanaan vs Realisasi Per Unit</strong>
                             </p>
-    
-                            <div class="progress-group">
-                                Add Products to Cart
-                                <span class="float-right"><b>160</b>/200</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-primary" style="width: 80%"></div>
+                            @foreach ($units as $unit)
+                                <div class="progress-group">
+                                    {{ $unit->nama }}
+                                    <span class="float-right">
+                                        <b id="unit-total-{{ $unit->id }}">
+                                            {{ isset($unitData[$unit->id]) ? $unitData[$unit->id] : 0 }}
+                                        </b>
+                                    </span>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-primary" id="progress-bar-{{ $unit->id }}"
+                                            style="width: 0%"></div>
+                                    </div>
                                 </div>
+                            @endforeach
+                            <div class="d-flex justify-content-center">
+                                {{ $units->links('pagination::bootstrap-4') }}
                             </div>
-                            <!-- /.progress-group -->
-    
-                            <div class="progress-group">
-                                Complete Purchase
-                                <span class="float-right"><b>310</b>/400</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-danger" style="width: 75%"></div>
-                                </div>
-                            </div>
-    
-                            <!-- /.progress-group -->
-                            <div class="progress-group">
-                                <span class="progress-text">Visit Premium Page</span>
-                                <span class="float-right"><b>480</b>/800</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-success" style="width: 60%"></div>
-                                </div>
-                            </div>
-    
-                            <!-- /.progress-group -->
-                            <div class="progress-group">
-                                Send Inquiries
-                                <span class="float-right"><b>250</b>/500</span>
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-warning" style="width: 50%"></div>
-                                </div>
-                            </div>
-                            <!-- /.progress-group -->
                         </div>
                     </div>
                     <!-- /.row -->
                 </div>
-                <!-- ./card-body -->
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col-sm-3 col-6">
-                            <div class="description-block border-right">
-                                <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                                <h5 class="description-header">$35,210.43</h5>
-                                <span class="description-text">TOTAL REVENUE</span>
-                            </div>
-                            <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-3 col-6">
-                            <div class="description-block border-right">
-                                <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i>
-                                    0%</span>
-                                <h5 class="description-header">$10,390.90</h5>
-                                <span class="description-text">TOTAL COST</span>
-                            </div>
-                            <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-3 col-6">
-                            <div class="description-block border-right">
-                                <span class="description-percentage text-success"><i class="fas fa-caret-up"></i>
-                                    20%</span>
-                                <h5 class="description-header">$24,813.53</h5>
-                                <span class="description-text">TOTAL PROFIT</span>
-                            </div>
-                            <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-3 col-6">
-                            <div class="description-block">
-                                <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i>
-                                    18%</span>
-                                <h5 class="description-header">1200</h5>
-                                <span class="description-text">GOAL COMPLETIONS</span>
-                            </div>
-                            <!-- /.description-block -->
-                        </div>
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.card-footer -->
             </div>
             <!-- /.card -->
         </div>
@@ -322,36 +240,57 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {{-- <script src="{{ asset('modules/Monitoring/js/script.js') }}"></script> --}}
 
+    {{-- menampilkan data chart --}}
     <script>
-        const ctx = document.getElementById('barChart');
-        const labels = {!! json_encode($labels) !!};
+        const ctx = document.getElementById('doughnut').getContext('2d');
         const data = {!! json_encode($data) !!};
+        const total = data.reduce((acc, curr) => acc + curr, 0);
+        const persentase = data.map(value => ((value / total) * 100).toFixed(2));
 
         new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: labels,
+                labels: [
+                    'perencanaan',
+                    'realisasi'
+                ],
+
                 datasets: [{
                     label: 'Perencanaan',
-                    data: data,
-                    borderWidth: 1,
-                    backgroundColor: '#36A2EB',
-                },
-                {
-                    label: 'Realisasi',
-                    data: data,
-                    borderWidth: 1,
-                    backgroundColor: '#FF6384',
-                }
-            ]
+                    data: persentase,
+                }, ]
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.formattedValue + '%';
+                            }
+                        }
                     }
                 }
             }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const unitData = @json($unitData);
+
+            @foreach ($units as $unit)
+                const unitId = {{ $unit->id }};
+                const total = unitData[unitId] || 0;
+                document.getElementById(`unit-total-${unitId}`).textContent = total;
+
+                // Calculate the percentage if you have a max value (e.g., 200)
+                const max = 200; // Replace with actual max value if available
+                const percentage = (total / max) * 100;
+
+                document.getElementById(`progress-bar-${unitId}`).style.width = `${percentage}%`;
+            @endforeach
         });
     </script>
 @endpush
