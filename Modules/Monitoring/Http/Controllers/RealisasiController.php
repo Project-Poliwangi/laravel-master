@@ -18,18 +18,18 @@ class RealisasiController extends Controller
     public function index()
     {
         $jumlahProgramKerja = SubPerencanaan::count();
-        $realisasi = Realisasi::whereHas('subPerencanaan.realisasi')->get();
-        $perencanaan = Perencanaan::all();
+        // $realisasi = Realisasi::whereHas('subPerencanaan.realisasi')->get();
+        $perencanaans = Perencanaan::with('subPerencanaan')->paginate(10);
         $totalDPA = 0;
 
-        foreach ($perencanaan as $item) {
+        foreach ($perencanaans as $item) {
             $subPerencanaan = $item->subPerencanaan;
             foreach ($subPerencanaan as $sub) {
                 $totalDPA += ($sub->volume * $sub->harga_satuan);
             }
         }
         
-        return view('monitoring::realisasi.index', compact('perencanaan', 'realisasi', 'jumlahProgramKerja', 'totalDPA'));
+        return view('monitoring::realisasi.index', compact('perencanaans', 'jumlahProgramKerja', 'totalDPA'));
     }
 
     /**
@@ -61,11 +61,12 @@ class RealisasiController extends Controller
         return view('monitoring::realisasi.show');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
+    public function sub_index($id){
+        $perencanaan = Perencanaan::findOrFail($id);
+        $subPerencanaan = $perencanaan->subPerencanaan;
+        return view('monitoring::realisasi.sub_index', compact('subPerencanaan', 'perencanaan'));
+    }
+
     public function edit($id)
     {
         return view('monitoring::realisasi.edit');

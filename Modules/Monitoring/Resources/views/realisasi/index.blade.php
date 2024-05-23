@@ -17,7 +17,7 @@
                 <span class="info-box-icon bg-secondary"><i class="far fa-envelope"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">TOTAL BIAYA DPA</span>
-                    <span class="info-box-number">Rp. {{ str_replace(',', '.', number_format ($totalDPA)) }}</span>
+                    <span class="info-box-number">Rp. {{ str_replace(',', '.', number_format($totalDPA)) }}</span>
                 </div>
             </div>
         </div>
@@ -84,20 +84,23 @@
             <div class="card">
                 <div class="card-header">Data Realisasi</div>
                 <div class="card-body">
-                    {{-- <a href="{{ url('/kepegawaian/pegawai/create') }}" class="btn btn-success btn-sm" title="Tambah Pegawai">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Tambah
-                        </a>
+                    <a href="{{ url('/kepegawaian/pegawai/create') }}" class="btn btn-success btn-sm"
+                        title="Tambah Pegawai">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Tambah
+                    </a>
 
-                        <form method="GET" action="{{ url('/kepegawaian/pegawai') }}" accept-charset="UTF-8" class="form-inline my-2 my-lg-0 float-right" role="search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="search" placeholder="Cari..." value="{{ request('search') }}">
-                                <span class="input-group-append">
-                                    <button class="btn btn-secondary" type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form> --}}
+                    <form method="GET" action="{{ url('/kepegawaian/pegawai') }}" accept-charset="UTF-8"
+                        class="form-inline my-2 my-lg-0 float-right" role="search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="search" placeholder="Cari..."
+                                value="{{ request('search') }}">
+                            <span class="input-group-append">
+                                <button class="btn btn-secondary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
 
                     <br />
                     <br />
@@ -112,13 +115,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($perencanaan as $perencanaan)
+                                @foreach ($perencanaans as $perencanaan)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $perencanaan->kode }}</td>
                                         <td>{{ $perencanaan->nama }}</td>
                                         <td>
-                                            <a href="{{ url('/realisasi/' . $perencanaan->id) }}" title="View Realisasi">
+                                            <a href="{{ route('realisasi.sub_index', $perencanaan->id) }}"
+                                                title="View Realisasi">
                                                 <button class="btn btn-info btn-sm">
                                                     <i class="fa fa-eye" aria-hidden="true"></i> View
                                                 </button>
@@ -146,7 +150,7 @@
                             </tbody>
                         </table>
                         <div class="d-flex">
-                            {{-- {!! $pegawai->links('pagination::bootstrap-4') !!} --}}
+                            {!! $perencanaans->links('pagination::bootstrap-4') !!}
                         </div>
                     </div>
                 </div>
@@ -156,15 +160,6 @@
 @endsection
 
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script>
-        $(document).ready(function() {
-            $('.table').DataTable();
-        });
-    </script>
-
     <script>
         document.getElementById("toggleContentButton").addEventListener("click", function() {
             var content = document.getElementById("dropdownContent");

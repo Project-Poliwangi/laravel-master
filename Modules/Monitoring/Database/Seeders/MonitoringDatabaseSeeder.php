@@ -16,6 +16,11 @@ class MonitoringDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
+        $this->call(MenuModulMonitoringTableSeeder::class);
+        $this->call(UserModulMonitoringTableSeeder::class);
+        $this->call(PegawaiTableSeeder::class);
+        $this->call(PerencanaanModulMonitoringTableSeeder::class);
+        $this->call(SubPerencanaanModulMonitoringTableSeeder::class);
+        $this->call(RealisasiModulMonitoringTableSeeder::class);
     }
 }

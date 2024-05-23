@@ -12,7 +12,7 @@ class PerencanaanController extends Controller
 {
     public function index()
     {
-        $perencanaans = Perencanaan::all();
+        $perencanaans = Perencanaan::paginate(10);
         return view('monitoring::perencanaan.index', compact('perencanaans'));
     }
 
@@ -39,11 +39,7 @@ class PerencanaanController extends Controller
 
     public function show($id)
     {
-        $subPerencanaan = SubPerencanaan::findOrFail($id);
-        $perencanaan = $subPerencanaan->perencanaan;
-        $total = $subPerencanaan->volume * $subPerencanaan->harga_satuan;
-
-        return view('monitoring::perencanaan.show', compact('subPerencanaan', 'perencanaan', 'total'));
+        return view('monitoring::show');
     }
 
     public function edit(Perencanaan $perencanaan)
