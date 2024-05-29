@@ -21,7 +21,7 @@ class MenuModulSuratTableSeeder extends Seeder
             'modul' => 'Surat',
             'label' => 'Surat',
             'url' => '',
-            'can' => serialize(['admin']),
+            'can' => serialize(['admin','operator']),
             'icon' => 'fas fa-envelope',
             'urut' => 1,
             'parent_id' => 0,
@@ -32,7 +32,7 @@ class MenuModulSuratTableSeeder extends Seeder
                 'modul' => 'Surat',
                 'label' => 'Surat Masuk',
                 'url' => 'surat/surat-masuk',
-                'can' => serialize(['admin']),
+                'can' => serialize(['admin','operator']),
                 'icon' => 'far fa-circle',
                 'urut' => 1,
                 'parent_id' => $menu->id,
@@ -47,6 +47,16 @@ class MenuModulSuratTableSeeder extends Seeder
                 'urut' => 1,
                 'parent_id' => $menu->id,
                 'active' => serialize(['surat/arsip', 'surat/arsip*']),
+            ]);
+            Menu::create([
+                'modul' => 'Surat',
+                'label' => 'Disposisi Surat',
+                'url' => 'surat/disposisi-surat',
+                'can' => serialize(['admin']),
+                'icon' => 'far fa-circle',
+                'urut' => 1,
+                'parent_id' => $menu->id,
+                'active' => serialize(['surat/disposisi-surat', 'surat/disposisi-surat*']),
             ]);
 
 

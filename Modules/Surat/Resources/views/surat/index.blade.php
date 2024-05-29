@@ -21,12 +21,12 @@
                         <thead class="table-light">
                             <tr>
                                 <th class="text-center" style="width: 20px;">No</th>
+                                <th class="align-middle text-center">Induk</th>
                                 <th class="align-middle text-center">Nomor Surat</th>
+                                <th class="align-middle text-center">Tanggal Surat</th>
                                 <th class="align-middle text-center">Pengirim</th>
                                 <th class="align-middle text-center">Perihal</th>
-                                <th class="align-middle text-center">Tanggal Surat</th>
-                                <th class="align-middle text-center">Tujuan Disposisi</th>
-                                <th class="align-middle text-center">Status</th>
+                                <th class="align-middle text-center">Sifat</th>
                                 <th class="align-middle text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -36,15 +36,20 @@
                                     <td class="text-center">
                                         {{$loop->iteration}}
                                     </td>
-                                    <td><a href="javascript: void(0);" class="text-body fw-bold">{{ $item->no_surat }}</a> </td>
+                                    <td><a href="javascript: void(0);" class="text-body fw-bold">{{ $item->induk }}</a> </td>
+                                    <td><a href="javascript: void(0);" class="text-body fw-bold">{{ $item->nomor }}</a> </td>
+                                    <td>
+                                        {{ date('d F Y', strtotime($item->tanggal_surat)) }}
+                                    </td>
                                     <td>{{ $item->pengirim }}</td>
                                     <td>
                                         {{ $item->perihal }}
                                     </td>
                                     <td>
-                                        {{ $item->tanggal_surat }}
+                                        {{ $item->sifat }}
                                     </td>
-                                    <td class="text-center">
+                                    
+                                    {{-- <td class="text-center">
                                         @if ($item->tujuan_disposisi != null)   
                                         {{ $item->tujuan_disposisi }}
                                         @else
@@ -57,12 +62,12 @@
                                         @else
                                         <span class="badge bg-secondary font-size-11">Arsip</span>
                                         @endif
-                                    </td>
+                                    </td> --}}
                                     <td class="text-center">
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                                        <a href="{{url('surat/surat-masuk/' .$item->id. '/edit')}}"><button type="button" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button></a>
                                         <button type="button" class="btn btn-sm btn-danger" ><i class="fas fa-trash"></i></button>
-                                        <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                                        <a href="{{url('surat/surat-masuk/' .$item->id)}}"><button type="button" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button></a>
                                         <button type="button" class="btn btn-success btn-sm"><i class="fas fa-paper-plane"></i></button>
                                         <button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-file-archive"></i></button>
                                     </td>

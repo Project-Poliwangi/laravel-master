@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Tambah Surat')
+@section('title', 'Edit Surat')
 @section('content_header')
     <h1 class="m-0 text-dark"></h1>
 @stop
@@ -8,28 +8,29 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">Tambah Surat</div>
+                <div class="card-header">Edit Surat</div>
                 <div class="card-body">
-                    <form action="{{ url('surat/surat-masuk') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ url('/surat/surat-masuk/' . $suratmasuk->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
+                        @method('PATCH')
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Induk</label>
-                                <input class="form-control" type="text" name="induk">
+                                <input class="form-control" type="text" name="induk" value="{{ $suratmasuk->induk }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Nomor Surat</label>
-                                <input class="form-control" type="text" name="nomor">
+                                <input class="form-control" type="text" name="nomor" value="{{ $suratmasuk->nomor }}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Tanggal Surat</label>
-                                <input class="form-control" type="date" name="tanggal_surat">
+                                <input class="form-control" type="date" name="tanggal_surat" value="{{ $suratmasuk->tanggal_surat }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Tanggal Diterima</label>
-                                <input class="form-control" type="datetime-local" name="tanggal_diterima">
+                                <input class="form-control" type="datetime-local" name="tanggal_diterima" value="{{ $suratmasuk->tanggal_diterima }}">
                             </div>
                             {{-- <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Status Surat</label>
@@ -43,31 +44,31 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Pengirim</label>
-                                <input class="form-control" type="text" name="pengirim">
+                                <input class="form-control" type="text" name="pengirim" value="{{ $suratmasuk->pengirim }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="example-text-input" class="col-form-label">Diterima dari</label>
-                                <input class="form-control" type="text" name="diterima_dari">
+                                <input class="form-control" type="text" name="diterima_dari" value="{{ $suratmasuk->diterima_dari }}">
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="">Perihal</label>
-                            <textarea type="" name="perihal" id="" class="form-control"></textarea>
+                            <textarea type="" name="perihal" id="" class="form-control">{{ $suratmasuk->perihal }}</textarea>
                         </div>
                         <div class="mb-3">
                             <label for="">Sifat</label>
-                            <select name="sifat" class="form-control" id="">
-                                <option value="" selected disabled>--Pilih--</option>
-                                <option value="biasa">Biasa</option>
-                                <option value="segera">segera</option>
-                                <option value="penting">penting</option>
-                                <option value="penting segera">penting segera</option>
-                                <option value="rahasia">rahasia</option>
+                            <select name="sifat" class="form-control" id="sifat">
+                                <option value="" disabled>--Pilih--</option>
+                                <option value="Biasa" {{ isset($suratmasuk) && $suratmasuk->sifat == 'Biasa' ? 'selected' : '' }}>Biasa</option>
+                                <option value="Segera" {{ isset($suratmasuk) && $suratmasuk->sifat == 'Segera' ? 'selected' : '' }}>Segera</option>
+                                <option value="Penting" {{ isset($suratmasuk) && $suratmasuk->sifat == 'Penting' ? 'selected' : '' }}>Penting</option>
+                                <option value="Penting Segera" {{ isset($suratmasuk) && $suratmasuk->sifat == 'Penting Segera' ? 'selected' : '' }}>Penting Segera</option>
+                                <option value="Rahasia" {{ isset($suratmasuk) && $suratmasuk->sifat == 'Rahasia' ? 'selected' : '' }}>Rahasia</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="">Catatan Sekretariat</label>
-                            <textarea type="" name="catatan_sekretariat" id="" class="form-control"></textarea>
+                            <textarea type="" name="catatan_sekretariat" id="" class="form-control">{{ $suratmasuk->catatan_sekretariat }}</textarea>
                         </div>
                         <div class="col-md-6">
                             <label for="example-text-input" class="col-form-label">File</label>
