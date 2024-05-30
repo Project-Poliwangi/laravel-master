@@ -15,7 +15,7 @@ class MonitoringController extends Controller
     {
         $perencanaan = Perencanaan::with('subPerencanaan')->get();
         $realisasi = Realisasi::all();
-        $units = Unit::paginate(7);
+        $units = Unit::paginate(4);
         $unitData = [];
         $labels = [];
         $data = [];
