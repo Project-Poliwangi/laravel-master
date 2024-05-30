@@ -51,311 +51,304 @@
                     </nav>
                 </div>
             </div>
-        </aside>
-        <!-- end-->
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
-        <!-- page-->
-        <div class="page-container2">
-            <!-- header-->
-            <header class="header-desktop2">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="header-wrap2">
-                            <div class="logo d-block d-lg-none">
-                                <a href="#">
-                                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />
-                                </a>
-                            </div>
-                            <div class="header-button2">
-                                <div class="header-button-item js-item-menu">
-                                    <i class="zmdi zmdi-menu"></i>
-                                    <div class="notifi-dropdown js-dropdown">
-                                        <div class="notifi__item">
-                                            <div class="bg-c1 img-cir img-40">
-                                                <a href="#">
-                                                <i class="zmdi zmdi-account-box"></i></a>
-                                            </div>
-                                            <div class="content">
-                                                <p>Profil</p>
-                                            </div>
-                                        </div>
-                                        <div class="notifi__item">
-                                            <div class="bg-c2 img-cir img-40">
-                                                <a href="#">
-                                                <i class="fa-solid fa-address-card"></i></a>
-                                            </div>
-                                            <div class="content">
-                                                <p>Hak Akses</p>
-                                            </div>
-                                        </div>
-                                        <div class="notifi__item">
-                                            <div class="bg-c3 img-cir img-40">
-                                                <a href="#">
-                                                <i class="fa-solid fa-right-from-bracket"></i></a>
-                                            </div>
-                                            <div class="content">
-                                                <p>Logout</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="info-box-content">
+                    <span class="info-box-text">New Members</span>
+                    <span class="info-box-number">2,000</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Monthly Recap Report</h5>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
                     </div>
                 </div>
-            </header>
-            <!-- end-->
-
-            <!-- label-->
-            <section class="au-breadcrumb m-t-75">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="au-breadcrumb-content">
-                                    <div class="au-breadcrumb-left">
-                                        <h2><b>Dashboard</b></h2>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p class="text-center">
+                                <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
+                            </p>
+                            <!-- BAR CHART -->
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h3 class="card-title">Bar Chart</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart">
+                                        <canvas id="barChart"
+                                            style="min-height: 300px; max-height: 250px; max-width: 100%;"></canvas>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-8">
+                            <p class="text-center">
+                                <strong>Goal Completion</strong>
+                            </p>
+    
+                            <div class="progress-group">
+                                Add Products to Cart
+                                <span class="float-right"><b>160</b>/200</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <!-- /.progress-group -->
+    
+                            <div class="progress-group">
+                                Complete Purchase
+                                <span class="float-right"><b>310</b>/400</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-danger" style="width: 75%"></div>
+                                </div>
+                            </div>
+    
+                            <!-- /.progress-group -->
+                            <div class="progress-group">
+                                <span class="progress-text">Visit Premium Page</span>
+                                <span class="float-right"><b>480</b>/800</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-success" style="width: 60%"></div>
+                                </div>
+                            </div>
+    
+                            <!-- /.progress-group -->
+                            <div class="progress-group">
+                                Send Inquiries
+                                <span class="float-right"><b>250</b>/500</span>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-warning" style="width: 50%"></div>
+                                </div>
+                            </div>
+                            <!-- /.progress-group -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- ./card-body -->
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-3 col-6">
+                            <div class="description-block border-right">
+                                <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
+                                <h5 class="description-header">$35,210.43</h5>
+                                <span class="description-text">TOTAL REVENUE</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-6">
+                            <div class="description-block border-right">
+                                <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i>
+                                    0%</span>
+                                <h5 class="description-header">$10,390.90</h5>
+                                <span class="description-text">TOTAL COST</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-6">
+                            <div class="description-block border-right">
+                                <span class="description-percentage text-success"><i class="fas fa-caret-up"></i>
+                                    20%</span>
+                                <h5 class="description-header">$24,813.53</h5>
+                                <span class="description-text">TOTAL PROFIT</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-6">
+                            <div class="description-block">
+                                <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i>
+                                    18%</span>
+                                <h5 class="description-header">1200</h5>
+                                <span class="description-text">GOAL COMPLETIONS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <!-- Main row -->
+    <div class="row">
+        <!-- Left col -->
+        <div class="col-md-12">
+            <!-- TABLE: LATEST ORDERS -->
+            <div class="card">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Latest Orders</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
-            </section>
-            <!-- label-->
-
-            <!-- info box-->
-            <section class="statistic">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">10</h2>
-                                    <span class="desc">KPA</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-account-o"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">20</h2>
-                                    <span class="desc">PPK</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-account-o"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">30</h2>
-                                    <span class="desc">Program</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-calendar-note"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="statistic__item">
-                                    <h2 class="number">40</h2>
-                                    <span class="desc">Kegiatan</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-calendar-note"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Item</th>
+                                    <th>Status</th>
+                                    <th>Popularity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                    <td>Call of Duty IV</td>
+                                    <td><span class="badge badge-success">Shipped</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                            90,80,90,-70,61,-83,63</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="badge badge-warning">Pending</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f39c12" data-height="20">
+                                            90,80,-90,70,61,-83,68</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>iPhone 6 Plus</td>
+                                    <td><span class="badge badge-danger">Delivered</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f56954" data-height="20">
+                                            90,-80,90,70,-61,83,63</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="badge badge-info">Processing</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00c0ef" data-height="20">
+                                            90,80,-90,70,-61,83,63</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR1848</a></td>
+                                    <td>Samsung Smart TV</td>
+                                    <td><span class="badge badge-warning">Pending</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f39c12" data-height="20">
+                                            90,80,-90,70,61,-83,68</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                                    <td>iPhone 6 Plus</td>
+                                    <td><span class="badge badge-danger">Delivered</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#f56954" data-height="20">
+                                            90,-80,90,70,-61,83,63</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="pages/examples/invoice.html">OR9842</a></td>
+                                    <td>Call of Duty IV</td>
+                                    <td><span class="badge badge-success">Shipped</span></td>
+                                    <td>
+                                        <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                            90,80,90,-70,61,-83,63</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                    <!-- /.table-responsive -->
                 </div>
-            </section>
-            <!-- end-->
-
-            <section>
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                        <div class="row equal-height">
-
-                            <!-- chart-->
-                            <div class="col-xl-8 mb-4">
-                                <div class="recent-report2 h-100">
-                                    <h3 class="title-3">Realisasi Keuangan</h3>
-                                    <div class="chart-info-right">
-                                        <div class="rs-select2--dark rs-select2--sm dropdown-left">
-                                            <select class="js-select2 au-select-dark" name="time">
-                                                <option selected="selected">Monitoring</option>
-                                                <option value="">Bulan</option>
-                                                <option value="">Tahun</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="recent-report__chart">
-                                        <canvas id="lineChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end-->
-
-                            <!-- progres-->
-                            <div class="col-xl-4 mb-4">
-                                <div class="table-responsive table-data ">
-                                    <table class="table table-striped table-earning">
-                                        <thead>
-                                            <tr>
-                                                <th>Bulan</th>
-                                                <th>TK</th>
-                                                <th>RK</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Januari</td>
-                                                <td>100</td>
-                                                <td>100</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Februari</td>
-                                                <td>200</td>
-                                                <td>200</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Maret</td>
-                                                <td>300</td>
-                                                <td>300</td>
-                                            </tr>
-                                            <tr>
-                                                <td>April</td>
-                                                <td>400</td>
-                                                <td>400</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mei</td>
-                                                <td>500</td>
-                                                <td>500</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Juni</td>
-                                                <td>600</td>
-                                                <td>600</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Juli</td>
-                                                <td>700</td>
-                                                <td>700</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agustus</td>
-                                                <td>800</td>
-                                                <td>800</td>
-                                            </tr>
-                                            <tr>
-                                                <td>September</td>
-                                                <td>900</td>
-                                                <td>900</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Oktober</td>
-                                                <td>1000</td>
-                                                <td>1000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>November</td>
-                                                <td>2000</td>
-                                                <td>2000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Desember</td>
-                                                <td>3000</td>
-                                                <td>3000r</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- end-->
-
-                            <!-- chart-->
-                            <div class="col-xl-6">
-                                <div class="recent-report2">
-                                    <h3 class="title-3">Realisasi Keuangan</h3>
-                                    <div class="recent-report__chart">
-                                        <canvas id="doughutChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end-->
-
-                            <!-- info anggaran-->
-                            <div class="col-xl-6">
-                                <div class="statistic__item">
-                                    <span class="desc">Total Anggaran</span>
-                                    <h2 class="number">$ 100.000.000</h2>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-money"></i>
-                                    </div>
-                                </div>
-                                <div class="statistic__item">
-                                    <span class="desc">Total Serapan</span>
-                                    <h2 class="number">$ 50.000.000</h2>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-money"></i>
-                                    </div>
-                                </div>
-                                <div class="statistic__item">
-                                    <span class="desc">Sisa Anggaran</span>
-                                    <h2 class="number">$ 50.000.000</h2>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-money"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end-->
-
-                        <!-- SKPD-->>
-                        <div class="col-lg-12">
-                            <div class="user-data m-b-30">
-                                <div class="filters m-b-45">
-                                    <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                        <select class="js-select2" name="property">
-                                            <option selected="selected">All Properties</option>
-                                            <option value="">Tertinggi</option>
-                                            <option value="">Terendah</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive table-data">
-                                    <table class="table table-striped table-earning">
-                                        <thead>
-                                            <tr>
-                                                <th>SKPD Serapan Tertinggi</th>
-                                                <th>Fisik</th>
-                                                <th>Persentase</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Kejuruan</td>
-                                                <td>100</td>
-                                                <td>100</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Kemahasiswaan</td>
-                                                <td>200</td>
-                                                <td>200</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end-->>
-                    </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
+                    <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
                 </div>
             </section>
         </div>
     </div>
-    <!-- end page-->
-@endsection
+    <!-- /.row -->
+@stop
+
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{-- <script src="{{ asset('modules/Monitoring/js/script.js') }}"></script> --}}
+
+    <script>
+        const ctx = document.getElementById('barChart');
+        const labels = {!! json_encode($labels) !!};
+        const data = {!! json_encode($data) !!};
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Perencanaan',
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: '#36A2EB',
+                },
+                {
+                    label: 'Realisasi',
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: '#FF6384',
+                }
+            ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+@endpush

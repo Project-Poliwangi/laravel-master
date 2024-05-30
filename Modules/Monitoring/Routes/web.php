@@ -26,11 +26,16 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 
         // subPerencanaan
         Route::get('/perencanaan/{perencanaan}/sub_perencanaan', 'SubPerencanaanController@index')->name('perencanaan.sub_index');
-        Route::get('/perencanaan/{perencanaan}/show', 'PerencanaanController@show')->name('perencanaan.show');
+        Route::get('/perencanaan/{perencanaan}/sub_perencanaan/show', 'SubPerencanaanController@show')->name('perencanaan.show');
         Route::post('/perencanaan/{perencanaan}/subPerencanaan/store', 'SubPerencanaanController@store')->name('subPerencanaan.store');
 
         // realisasi
         Route::get('/realisasi', 'RealisasiController@index')->name('realisasi.index');
+        Route::get('/realisasi/{perencanaan}', 'RealisasiController@sub_index')->name('realisasi.sub_index');
+        Route::get('/realisasi/{perencanaan}/show', 'RealisasiController@show')->name('realisasi.show');
+        Route::get('/realisasi/create', 'RealisasiController@create')->name('realisasi.create');
+        Route::get('/realisasi/store', 'RealisasiController@store')->name('realisasi.store');
+        Route::get('/realisasi/destroy/{realisasi}', 'RealisasiController@destroy')->name('realisasi.destroy');
 
         // laporan
         Route::get('/laporan', 'LaporanController@index')->name('laporan.index');

@@ -66,7 +66,11 @@ class SubPerencanaanController extends Controller
      */
     public function show($id)
     {
-        return view('monitoring::show');
+        $subPerencanaan = SubPerencanaan::findOrFail($id);
+        $perencanaan = $subPerencanaan->perencanaan;
+        $total = $subPerencanaan->volume * $subPerencanaan->harga_satuan;
+
+        return view('monitoring::perencanaan.show', compact('subPerencanaan', 'perencanaan', 'total'));
     }
 
     /**

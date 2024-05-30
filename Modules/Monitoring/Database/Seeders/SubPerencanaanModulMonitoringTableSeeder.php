@@ -2,8 +2,10 @@
 
 namespace Modules\Monitoring\Database\Seeders;
 
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Modules\Monitoring\Entities\SubPerencanaan;
 
 class SubPerencanaanModulMonitoringTableSeeder extends Seeder
@@ -17,41 +19,39 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
     {
         Model::unguard();
 
-        for ($i = 1; $i <= 5; $i++) {
-            SubPerencanaan::create([
-                'kegiatan' => 'Kegiatan ' . $i,
-                'metode_pengadaan' => 'Pengadaan Langsung',
-                'satuan' => 'Satuan ' . $i,
-                'volume' => rand(1, 10), // Angka acak antara 1 dan 10
-                'harga_satuan' => rand(10000, 50000), // Angka acak antara 10000 dan 50000
-                'output' => 'Output ' . $i,
-                'rencana_mulai' => now(),
-                'rencana_bayar' => now(),
-                'file_hps' => 'file_hps_' . $i . '.pdf',
-                'file_kak' => 'file_kak_' . $i . '.pdf',
-                'pic_id' => 1,
-                'ppk_id' => 1,
-                'jenis' => 'Operasional',
-                'perencanaan_id' => 1,
-            ]);
-        }
+        $faker = Factory::create('id_ID'); // Menggunakan lokal bahasa Indonesia
 
-        for ($i = 1; $i <= 4; $i++) {
-            SubPerencanaan::create([
-                'kegiatan' => 'Kegiatan ' . $i,
-                'metode_pengadaan' => 'Swakelola',
-                'satuan' => 'Satuan ' . $i,
-                'volume' => rand(1, 10), // Angka acak antara 1 dan 10
-                'harga_satuan' => rand(10000, 50000), // Angka acak antara 10000 dan 50000
-                'output' => 'Output ' . $i,
-                'rencana_mulai' => now(),
-                'rencana_bayar' => now(),
-                'file_hps' => 'file_hps_' . $i . '.pdf',
-                'file_kak' => 'file_kak_' . $i . '.pdf',
-                'pic_id' => 1,
-                'ppk_id' => 1,
-                'jenis' => 'Barang',
-                'perencanaan_id' => 2,
+        foreach (range(1, 20) as $index) {
+            DB::table('sub_perencanaans')->insert([
+                'kegiatan' => $faker->sentence(3),
+                'metode_pengadaan' => $faker->randomElement([
+                    'Swakelola',
+                    'Pengadaan Langsung',
+                    'E-purchasing',
+                    'Tender',
+                    'Seleksi',
+                    'Penunjukan Langsung'
+                ]),
+                'satuan' => $faker->word,
+                'volume' => $faker->numberBetween(1, 100),
+                'harga_satuan' => $faker->numberBetween(1000, 1000000),
+                'output' => $faker->word,
+                'rencana_mulai' => $faker->date(),
+                'rencana_bayar' => $faker->date(),
+                'file_hps' => $faker->word . '.pdf',
+                'file_kak' => $faker->word . '.pdf',
+                'perencanaan_id' => $faker->numberBetween(1, 50), // Asumsi bahwa tabel perencanaans memiliki ID antara 1 hingga 10
+                'pic_id' => $faker->numberBetween(1, 20), // Asumsi bahwa tabel pegawais memiliki ID antara 1 hingga 10
+                'ppk_id' => $faker->numberBetween(1, 20), // Asumsi bahwa tabel pegawais memiliki ID antara 1 hingga 10
+                'pp_id' => $faker->optional()->numberBetween(1, 10), // Asumsi nullable
+                'jenis' => $faker->randomElement([
+                    'Barang',
+                    'Jasa Konsultansi',
+                    'Operasional',
+                    'Pekerjaan Konstruksi'
+                ]),
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
         }
     }
