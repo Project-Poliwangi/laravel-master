@@ -13,81 +13,120 @@ class MonitoringController extends Controller
 {
     public function index()
     {
+        $jumlahPerencanaan = Perencanaan::count();
+        $jumlahSubPerencanaan = SubPerencanaan::count();
         $perencanaan = Perencanaan::with('subPerencanaan')->get();
-        $realisasi = Realisasi::all();
-        $units = Unit::paginate(7);
-        $unitData = [];
-        $labels = [];
+        $realisasi = Realisasi::with('subPerencanaan.perencanaan.unit')->get();
+        $units = Unit::all();
         $data = [];
 
-        // hitung total perencanaan
-        $total_perencanaan = 0;
-        foreach ($perencanaan as $item) {
-            $subPerencanaan = $item->subPerencanaan;
-            foreach ($subPerencanaan as $sub) {
-                $total_perencanaan += $sub->volume * $sub->harga_satuan;
-            }
-        }
+        // Hitung total perencanaan
+        $total_perencanaan = $perencanaan->reduce(function ($carry, $item) {
+            return $carry + $item->subPerencanaan->sum(function ($sub) {
+                return $sub->volume * $sub->harga_satuan;
+            });
+        }, 0);
 
         // hitung total realisasi
         $total_realisasi = 0;
         foreach ($realisasi as $item) {
-            $total_realisasi = $item->realisasi;
+            $total_realisasi += $item->realisasi;
         }
 
-        foreach ($perencanaan as $item) {
-            $unit_id = $item->unit_id; // Get the unit_id from the Perencanaan
-            if (!isset($unitData[$unit_id])) {
-                $unitData[$unit_id] = 0; // Initialize the unit_id key if it does not exist
-            }
-            $subPerencanaan = $item->subPerencanaan;
-            foreach ($subPerencanaan as $sub) {
-                $unitData[$unit_id] += $sub->volume * $sub->harga_satuan;
+        // Hitung persentase
+        if ($total_perencanaan > 0) {
+            $persentase_realisasi = ($total_realisasi / $total_perencanaan) * 100;
+            $persentase_belum_direalisasi = 100 - $persentase_realisasi;
+        } else {
+            $persentase_realisasi = 0;
+            $persentase_belum_direalisasi = 0;
+        }
+
+        // Inisialisasi unitRealisasi dengan semua unit
+        $unitRealisasi = [];
+        foreach ($units as $unit) {
+            $unitRealisasi[$unit->id] = [
+                'nama' => $unit->nama,
+                'total_realisasi' => 0,
+                'percentage' => 0
+            ];
+        }
+
+        // Hitung total realisasi per unit
+        foreach ($realisasi as $item) {
+            $unit = $item->subPerencanaan->perencanaan->unit;
+            if ($unit) {
+                $unitId = $unit->id;
+                $unitRealisasi[$unitId]['total_realisasi'] += $item->realisasi;
             }
         }
 
-        $persentase_perencanaan = ($total_perencanaan / ($total_perencanaan + $total_realisasi)) * 100;
-        $persentase_realisasi = ($total_realisasi / ($total_perencanaan + $total_realisasi)) * 100;
+        // Hitung persentase untuk semua unit
+        foreach ($unitRealisasi as &$unit) {
+            if ($total_perencanaan > 0) {
+                $unit['percentage'] = ($unit['total_realisasi'] / $total_perencanaan) * 100;
+            } else {
+                $unit['percentage'] = 0;
+            }
+        }
+
+        // Sort the units by total realisasi in descending order and get the top 5
+        usort($unitRealisasi, function ($a, $b) {
+            return $b['total_realisasi'] <=> $a['total_realisasi'];
+        });
+
+        $topUnits = array_slice($unitRealisasi, 0, 5);
+
+        // Sort the units by total realisasi in ascending order and get the bottom 5
+        usort($unitRealisasi, function ($a, $b) {
+            return $a['total_realisasi'] <=> $b['total_realisasi'];
+        });
+
+        $bottomUnits = array_slice($unitRealisasi, 0, 5);
 
         $data = [
-            $persentase_perencanaan,
-            $persentase_realisasi
+            $persentase_realisasi,
+            $persentase_belum_direalisasi
         ];
 
-        // \Log::info('Unit Data: ', $unitData);
-        // dd($unitData);
-        return view('monitoring::index', compact('perencanaan', 'units', 'unitData'))
-            ->with('labels', $labels)
-            ->with('data', $data);
+        // dd($unitRealisasi);
+        return view('monitoring::index', compact(
+            'perencanaan',
+            'total_perencanaan',
+            'total_realisasi',
+            'topUnits',
+            'bottomUnits',
+            'jumlahPerencanaan',
+            'jumlahSubPerencanaan'
+        ))->with('data', $data);
     }
 
-    public function create()
+    public function getDataBulan(Request $request)
     {
-        return view('monitoring::create');
-    }
+        $year = $request->input('year', date('Y'));
+        $monthlyTarget = [];
+        $monthlyRealization = [];
 
-    public function store(Request $request)
-    {
-        //
-    }
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyTarget[$i] = Perencanaan::with('subPerencanaan')
+                ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $i)
+                ->get()
+                ->reduce(function ($carry, $item) {
+                    return $carry + $item->subPerencanaan->sum(function ($sub) {
+                        return $sub->volume * $sub->harga_satuan;
+                    });
+                }, 0);
 
-    public function show($id)
-    {
-        return view('monitoring::show');
-    }
+            $monthlyRealization[$i] = Realisasi::whereYear('created_at', $year)
+                ->whereMonth('created_at', $i)
+                ->sum('realisasi');
+        }
 
-    public function edit($id)
-    {
-        return view('monitoring::edit');
-    }
 
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
+        return response()->json([
+            'monthlyTarget' => array_values($monthlyTarget),
+            'monthlyRealization' => array_values($monthlyRealization),
+        ]);
     }
 }

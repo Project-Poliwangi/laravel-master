@@ -20,8 +20,10 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
         Model::unguard();
 
         $faker = Factory::create('id_ID'); // Menggunakan lokal bahasa Indonesia
+        $createdAt = $faker->dateTimeBetween('-4 month', 'now'); 
+        $updatedAt = $faker->dateTimeBetween($createdAt, 'now');
 
-        foreach (range(1, 20) as $index) {
+        foreach (range(1, 100) as $index) {
             DB::table('sub_perencanaans')->insert([
                 'kegiatan' => $faker->sentence(3),
                 'metode_pengadaan' => $faker->randomElement([
@@ -34,7 +36,7 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
                 ]),
                 'satuan' => $faker->word,
                 'volume' => $faker->numberBetween(1, 100),
-                'harga_satuan' => $faker->numberBetween(1000, 1000000),
+                'harga_satuan' => $faker->numberBetween(100000, 100000000),
                 'output' => $faker->word,
                 'rencana_mulai' => $faker->date(),
                 'rencana_bayar' => $faker->date(),
@@ -50,8 +52,8 @@ class SubPerencanaanModulMonitoringTableSeeder extends Seeder
                     'Operasional',
                     'Pekerjaan Konstruksi'
                 ]),
-                'created_at' => now(),
-                'updated_at' => now()
+                'created_at' => $createdAt,
+                'updated_at' => $updatedAt
             ]);
         }
     }

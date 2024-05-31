@@ -9,8 +9,8 @@
             <div class="card">
                 <div class="card-header">Detail Kegiatan: {{ $perencanaan->nama }}</div>
                 <div class="card-body">
-                    <a href="{{ route('perencanaan.index') }}" title="Kembali">
-                        <button class="btn btn-warning btn-sm">
+                    <a href="#" title="Kembali">
+                        <button class="btn btn-warning btn-sm" onclick="window.history.back()">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali
                         </button>
                     </a>
