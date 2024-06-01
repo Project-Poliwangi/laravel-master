@@ -40,6 +40,36 @@
                     <td>600</td>
                     <td>600</td>
                 </tr>
+                <tr>
+                    <td>Juli</td>
+                    <td>600</td>
+                    <td>600</td>
+                </tr>
+                <tr>
+                    <td>Agustus</td>
+                    <td>600</td>
+                    <td>600</td>
+                </tr>
+                <tr>
+                    <td>September</td>
+                    <td>600</td>
+                    <td>600</td>
+                </tr>
+                <tr>
+                    <td>Oktober</td>
+                    <td>600</td>
+                    <td>600</td>
+                </tr>
+                <tr>
+                    <td>November</td>
+                    <td>600</td>
+                    <td>600</td>
+                </tr>
+                <tr>
+                    <td>Desember</td>
+                    <td>600</td>
+                    <td>600</td>
+                </tr>
             </tbody>
         </table>
     </div>
