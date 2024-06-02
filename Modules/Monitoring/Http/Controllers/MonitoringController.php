@@ -103,7 +103,9 @@ class MonitoringController extends Controller
 
     public function getDataBulan(Request $request)
     {
+        $units = Unit::all();
         $year = $request->input('year', date('Y'));
+        $unitId = $request->input('unit', null);
         $monthlyTarget = [];
         $monthlyRealization = [];
 
@@ -111,6 +113,11 @@ class MonitoringController extends Controller
             $monthlyTarget[$i] = Perencanaan::with('subPerencanaan')
                 ->whereYear('created_at', $year)
                 ->whereMonth('created_at', $i)
+                ->when($unitId, function ($query) use ($unitId) {
+                    return $query->whereHas('unit', function ($q) use ($unitId) {
+                        $q->where('id', $unitId);
+                    });
+                })
                 ->get()
                 ->reduce(function ($carry, $item) {
                     return $carry + $item->subPerencanaan->sum(function ($sub) {
@@ -120,13 +127,18 @@ class MonitoringController extends Controller
 
             $monthlyRealization[$i] = Realisasi::whereYear('created_at', $year)
                 ->whereMonth('created_at', $i)
+                ->when($unitId, function ($query) use ($unitId) {
+                    return $query->whereHas('subPerencanaan.perencanaan.unit', function ($q) use ($unitId) {
+                        $q->where('id', $unitId);
+                    });
+                })
                 ->sum('realisasi');
         }
-
 
         return response()->json([
             'monthlyTarget' => array_values($monthlyTarget),
             'monthlyRealization' => array_values($monthlyRealization),
+            'units' => $units
         ]);
     }
 }

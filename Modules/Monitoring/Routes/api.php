@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Monitoring\Http\Controllers\LaporanController;
 use Modules\Monitoring\Http\Controllers\MonitoringController;
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +19,6 @@ Route::middleware('auth:api')->get('/monitoring', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/financial-data', [MonitoringController::class, 'getDataBulan']);
+Route::get('financial-data', [MonitoringController::class, 'getDataBulan']);
+
+Route::get('realisasi-perbulan', [LaporanController::class, 'ChartKeuangan']);
