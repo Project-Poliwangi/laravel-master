@@ -90,20 +90,20 @@
                             <div class="form-group">
                                 <label for="yearSelect">Pilih Tahun:</label>
                                 <select id="yearSelect" class="select2" style="width: 100%;">>
+                                    <!-- Options will be populated by JavaScript -->
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Pilih Unit:</label>
-                                <select class="select2" style="width: 100%;" disabled>
-                                    <option selected>ASC</option>
-                                    <option>DESC</option>
+                                <label for="unitSelect">Pilih Unit:</label>
+                                <select id="unitSelect" class="select2" style="width: 100%;">
+                                    <!-- Options will be populated by JavaScript -->
                                 </select>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         @include('monitoring::include.chart_realisasi')
 

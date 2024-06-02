@@ -5,6 +5,10 @@ namespace Modules\Monitoring\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use App\Models\Core\Unit;
+use Carbon\Carbon;
+use Modules\Monitoring\Entities\Perencanaan;
+use Modules\Monitoring\Entities\Realisasi;
 
 class LaporanController extends Controller
 {
@@ -14,7 +18,10 @@ class LaporanController extends Controller
      */
     public function index_bulanan()
     {
-        return view('monitoring::laporan_bulanan.index');
+        $perencanaan = Perencanaan::with('subPerencanaan')->get();
+        $units = Unit::all();
+
+        return view('monitoring::laporan_bulanan.index', compact('units', 'perencanaan'));
     }
 
     public function index_triwulan()
@@ -22,63 +29,26 @@ class LaporanController extends Controller
         return view('monitoring::laporan_triwulan.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('monitoring::create');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
+    // Api chart
+    public function ChartKeuangan()
     {
-        //
-    }
+        $currentYear = Carbon::now()->year;
+        $monthlyRealisasi = Realisasi::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(realisasi) as total_realisasi')
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('year', 'month')
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get()
+            ->keyBy('month');
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('monitoring::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('monitoring::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        $realisasi = collect();
+        for ($i = 1; $i <= 12; $i++) {
+            $realisasi->push([
+                'month' => Carbon::create()->month($i)->format('F'),
+                'total_realisasi' => $monthlyRealisasi->get($i)->total_realisasi ?? 0,
+            ]);
+        }
+        return response()->json($realisasi);
     }
 }
