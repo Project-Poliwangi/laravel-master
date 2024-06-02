@@ -30,7 +30,6 @@ class PegawaiTableSeeder extends Seeder
                 'jenis_kelamin' => $faker->randomElement(['L', 'P']),
                 'agama' => $faker->optional()->randomElement(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Budha', 'Konghucu']),
                 'no_tlp' => $faker->optional()->phoneNumber,
-                'tmp_lahir' => $faker->optional()->city,
                 'tgl_lahir' => $faker->optional()->date,
                 'gol_darah' => $faker->optional()->randomElement(['A', 'B', 'AB', 'O']),
                 'gelar_dpn' => $faker->optional()->randomElement(['Dr.', 'Ir.', 'Prof.', '']),

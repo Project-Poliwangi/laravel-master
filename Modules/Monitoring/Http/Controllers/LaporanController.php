@@ -12,9 +12,14 @@ class LaporanController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index_bulanan()
     {
-        return view('monitoring::laporan.index');
+        return view('monitoring::laporan_bulanan.index');
+    }
+
+    public function index_triwulan()
+    {
+        return view('monitoring::laporan_triwulan.index');
     }
 
     /**

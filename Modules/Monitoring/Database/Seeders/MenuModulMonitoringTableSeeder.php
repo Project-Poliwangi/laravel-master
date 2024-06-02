@@ -17,8 +17,7 @@ class MenuModulMonitoringTableSeeder extends Seeder
     {
         Model::unguard();
         Menu::where('modul', 'Monitoring')->delete();
-        Menu::create([
-            'id' => 7,
+        $menu = Menu::create([
             'modul' => 'Monitoring',
             'label' => 'Monitoring',
             'url' => 'monitoring',
@@ -26,43 +25,53 @@ class MenuModulMonitoringTableSeeder extends Seeder
             'icon' => 'fas fa-money-bill',
             'urut' => 3,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['monitoring']),
         ]);
 
-        Menu::create([
-            'id' => 8,
-            'modul' => 'Monitoring',
-            'label' => 'Perencanaan',
-            'url' => 'monitoring/perencanaan',
-            'can' => serialize(['admin', 'perencanaan', 'penanggung', 'keuangan']),
-            'icon' => 'fas fa-chart-line',
-            'urut' => 1,
-            'parent_id' => 7,
-            'active' => serialize(['monitoring/perencanaan', 'monitoring/perencanaan*']),
-        ]);
+        if ($menu) {
+            Menu::create([
+                'modul' => 'Monitoring',
+                'label' => 'Perencanaan',
+                'url' => 'monitoring/perencanaan',
+                'can' => serialize(['admin', 'perencanaan', 'penanggung', 'keuangan']),
+                'icon' => 'fas fa-chart-line',
+                'urut' => 1,
+                'parent_id' => $menu->id,
+                'active' => serialize(['monitoring/perencanaan', 'monitoring/perencanaan*']),
+            ]);
+    
+            Menu::create([
+                'modul' => 'Monitoring',
+                'label' => 'Realisasi',
+                'url' => 'monitoring/realisasi',
+                'can' => serialize(['admin', 'perencanaan', 'penanggung', 'keuangan']),
+                'icon' => 'fas fa-clipboard-check',
+                'urut' => 2,
+                'parent_id' => $menu->id,
+                'active' => serialize(['monitoring/realisasi', 'monitoring/realisasi*']),
+            ]);
+    
+            Menu::create([
+                'modul' => 'Monitoring',
+                'label' => 'Laporan Bulanan',
+                'url' => 'monitoring/laporan_bulanan',
+                'can' => serialize(['admin', 'perencanaan', 'penanggung', 'keuangan']),
+                'icon' => 'fas fa-file-alt',
+                'urut' => 3,
+                'parent_id' => $menu->id,
+                'active' => serialize(['monitoring/_bulanan', 'monitoring/laporan_bulanan*']),
+            ]);
 
-        Menu::create([
-            'id' => 9,
-            'modul' => 'Monitoring',
-            'label' => 'Realisasi',
-            'url' => 'monitoring/realisasi',
-            'can' => serialize(['admin', 'perencanaan', 'penanggung', 'keuangan']),
-            'icon' => 'fas fa-clipboard-check',
-            'urut' => 2,
-            'parent_id' => 7,
-            'active' => serialize(['monitoring/realisasi', 'monitoring/realisasi*']),
-        ]);
-
-        Menu::create([
-            'id' => 10,
-            'modul' => 'Monitoring',
-            'label' => 'Laporan',
-            'url' => 'monitoring/laporan',
-            'can' => serialize(['admin', 'perencanaan', 'penanggung', 'keuangan']),
-            'icon' => 'fas fa-file-alt',
-            'urut' => 3,
-            'parent_id' => 7,
-            'active' => serialize(['monitoring/laporan', 'monitoring/laporan*']),
-        ]);
+            Menu::create([
+                'modul' => 'Monitoring',
+                'label' => 'Laporan Triwulan',
+                'url' => 'monitoring/laporan_triwulan',
+                'can' => serialize(['admin', 'perencanaan', 'penanggung', 'keuangan']),
+                'icon' => 'fas fa-file-alt',
+                'urut' => 3,
+                'parent_id' => $menu->id,
+                'active' => serialize(['monitoring/laporan_triwulan', 'monitoring/laporan_triwulan*']),
+            ]);
+        }
     }
 }
