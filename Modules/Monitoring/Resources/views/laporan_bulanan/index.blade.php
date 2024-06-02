@@ -104,17 +104,18 @@
                                     <canvas id="visitors-chart" height="200"></canvas>
                                 </div>
                             </div>
-
-                        <div class="row mt-4">
-                            @include('monitoring::include.tabel_bulanan')
                         </div>
+                        
+                    <div class="row mt-4">
+                        @include('monitoring::include.tabel_bulanan')
                     </div>
-                    <!-- end-->
                 </div>
+                <!-- end-->
             </div>
         </div>
-
     </div>
+
+</div>
 </div>
 @stop
 
