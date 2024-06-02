@@ -37,7 +37,10 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::get('/realisasi/store', 'RealisasiController@store')->name('realisasi.store');
         Route::get('/realisasi/destroy/{realisasi}', 'RealisasiController@destroy')->name('realisasi.destroy');
 
-        // laporan
-        Route::get('/laporan', 'LaporanController@index')->name('laporan.index');
+        // laporan bulanan
+        Route::get('/laporan_bulanan', 'LaporanController@index_bulanan')->name('laporan_bulanan.index');
+
+        // laporan triwulan
+        Route::get('/laporan_triwulan', 'LaporanController@index_triwulan')->name('laporan_triwulan.index');
     });
 });

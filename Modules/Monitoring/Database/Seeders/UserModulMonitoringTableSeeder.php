@@ -5,6 +5,7 @@ namespace Modules\Monitoring\Database\Seeders;
 use App\Models\Core\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -20,7 +21,7 @@ class UserModulMonitoringTableSeeder extends Seeder
     {
         Model::unguard();
 
-        \Artisan::call('permission:create-permission-routes');
+        Artisan::call('permission:create-permission-routes-sync');
 
         $perencanaan = User::create([
             'name' => 'Perencanaan',
@@ -62,10 +63,10 @@ class UserModulMonitoringTableSeeder extends Seeder
 			'status' => 2
         ]);
 
-        $role = Role::create(['name' => 'perencanaan']);
-        $role = Role::create(['name' => 'keuangan']);
-        $role = Role::create(['name' => 'penanggung']);
-        $role = Role::create(['name' => 'pimpinan']);
+        $rolePerencanaan = Role::create(['name' => 'perencanaan']);
+        $roleKeuangan = Role::create(['name' => 'keuangan']);
+        $rolePenanggung = Role::create(['name' => 'penanggung']);
+        $rolePimpinan = Role::create(['name' => 'pimpinan']);
         
         $permissions = Permission::where('name','adminlte.darkmode.toggle')
         ->orWhere('name','logout.perform')
@@ -78,12 +79,15 @@ class UserModulMonitoringTableSeeder extends Seeder
         ->orWhere('name','laporan.index')
         ->pluck('id','id')
         ->all();
-   
-        $role->syncPermissions($permissions);
 
-        $perencanaan->assignRole([$role->id]);
-        $keuangan->assignRole([$role->id]);
-        $penanggung->assignRole([$role->id]);
-        $pimpinan->assignRole([$role->id]);
+        $perencanaan->assignRole([$rolePerencanaan->id]);
+        $keuangan->assignRole([$roleKeuangan->id]);
+        $penanggung->assignRole([$rolePenanggung->id]);
+        $pimpinan->assignRole([$rolePimpinan->id]);
+
+        $rolePerencanaan->syncPermissions($permissions);
+        $roleKeuangan->syncPermissions($permissions);
+        $rolePenanggung->syncPermissions($permissions);
+        $rolePimpinan->syncPermissions($permissions);
     }
 }
