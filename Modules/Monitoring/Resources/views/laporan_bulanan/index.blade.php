@@ -53,14 +53,14 @@
                 <div class="row">
                     <div class="col-md-12 d-flex justify-content-between" style="gap: 10px;">
                         <div class="form-group" style="width: 48%;">
-                            <label>Nama Unit</label>
+                            <label>Sampai Dengan Bulan</label>
                             <select class="form-control select2" style="width: 100%;">
                                 <option selected="selected">Alabama</option>
                                 <option>Alaska</option>
                             </select>
                         </div>
                         <div class="form-group" style="width: 48%;">
-                            <label>Nama Program</label>
+                            <label>Sampai Dengan Tahun</label>
                             <select class="form-control select2" style="width: 100%;">
                                 <option selected="selected">Alabama</option>
                                 <option>Alaska</option>
@@ -85,16 +85,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 m-4">
                             <button type="button" class="btn btn-primary">
-                                <i class="fas fa-print"></i> Cetak
+                                <i class="fas fa-print"></i> Cetak Excel
                             </button>
                             <button type="button" class="btn btn-primary">
-                                <i class="fas fa-print"></i> Cetak satker yang memiliki anggaran
+                                <i class="fas fa-print"></i> Cetak Pdf
                             </button>
                         </div>
                     </div>
-
 
                     <!-- chart-->
                     <div class="card-body">
@@ -105,14 +104,6 @@
                                     <canvas id="visitors-chart" height="200"></canvas>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <p class="d-flex flex-column"><span>Realisasi Fisik</span></p>
-                                <div class="position-relative mb-4">
-                                    <canvas id="sales-chart" height="200"></canvas>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row mt-4">
                             @include('monitoring::include.tabel_bulanan')
