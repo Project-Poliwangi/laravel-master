@@ -124,13 +124,13 @@
                                             <a href="{{ route('realisasi.sub_index', $perencanaan->id) }}"
                                                 title="View Realisasi">
                                                 <button class="btn btn-info btn-sm">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i> View
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </button>
                                             </a>
                                             <a href="{{ url('/realisasi/' . $perencanaan->id . '/edit') }}"
                                                 title="Edit Realisasi">
                                                 <button class="btn btn-primary btn-sm">
-                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                <i class="fas fa-edit" arria-hidden="true"></i>
                                                 </button>
                                             </a>
 
@@ -141,7 +141,7 @@
                                                 <button type="submit" class="btn btn-danger btn-sm"
                                                     title="Delete Realisasi"
                                                     onclick="return confirm(&quot;Confirm delete?&quot;)">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         </td>
