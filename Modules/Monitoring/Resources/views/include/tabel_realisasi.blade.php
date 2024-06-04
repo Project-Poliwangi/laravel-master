@@ -83,7 +83,7 @@
 
     <div id="table-2" class="table-responsive" style="display: none;">
         <div class="card">
-            <div class="card-header">Data Realisasi</div>
+            <div class="card-header">Revisi dan kendala</div>
             <div class="card-body">
                 <a href="{{ url('/kepegawaian/pegawai/create') }}" class="btn btn-success btn-sm"
                     title="Tambah Pegawai">
