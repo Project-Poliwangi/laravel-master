@@ -2,12 +2,12 @@
 
 namespace Modules\Surat\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Modules\Surat\Entities\Surat;
-use Illuminate\Routing\Controller;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Modules\Surat\Entities\SuratMasuk;
 
-class ArsipController extends Controller
+class ArsipSuratController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class ArsipController extends Controller
      */
     public function index()
     {
-        $arsip = Surat::where('status',2)->get();
-        return view('surat::arsip.index',compact('arsip'));
+        $surat = SuratMasuk::where('status',5)->get();
+        return view('surat::arsip.index',compact('surat'));
     }
 
     /**

@@ -10,6 +10,9 @@
             <div class="card">
                 <div class="card-header">Tambah Surat</div>
                 <div class="card-body">
+                    
+                    <a href="{{ url( (Request::server('HTTP_REFERER')==null?'/surat/surat-masuk':Request::server('HTTP_REFERER')) ) }}" title="Kembali"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                    <br><br>
                     <form action="{{ url('surat/surat-masuk') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-3">
@@ -31,14 +34,7 @@
                                 <label for="example-text-input" class="col-form-label">Tanggal Diterima</label>
                                 <input class="form-control" type="datetime-local" name="tanggal_diterima">
                             </div>
-                            {{-- <div class="col-md-6">
-                                <label for="example-text-input" class="col-form-label">Status Surat</label>
-                                <select id="status_surat" name="status" class="form-control">
-                                    <option value="" selected disabled>--Pilih--</option>
-                                    <option value="1">Perlu Disposisi</option>
-                                    <option value="2">Arsipkan</option>
-                                </select>
-                            </div> --}}
+
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -54,16 +50,26 @@
                             <label for="">Perihal</label>
                             <textarea type="" name="perihal" id="" class="form-control"></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label for="">Sifat</label>
-                            <select name="sifat" class="form-control" id="">
-                                <option value="" selected disabled>--Pilih--</option>
-                                <option value="biasa">Biasa</option>
-                                <option value="segera">segera</option>
-                                <option value="penting">penting</option>
-                                <option value="penting segera">penting segera</option>
-                                <option value="rahasia">rahasia</option>
-                            </select>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="">Sifat</label>
+                                <select name="sifat" class="form-control" id="">
+                                    <option value="" selected disabled>--Pilih--</option>
+                                    <option value="biasa">Biasa</option>
+                                    <option value="segera">segera</option>
+                                    <option value="penting">penting</option>
+                                    <option value="penting segera">penting segera</option>
+                                    <option value="rahasia">rahasia</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="example-text-input">Pilih Tindakan</label>
+                                <select id="status_surat" name="status" class="form-control">
+                                    <option value="" selected disabled>--Pilih--</option>
+                                    <option value="1">Arsipkan</option>
+                                    <option value="2">Ajukan Ke Pimpinan</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="">Catatan Sekretariat</label>
@@ -92,16 +98,10 @@
                                 <option value="Wadir II">Wakil Direktur II</option>
                             </select>
                         </div> --}}
-                        <div class="row mb-3 mt-5">
+                        <div class="row mb-3 mt-3">
                             <div class="col-md-8 d-flex">
                                 <div class="col-md-2">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                </div>
-                                {{-- <div class="col-md-2" id="kirim" hidden>
-                                    <button type="button" class="btn btn-primary">Kirim</button>
-                                </div> --}}
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-dark">Kembali</button>
                                 </div>
                             </div>
                         </div>

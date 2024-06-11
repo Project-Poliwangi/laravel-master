@@ -1,4 +1,5 @@
 @extends('adminlte::page')
+@section('iframe', true)
 @section('title', 'Show Surat Masuk')
 @section('content_header')
     <h1 class="m-0 text-dark"></h1>
@@ -32,12 +33,9 @@
                                     <tr><th>Perihal</th><td>{{ $surat->perihal }}</td></tr>
                                     <tr><th>Sifat</th><td>{{ $surat->sifat }}</td></tr>
                                     <tr><th>Catatan Sekretariat</th><td>{{ $surat->catatan_sekretariat }}</td></tr>
-                                    @if (pathinfo($surat->file, PATHINFO_EXTENSION) === 'pdf')
-                                    <tr><th>File</th><td><embed src="{{ asset('storage/assets/img/surat/' . $surat->file) }}" type="application/pdf" width="100%" height="600"></td></tr>
-                                    @else
-                                        
-                                    <tr><th>File</th><td><img src="{{asset('storage/assets/img/surat').'/'.$surat->file}}" alt=""></td></tr>
-                                    @endif
+                                    <tr><th>Files</th><td><iframe src="{{ asset('storage/assets/img/surat').'/' . $surat->file }}"  width="100%" height="600"></iframe></td></tr>
+                                    
+                                    
                                     {{-- <tr><th>Induk</th><td>{{ $disposisi->induk }}</td></tr>
                                     <tr><th> Disposisi Singkat </th><td> {{ $disposisi->disposisi_singkat }} </td></tr>
                                     <tr><th> Disposisi Narasi </th><td> {{ $disposisi->disposisi_narasi }} </td></tr> --}}

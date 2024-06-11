@@ -247,6 +247,27 @@ return [
 			'active' => ['home', 'home*'],
         ],
         [
+            'key' => 'Surat Wakil Direktur',
+            'text' => 'Surat Wakil Direktur',
+            'url'  => 'surat/wadir',
+            'icon' => 'nav-icon fas fa-envelope',
+			'active' => ['surat/wadir', 'surat/wadir*'],
+        ],
+        [
+            'key' => 'Surat Masuk',
+            'text' => 'Surat Masuk',
+            'url'  => 'surat/surat-masuk',
+            'icon' => 'nav-icon fas fa-envelope',
+			'active' => ['surat/surat-masuk', 'surat/surat-masuk*'],
+        ],
+        [
+            'key' => 'Disposisi Surat',
+            'text' => 'Disposisi Surat',
+            'url'  => 'surat/disposisi-surat',
+            'icon' => 'nav-icon fas fa-envelope',
+			'active' => ['surat/disposisi-surat', 'surat/disposisi-surat*'],
+        ],
+        [
             'key' => 'bcl',
             'text' => '',
             'url'  => 'https://www.youtube.com/@bangcholik',

@@ -10,6 +10,8 @@
             <div class="card">
                 <div class="card-header">Edit Surat</div>
                 <div class="card-body">
+                    
+                    <a href="{{ url( (Request::server('HTTP_REFERER')==null?'/surat/surat-masuk':Request::server('HTTP_REFERER')) ) }}" title="Kembali"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
                     <form action="{{ url('/surat/surat-masuk/' . $suratmasuk->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
@@ -93,16 +95,10 @@
                                 <option value="Wadir II">Wakil Direktur II</option>
                             </select>
                         </div> --}}
-                        <div class="row mb-3 mt-5">
+                        <div class="row mb-3 mt-3">
                             <div class="col-md-8 d-flex">
                                 <div class="col-md-2">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                </div>
-                                {{-- <div class="col-md-2" id="kirim" hidden>
-                                    <button type="button" class="btn btn-primary">Kirim</button>
-                                </div> --}}
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-dark">Kembali</button>
                                 </div>
                             </div>
                         </div>

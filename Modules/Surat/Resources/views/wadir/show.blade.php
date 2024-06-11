@@ -11,8 +11,9 @@
                 <div class="card-header">Surat {{ $surat->pengirim }}</div>
                 <div class="card-body">
 
-                    <a href="{{ url('/surat/disposisi-surat') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
-                    
+                    <a href="{{ url('/surat/wadir') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                    {{-- <a href="{{ url('/surat/wadir/' . $surat->id . '/edit') }}" title="Edit JenisLuaran"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Ubah</button></a> --}}
+
                     {{-- <form method="POST" action="{{ url('/kepegawaian/pegawai' . '/' . $pegawai->id) }}" accept-charset="UTF-8" style="display:inline">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
@@ -86,15 +87,13 @@
             <div class="card">
                 <div class="card-header">Surat {{ $surat->pengirim }}</div>
                 <div class="card-body">
-                    <form action="{{ url('surat/disposisi-surat/' . $surat->id) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ url('surat/wadir/' . $surat->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('patch')
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="">Disposisi</label>
-                                <select class="form-control select2" 
-								name="disposisi[]" required multiple="multiple">
-                                    {{-- <option value="" selected disabled>--Pilih--</option> --}}
+                                <select name="disposisi[]" class="form-control select2" id="" multiple="multiple">
                                     @foreach ($user as $item)
                                         <option value="{{ $item->name }}">{{ $item->name }}</option>
                                     @endforeach
@@ -103,7 +102,6 @@
                             <div class="col-md-6">
                                 <label for="example-text-input">Tujuan Disposisi</label>
                                 <select name="tujuan_disposisi[]" class="form-control select2" multiple="multiple">
-                                    {{-- <option value="" selected disabled>--Pilih--</option> --}}
                                     @foreach ($user as $item)
                                         <option value="{{ $item->name }}">{{ $item->name }}</option>
                                     @endforeach
@@ -142,8 +140,10 @@
 @push('js')
     <script>
          $(function () {
-            //Initialize Select2 Elements
-            $('.select2').select2();
+            $('.select2').select2({
+                placeholder: "--Pilih--",
+                allowClear: true
+            });
          });
         
         
