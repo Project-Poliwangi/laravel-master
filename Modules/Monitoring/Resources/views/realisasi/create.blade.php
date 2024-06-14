@@ -7,9 +7,9 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-                    <div class="card-header">Tambah Pegawai</div>
+                    <div class="card-header">Tambah Realisasi</div>
                     <div class="card-body">
-                        <a href="{{ url( (Request::server('HTTP_REFERER')==null?'/kepegawaian/pegawai':Request::server('HTTP_REFERER')) ) }}" title="Kembali"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
+                        <a href="{{ url( (Request::server('HTTP_REFERER')==null?'/monitoring/realisasi':Request::server('HTTP_REFERER')) ) }}" title="Kembali"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button></a>
                         <br />
                         <br />
 
@@ -21,10 +21,10 @@
                             </ul>
                         @endif
 
-                        <form method="POST" action="{{ url('/kepegawaian/pegawai') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                        <form method="POST" action="{{ url('/monitoring/realisasi') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
-                            @include ('kepegawaian::pegawai.form', ['formMode' => 'create'])
+                            @include ('monitoring::realisasi.form')
 
                         </form>
 

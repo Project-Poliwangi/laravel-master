@@ -9,8 +9,8 @@
         <div class="card">
             <div class="card-header">Data Realisasi</div>
             <div class="card-body">
-                <a href="{{ url('/kepegawaian/pegawai/create') }}" class="btn btn-success btn-sm"
-                    title="Tambah Pegawai">
+                <a href="{{ url('/monitoring/realisasi/create') }}" class="btn btn-success btn-sm"
+                    title="Tambah Realisasi">
                     <i class="fa fa-plus" aria-hidden="true"></i> Tambah
                 </a>
 
