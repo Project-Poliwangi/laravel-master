@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::get('/permohonandiproses', 'UnitController@permohonandiproses')->name('unit.diproses');
         Route::get('/permohonanselesai', 'UnitController@permohonanselesai')->name('unit.selesai');
         Route::get('/templatedokumen', 'UnitController@templatedokumen')->name('unit.template');
+        Route::get('/create', 'UnitController@create')->name('unit.create');
+        Route::post('/store', 'UnitController@create')->name('unit.store');
     });
 
     Route::prefix('admin')->group(function () {

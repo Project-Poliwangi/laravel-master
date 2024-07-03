@@ -6,36 +6,26 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
+use Modules\Pengadaan\Entities\Pengadaan;
+
 class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pengadaan::index');
+        $search = $request->get('search');
+        $pengadaan = Pengadaan::where('nomor_surat', 'like', '%'.$search.'%')
+                                ->orWhere('jenis_pengadaan', 'like', '%'.$search.'%')
+                                ->orWhere('total_biaya', 'like', '%'.$search.'%')
+                                ->orderBy('created_at', 'desc')
+                                ->paginate(10);
+
+        return view('unit.index', compact('unit'));
     }
 
-    public function daftarpermohonan()
-    { 
-        return view('pengadaan::unit.permohonan');
-    }
-
-    public function permohonandiproses()
-    {
-        return view('pengadaan::unit.diproses');
-    }
-
-    public function permohonanselesai()
-    {
-        return view('pengadaan::unit.selesai');
-    }
-
-    public function templatedokumen()
-    {
-        return view('pengadaan::unit.template');
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -43,7 +33,7 @@ class UnitController extends Controller
      */
     public function create()
     {
-        return view('pengadaan::create');
+        return view('pengadaan::unit.create');
     }
 
     /**
@@ -53,8 +43,22 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nomor_surat' => 'required|string|max:255',
+            'jenis_pengadaan' => 'required|in:barang,jasa,perbaikan,kegiatan,konstruksi',
+            'total_biaya' => 'required|numeric|min:0',
+            'dokumen_kak' => 'nullable|string|max:255',
+            'dokumen_hps' => 'nullable|string|max:255',
+            'dokumen_stock_opname' => 'nullable|string|max:255',
+            'dokumen_surat_ijin_impor' => 'nullable|string|max:255',
+            'status_id' => 'required|exists:status,id',
+        ]);
+
+        Pengadaan::create($validatedData);
+
+        return response()->json(['message' => 'Pengadaan created successfully!']);
     }
+    
 
     /**
      * Show the specified resource.
@@ -95,5 +99,25 @@ class UnitController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function daftarpermohonan()
+    { 
+        return view('pengadaan::unit.permohonan');
+    }
+
+    public function permohonandiproses()
+    {
+        return view('pengadaan::unit.diproses');
+    }
+
+    public function permohonanselesai()
+    {
+        return view('pengadaan::unit.selesai');
+    }
+
+    public function templatedokumen()
+    {
+        return view('pengadaan::unit.template');
     }
 }

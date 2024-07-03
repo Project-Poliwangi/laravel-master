@@ -39,7 +39,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
                 'icon' => 'fas fa-folder',
                 'urut' => 1,
                 'parent_id' => $menu->id,
-                'active' => serialize(['pengadaan/templatedokumen','pengadaan/templatedokumen*']),
+                'active' => serialize(['admin/templatedokumen','admin/templatedokumen*']),
             ]);
         }
 
@@ -52,7 +52,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'icon' => 'fas fa-solid fa-list',
             'urut' => 1,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['direktur/daftarpermohonan','direktur/daftarpermohonan*']),
         ]);
 
         Menu::create([
@@ -63,7 +63,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'icon' => 'fas fa-circle-notch',
             'urut' => 2,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['direktur/permohonandiproses','direktur/permohonandiproses*']),
         ]);
 
         Menu::create([
@@ -74,45 +74,45 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'icon' => 'fas fa-check-circle',
             'urut' => 3,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['direktur/permohonanselesai','direktur/permohonanselesai*']),
         ]);
 
         // Menu PPK
         Menu::create([
             'modul' => 'Pengadaan',
             'label' => 'Daftar Permohonan',
-            'url' => 'daftarpermohonan',
+            'url' => 'ppk/daftarpermohonan',
             'can' => serialize(['ppk']),
             'icon' => 'fas fa-solid fa-list',
             'urut' => 1,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['ppk/daftarpermohonan','ppk/daftarpermohonan*']),
         ]);
 
         Menu::create([
             'modul' => 'Pengadaan',
             'label' => 'Permohonan Diproses',
-            'url' => 'permohonandiproses',
+            'url' => 'ppk/permohonandiproses',
             'can' => serialize(['ppk']),
             'icon' => 'fas fa-circle-notch',
             'urut' => 2,
             'parent_id'=> 0,
-            'active' => '',
+            'active' => serialize(['ppk/permohonandiproses','ppk/permohonandiproses*']),
         ]);
 
         Menu::create([
             'modul' => 'Pengadaan',
             'label' => 'Permohonan Selesai',
-            'url' => 'permohonanselesai',
+            'url' => 'ppk/permohonanselesai',
             'can' => serialize(['ppk']),
             'icon' => 'fas fa-check-circle',
             'urut' => 3,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['ppk/permohonanselesai','ppk/permohonanselesai*']),
         ]);
 
 
-        $menu = Menu::create([
+        $menuppk = Menu::create([
             'modul' => 'Pengadaan',
             'label' => 'Dokumen',
             'url' => '',
@@ -122,7 +122,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'parent_id' => 0,
             'active' => serialize(['pengadaan']),
         ]);
-        if($menu){
+        if($menuppk){
             Menu::create([
                 'modul' => 'Pengadaan',
                 'label' => 'Penetapan',
@@ -130,8 +130,8 @@ class MenuModulPengadaanTableSeeder extends Seeder
                 'can' => serialize(['ppk']),
                 'icon' => 'far fa-file',
                 'urut' => 1,
-                'parent_id' => $menu->id,
-                'active' => serialize(['pengadaan/penetapan','pengadaan/penetapan*']),
+                'parent_id' => $menuppk->id,
+                'active' => serialize(['ppk/penetapan','ppk/penetapan*']),
             ]);
 
             Menu::create([
@@ -141,8 +141,8 @@ class MenuModulPengadaanTableSeeder extends Seeder
                 'can' => serialize(['ppk']),
                 'icon' => 'far fa-file',
                 'urut' => 2,
-                'parent_id' => $menu->id,
-                'active' => serialize(['pengadaan/kontrak','pengadaan/kontrak*']),
+                'parent_id' => $menuppk->id,
+                'active' => serialize(['ppk/kontrak','ppk/kontrak*']),
             ]);
 
             Menu::create([
@@ -152,8 +152,8 @@ class MenuModulPengadaanTableSeeder extends Seeder
                 'can' => serialize(['ppk']),
                 'icon' => 'far fa-file',
                 'urut' => 3,
-                'parent_id' => $menu->id,
-                'active' => serialize(['pengadaan/serahterima','pengadaan/serahterima*']),
+                'parent_id' => $menuppk->id,
+                'active' => serialize(['ppk/serahterima','ppk/serahterima*']),
             ]);
         }
 
@@ -166,7 +166,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'icon' => 'fas fa-solid fa-list',
             'urut' => 1,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['unit/daftarpermohonan','unit/daftarpermohonan*']),
         ]);
 
         Menu::create([
@@ -177,7 +177,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'icon' => 'fas fa-circle-notch',
             'urut' => 2,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['unit/permohonandiproses','unit/permohonandiproses*']),
         ]);
 
         Menu::create([
@@ -188,7 +188,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'icon' => 'fas fa-check-circle',
             'urut' => 3,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['unit/permohonanselesai','unit/permohonanselesai*']),
         ]);
 
         Menu::create([
@@ -199,7 +199,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'icon' => 'fas fa-file-download',
             'urut' => 4,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['unit/templatedokumen','unit/templatedokumen*']),
         ]);
 
         // $this->call("OthersTableSeeder");
