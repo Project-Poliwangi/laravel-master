@@ -12,6 +12,12 @@
 */
 
 Route::group(['middleware' => ['auth', 'permission']], function () {
+    // Route::prefix('keuangan')->group(function () {
+    //     Route::get('/', function () {
+    //         return redirect()->route('dashboard');
+    //     });
+    // });
+    //     Route::get('unit/dashboard', 'UnitController@index')->name('dashboard');
     
     Route::prefix('direktur')->group(function () {
         Route::get('/', 'PengadaanController@index');
@@ -34,13 +40,18 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 
     Route::prefix('unit')->group(function () {
         Route::get('/', 'PengadaanController@index');
-        Route::get('/dashboard', 'DashboardUsersController@unit')->name('unit.dashboard');
+        Route::get('/index', 'DashboardUsersController@index')->name('unit.index');
         Route::get('/daftarpermohonan', 'UnitController@daftarpermohonan')->name('unit.permohonan');
         Route::get('/permohonandiproses', 'UnitController@permohonandiproses')->name('unit.diproses');
         Route::get('/permohonanselesai', 'UnitController@permohonanselesai')->name('unit.selesai');
         Route::get('/templatedokumen', 'UnitController@templatedokumen')->name('unit.template');
         Route::get('/create', 'UnitController@create')->name('unit.create');
-        Route::post('/store', 'UnitController@create')->name('unit.store');
+        Route::post('/store', 'UnitController@store')->name('unit.store');
+        Route::get('/show/{id}', 'UnitController@show')->name('unit.show');
+        Route::get('/edit/{id}', 'UnitController@edit')->name('unit.edit');
+        Route::patch('/update/{id}', 'UnitController@update')->name('unit.update');
+        Route::delete('/destroy/{id}', 'UnitController@destroy')->name('unit.destroy');
+        
     });
 
     Route::prefix('admin')->group(function () {

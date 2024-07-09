@@ -1,21 +1,13 @@
 @extends('adminlte::page')
-@section('title', 'Tambah Permohonan')
+@section('title', 'Edit Permohonan')
 @section('content_header')
     <h1 class="m-0 text-dark"></h1>
 @stop
 @section('content')
-    <div class="page-heading">
-        <div class="page-title">
-            <div class="row">
-                <div class="col-12 col-md-12 order-md-1 order-last">
-                    <h3>Pengajuan Permohonan</h3>
-                    <p class="text-subtitle text-muted">Formulir untuk menambahkan pengajuan permohonan</p>
-
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
 
                     @if ($errors->any())
                         <ul class="alert alert-danger">
@@ -25,11 +17,12 @@
                         </ul>
                     @endif
 
-                    <form method="POST" action="{{ url('/unit/store') }}" accept-charset="UTF-8" class="form-horizontal"
-                        enctype="multipart/form-data">
+                    <form method="POST" action="{{ url('unit/update/' . $pengadaan->id) }}" accept-charset="UTF-8"
+                        class="form-horizontal" enctype="multipart/form-data">
+                        {{ method_field('PATCH') }}
                         {{ csrf_field() }}
 
-                        @include ('pengadaan::unit.form', ['formMode' => $formMode])
+                        @include ('pengadaan::unit.form', ['formMode' => $formMode, 'pengadaan' => $pengadaan])
 
                         {{-- <div class="col-sm-12 d-flex justify-content-end">
                             <button type="button" class="btn btn-warning" onclick="history.back();">
@@ -42,7 +35,9 @@
                         <br> --}}
                     </form>
                 </div>
+
             </div>
+
         </div>
     </div>
 @endsection

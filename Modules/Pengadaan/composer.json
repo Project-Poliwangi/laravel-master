@@ -19,5 +19,8 @@
         "psr-4": {
             "Modules\\Pengadaan\\": ""
         }
+    },
+    "require": {
+        "elibyy/tcpdf-laravel": "^9.0"
     }
 }

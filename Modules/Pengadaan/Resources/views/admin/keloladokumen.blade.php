@@ -20,7 +20,7 @@
                     <table class="table table-bordered">
                         <tr>
                             <th width="1%">ID</th>
-                            <th>Nama</th>
+                            <th>Nama Dokumen</th>
                             <th>File</th>
                             <th>Action</th>
                         </tr>

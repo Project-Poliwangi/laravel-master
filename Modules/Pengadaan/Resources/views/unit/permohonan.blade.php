@@ -9,11 +9,11 @@
             <div class="card">
                 <div class="card-header">Daftar Permohonan Pengadaan</div>
                 <div class="card-body">
-                    <a href="{{ url('pengadaan/unit/create') }}" class="btn btn-success btn-sm" title="Tambah Permohonan">
+                    <a href="{{ url('/unit/create') }}" class="btn btn-success btn-sm" title="Tambah Permohonan">
                         <i class="fa fa-plus" aria-hidden="true"></i> Tambah
                     </a>
 
-                    <form method="GET" action="{{ url('/pengadaan/unit/permohonan') }}" accept-charset="UTF-8"
+                    <form method="GET" action="{{ url('/unit') }}" accept-charset="UTF-8"
                         class="form-inline my-2 my-lg-0 float-right" role="search">
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Cari..."
@@ -42,27 +42,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($unit as $pengadaans)
+                                    @foreach ($pengadaan as $unit)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $pengadaans->nomor_surat }}</td>
-                                            <td>{{ $pengadaans->jenis_pengadaan }}</td>
-                                            <td>{{ $pengadaans->total_biaya }}</td>
-                                            <td><a href="{{ url('/pengadaan/unit/' . $pengadaans->id) }}"
-                                                    title="View Dokumen" class="btn icon icon-left btn-secondary btn-sm"><i
-                                                        class="bi bi-eye"></i> Lihat</a></td>
+                                            <td>{{ $unit->nomor_surat }}</td>
+                                            <td>{{ $unit->jenis_pengadaan }}</td>
+                                            <td>{{ $unit->total_biaya }}</td>
                                             <td>
-                                                <a href="{{ url('/pengadaan/edit/' . $pengadaans->id) }}" title="Edit"
+                                                <a href="{{ url('/unit/show/' . $unit->id) }}" title="Lihat Dokumen"
+                                                    class="btn icon icon-left btn-secondary btn-sm"><i
+                                                        class="fa fa-eye"></i> Lihat</a>
+                                            </td>
+                                            <td>
+                                                <a href="{{ url('unit/edit/' . $unit->id) }}" title="Edit"
                                                     class="btn icon icon-left btn-primary btn-sm"><i
-                                                        class="bi bi-pencil"></i> Edit</a>
-                                                <form action="{{ url('/pengadaan/delete/' . $pengadaans->id) }}"
-                                                    method="POST" style="display: inline;">
+                                                        class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                                                <form action="{{ url('/unit/destroy/' . $unit->id) }}" method="POST"
+                                                    accept-charset="UTF-8" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" title="Delete"
                                                         class="btn icon icon-left btn-danger btn-sm"
                                                         onclick="return confirm('Apakah Anda yakin ingin menghapus pengadaan ini?')">
-                                                        <i class="bi bi-trash"></i> Hapus
+                                                        <i class="fa fa-trash"></i> Hapus
                                                     </button>
                                                 </form>
                                             </td>
@@ -70,11 +72,15 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
+                            <div class="d-flex">
+                                {!! $pengadaan->links('pagination::bootstrap-4') !!}
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+@endsection
