@@ -55,8 +55,11 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
     });
 
     Route::prefix('admin')->group(function () {
-        Route::get('/', 'PengadaanController@index');
-        Route::get('/keloladokumen', 'AdminController@keloladokumen')->name('admin.keloladokumen');
+        Route::get('/keloladokumen', 'AdminController@index')->name('admin.index');
+        Route::post('/store', 'AdminController@store')->name('admin.store');
+        Route::get('dokumen/show/{id}', 'AdminController@show')->name('admin.show');
+        Route::get('dokumen/edit/{id}', 'AdminController@edit')->name('admin.edit');
+        Route::patch('dokumen/update/{id}', 'AdminController@update')->name('admin.update');
     });
     
 }); 
