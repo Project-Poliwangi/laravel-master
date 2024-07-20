@@ -1,6 +1,6 @@
 {
-    "Kepegawaian": true,
-    "Monitoring": true,
-    "Pengadaan": true,
+    "Kepegawaian": false,
+    "Monitoring": false,
+    "Pengadaan": false,
     "PeminjamanRuangan": true
 }

@@ -16,6 +16,17 @@ class PeminjamanRuanganDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
+        $this->call([
+            AuthenticationTableSeeder::class,
+            MenuModulPeminjamanRuanganTableSeeder::class,
+            UnitTableSeeder::class,
+            PegawaiTableSeeder::class,
+            GedungTableSeeder::class,
+            JurusanTableSeeder::class,
+            ProgramStudiTableSeeder::class,
+            MataKuliahTableSeeder::class,
+            RuangTableSeeder::class,
+            RuangPenggunaanKuliahTableSeeder::class
+        ]);
     }
 }
