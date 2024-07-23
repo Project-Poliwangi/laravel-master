@@ -52,16 +52,16 @@
                             <thead class="thead-light">
                                 <th style="white-space: nowrap;text-align: center" width="1%">No.</th>
                                 <th style="white-space: nowrap;text-align: center">Kode Ruangan</th>
-                                <th style="white-space: nowrap;text-align: center">Kode Program Studi</th>
+                                {{-- <th style="white-space: nowrap;text-align: center">Kode Program Studi</th>
                                 <th style="white-space: nowrap;text-align: center">Kode Mata Kuliah</th>
-                                <th style="white-space: nowrap;text-align: center">Kode Dosen Pengampu</th>
+                                <th style="white-space: nowrap;text-align: center">Kode Dosen Pengampu</th> --}}
+                                <th style="white-space: nowrap;text-align: center">NIM</th>
                                 <th style="white-space: nowrap;text-align: center">Jadwal Mulai</th>
                                 <th style="white-space: nowrap;text-align: center">Jadwal Selesai</th>
-                                <th style="white-space: nowrap;text-align: center">NIM</th>
-                                <th style="white-space: nowrap;text-align: center">Waktu Mulai</th>
-                                <th style="white-space: nowrap;text-align: center">Waktu Selesai</th>
+                                {{-- <th style="white-space: nowrap;text-align: center">Waktu Mulai</th>
+                                <th style="white-space: nowrap;text-align: center">Waktu Selesai</th> --}}
                                 <th style="white-space: nowrap;text-align: center">Keterangan</th>
-                                <th style="white-space: nowrap;text-align: center">Gambar</th>
+                                {{-- <th style="white-space: nowrap;text-align: center">Gambar</th> --}}
                                 <th style="white-space: nowrap;text-align: center" width="150">Aksi</th>
                             </thead>
                             <tbody>
@@ -69,19 +69,35 @@
                                     @foreach ($data as $item)
                                         <td style="white-space:nowrap">{{ $loop->iteration }}</td>
                                         <td style="white-space:nowrap">{{ $item->ruang->kode_bmn }} - {{ $item->ruang->nama }}</td>
-                                        <td style="white-space:nowrap">{{ $item->programStudi->nama }}</td>
+                                        {{-- <td style="white-space:nowrap">{{ $item->programStudi->nama }}</td>
                                         <td style="white-space:nowrap">{{ $item->mataKuliah->kode }} - {{ $item->mataKuliah->nama }}</td>
-                                        <td style="white-space:nowrap">{{ $item->pegawai->NIK }} - {{ $item->pegawai->nama }}</td>
+                                        <td style="white-space:nowrap">{{ $item->pegawai->NIK }} - {{ $item->pegawai->nama }}</td> --}}
+                                        <td style="white-space:nowrap">{{ $item->peminjam_nim }}</td>
                                         <td style="white-space:nowrap">{{ $item->jadwal_mulai }}</td>
                                         <td style="white-space:nowrap">{{ $item->jadwal_akhir }}</td>
-                                        <td style="white-space:nowrap">{{ $item->NIM }}</td>
-                                        <td style="white-space:nowrap">{{ $item->waktu_pinjam }}</td>
-                                        <td style="white-space:nowrap">{{ $item->waktu_selesai }}</td>
-                                        <td style="white-space:nowrap">{{ $item->status }}</td>
-                                        <td style="white-space:nowrap">{{ $item->foto_selesai }}</td>
+                                        {{-- <td style="white-space:nowrap">{{ $item->waktu_pinjam }}</td>
+                                        <td style="white-space:nowrap">{{ $item->waktu_selesai }}</td> --}}
+                                        <td style="white-space:nowrap">
+                                            <span class="badge py-1 px-2 {{ $item->status == 'pending' ? 'bg-warning' : ($item->status == 'approve' ? 'bg-success' : 'bg-danger') }}">{{ ucfirst($item->status) }}</span>
+                                        </td>
+                                        {{-- <td style="white-space:nowrap">{{ $item->foto_selesai }}</td> --}}
                                         <td style="white-space:nowrap" width="150">
-                                            <button class="btn btn-success"><i class="fas fa-edit"></i> Edit</button>
-                                            <button class="btn btn-warning"><i class="fas fa-trash-alt"></i> Hapus</button>
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#myModal{{ $item->id }}"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-warning btn-sm"><i class="fas fa-trash-alt"></i></button>
+
+                                            <div class="modal fade" id="myModal{{ $item->id }}" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 style="font-weight: bold">Detail</h5>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="table"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     @endforeach
                                 @else
