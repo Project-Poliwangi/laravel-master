@@ -2,9 +2,13 @@
 
 namespace Modules\PeminjamanRuangan\Http\Controllers\KelolaGedung;
 
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Validation\Rule;
 use Modules\PeminjamanRuangan\Entities\Gedung;
 
 class KelolaGedungController extends Controller
@@ -55,17 +59,40 @@ class KelolaGedungController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'kode' => 'required|unique:gedungs,kode',
+            'nama' => 'required',
+            'lokasi' => 'required',
+            'luas' => 'required|integer',
+            'file' => 'required|max:1024|mimes:jpeg,jpg,png,heic,webp'
+        ], [
+            'kode.required' => 'Kode gedung wajib diisi',
+            'kode.unique' => 'Kode gedung sudah terdaftar',
+            'nama.required' => 'Nama gedung wajib diisi',
+            'lokasi.required' => 'Lokasi gedung wajib diisi',
+            'luas.required' => 'Luas gedung wajib diisi',
+            'luas.integer' => 'Luas gedung harus berupa angka',
+            'file.required' => 'Foto gedung wajib diisi',
+            'file.mimes' => 'Foto gedung berupa salah satu dari jenis: jpg, jpeg, png, webp, heic',
+            'file.max' => 'Foto gedung tidak boleh lebih dari 1 MB'
+        ]);
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('peminjamanruangan::show');
+        try {
+            DB::beginTransation();
+            if($request->hasFile('file')) {
+                $file = $request->file('file');
+                $filename = 'Gedung_'. rand(0, 999999999999) .'.'. $file->getClientOriginalExtension();
+                $file->move(public_path('storage/images/gedungs/'), $filename);
+            }
+
+            $request->merge(['foto' => $filename]);
+            Gedung::create($request->only('kode', 'nama', 'lokasi', 'foto', 'luas'));
+            DB::commit();
+            
+            return redirect()->route('gedung')->with('success', 'Data gedung berhasil disimpan.');
+        } catch(Exception $e) {
+            abort(500);
+        }
     }
 
     /**
@@ -73,9 +100,15 @@ class KelolaGedungController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function edit($id)
+    public function edit(Gedung $gedung)
     {
-        return view('peminjamanruangan::edit');
+        $data = [
+            'title' => 'Ubah Gedung',
+            'action' => route('gedung.update', $gedung->id),
+            'gedung' => $gedung
+        ];
+
+        return view('peminjamanruangan::kelola-gedung.form', $data);
     }
 
     /**
@@ -84,9 +117,51 @@ class KelolaGedungController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Gedung $gedung)
     {
-        //
+        $request->validate([
+            'kode' => [
+                'required',
+                Rule::unique('gedungs', 'kode')->ignoreModel($gedung)
+            ],
+            'nama' => 'required',
+            'lokasi' => 'required',
+            'luas' => 'required|integer',
+            'file' => 'max:1024|mimes:jpeg,jpg,png,heic,webp'
+        ], [
+            'kode.required' => 'Kode gedung wajib diisi',
+            'kode.unique' => 'Kode gedung sudah terdaftar',
+            'nama.required' => 'Nama gedung wajib diisi',
+            'lokasi.required' => 'Lokasi gedung wajib diisi',
+            'luas.required' => 'Luas gedung wajib diisi',
+            'luas.integer' => 'Luas gedung harus berupa angka',
+            'file.required' => 'Foto gedung wajib diisi',
+            'file.mimes' => 'Foto gedung berupa salah satu dari jenis: jpg, jpeg, png, webp, heic',
+            'file.max' => 'Foto gedung tidak boleh lebih dari 1 MB'
+        ]);
+
+        try {
+            DB::beginTransation();
+            if($request->hasFile('file')) {
+                $file = $request->file('file');
+                $filename = 'Gedung_'. rand(0, 999999999999) .'.'. $file->getClientOriginalExtension();
+                $file->move(public_path('storage/images/gedungs/'), $filename);
+
+                if(file_exists(public_path('storage/images/gedungs/'. $gedung->foto))) {
+                    File::delete(public_path('storage/images/gedungs/'. $gedung->foto));
+                }
+            } else {
+                $filename = $gedung->foto;
+            }
+
+            $request->merge(['foto' => $filename]);
+            $gedung->update($request->only('kode', 'nama', 'lokasi', 'foto', 'luas'));
+            DB::commit();
+            
+            return redirect()->route('gedung')->with('success', 'Data gedung berhasil disimpan.');
+        } catch(Exception $e) {
+            abort(500);
+        }
     }
 
     /**
@@ -94,8 +169,14 @@ class KelolaGedungController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(Gedung $gedung)
     {
-        //
+        try {
+            $gedung->delete();
+
+            return redirect()->route('gedung')->with('success', 'Data gedung berhasil dihapus.');
+        } catch(Exception $e) {
+            abort(500);
+        }
     }
 }

@@ -9,8 +9,8 @@
                     <h4 style="font-weight: bold" class="my-2">{{ strtoupper($title) }}</h4>
                 </div>
                 <div class="col-sm-6 col-12 text-right">
-                    <a href="{{ route('gedung.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
-                        Tambah Gedung</a>
+                    <a href="{{ route('ruang.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
+                        Tambah Ruangan</a>
                 </div>
             </div>
         </div>
@@ -48,39 +48,38 @@
                                 data-dismiss="alert">&times;</button></div>
                     @endif
                     <div class="table-responsive">
-                        <table class="table small">
+                        <table class="table table-bordered small">
                             <thead class="thead-light">
                                 <th style="white-space: nowrap;text-align: center" width="1%">No.</th>
                                 <th style="white-space: nowrap;text-align: center">Nama Gedung</th>
+                                <th style="white-space: nowrap;text-align: center">Kode Ruangan</th>
+                                <th style="white-space: nowrap;text-align: center">Nama Ruangan</th>
+                                <th style="white-space: nowrap;text-align: center">Luas</th>
+                                <th style="white-space: nowrap;text-align: center">Kapasitas</th>
+                                <th style="white-space: nowrap;text-align: center">Lantai</th>
+                                <th style="white-space: nowrap;text-align: center">Jenis Kelas</th>
+                                <th style="white-space: nowrap;text-align: center">Gambar</th>
                                 <th style="white-space: nowrap;text-align: center" width="150">Aksi</th>
                             </thead>
                             <tbody>
                                 @if ($data->count() > 0)
                                     @foreach ($data as $item)
                                         <tr>
-                                            <td style="white-space: nowrap">{{ $loop->iteration }}</td>
-                                            <td style="white-space: nowrap">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="d-flex align-items-center justify-content-center border bg-light" style="width: 60px;height: 60px;border-radius: 50%;overflow: hidden">
-                                                        <img src="{{ asset('storage/images/gedungs/'. $item->foto) }}" width="70" alt="">
-                                                    </div>
-                                                    <div class="ml-3">
-                                                        <h6 style="font-weight: bold">{{ $item->kode  }} - {{ $item->nama }}</h6>
-                                                        <table>
-                                                            <tr>
-                                                                <td style="border: 0!important;padding: 0px!important;padding-right: 5px!important;">Lokasi</td>
-                                                                <td style="border: 0!important;padding: 0px!important;padding-right: 5px!important;">: {{ $item->lokasi }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="border: 0!important;padding: 0px!important;padding-right: 5px!important;">Luas</td>
-                                                                <td style="border: 0!important;padding: 0px!important;padding-right: 5px!important;">: {{ $item->luas }} M<sup>2</sup></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $loop->iteration }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->gedung->nama }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->kode_bmn }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->nama }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->luas }} M<sup>2</sup></td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->kapasitas }} Orang</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->lantai }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->jenis }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">
+                                                <div class="border bg-light d-flex align-items-center justify-content-center mx-auto" style="width: 40px;height: 40px;overflow: hidden;border-radius: 50%;">
+                                                    <img src="{{ asset('storage/images/ruangs/'. $item->foto) }}" width="60" alt="">
                                                 </div>
                                             </td>
                                             <td style="white-space: nowrap;width: 150px;">
-                                                <a href="{{ route('gedung.edit', $item->id) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i>
+                                                <a href="{{ route('ruang.edit', $item->id) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i>
                                                     Edit</a>
                                                 <button class="btn btn-warning btn-sm text-white" data-toggle="modal" data-target="#deleteModal{{ $item->id }}">
                                                     <i class="fas fa-trash-alt"></i>
@@ -89,7 +88,7 @@
                                                 <div class="modal fade" id="deleteModal{{ $item->id }}" role="dialog">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
-                                                            <form action="{{ route('gedung.delete', $item->id) }}" method="post">
+                                                            <form action="{{ route('ruang.delete', $item->id) }}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <div class="modal-header">

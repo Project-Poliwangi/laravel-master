@@ -21,7 +21,7 @@ class RuangTableSeeder extends Seeder
         Ruang::create([
             'gedung_id' => Gedung::first()->id,
             'kode_bmn' => rand(0, 9999999999),
-            'kode_qr' => rand(0, 9999999999),
+            'kode_qr' => 'T0SI102293',
             'nama' => 'G4.02',
             'luas' => 30,
             'kapasitas' => 30,

@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Module PeminjamanRuangan</title>
+@extends('adminlte::page')
 
-       {{-- Laravel Mix - CSS File --}}
-       {{-- <link rel="stylesheet" href="{{ mix('css/peminjamanruangan.css') }}"> --}}
-
-    </head>
-    <body>
-        @yield('content')
-
-        {{-- Laravel Mix - JS File --}}
-        {{-- <script src="{{ mix('js/peminjamanruangan.js') }}"></script> --}}
-    </body>
-</html>
+@section('content_top_nav_right')
+    <li class="nav-item">
+        <a href="{{ route('ruang.check') }}" class="nav-link"><i class="fas fa-camera"></i></a>
+    </li>
+@endsection

@@ -9,8 +9,8 @@
                     <h4 style="font-weight: bold" class="my-2">{{ strtoupper($title) }}</h4>
                 </div>
                 <div class="col-sm-6 col-12 text-right">
-                    <a href="{{ route('gedung.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
-                        Tambah Gedung</a>
+                    <a href="{{ route('mata-kuliah.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
+                        Tambah Mata Kuliah</a>
                 </div>
             </div>
         </div>
@@ -48,39 +48,28 @@
                                 data-dismiss="alert">&times;</button></div>
                     @endif
                     <div class="table-responsive">
-                        <table class="table small">
+                        <table class="table table-bordered small">
                             <thead class="thead-light">
                                 <th style="white-space: nowrap;text-align: center" width="1%">No.</th>
-                                <th style="white-space: nowrap;text-align: center">Nama Gedung</th>
+                                <th style="white-space: nowrap;text-align: center">Kode Mata Kuliah</th>
+                                <th style="white-space: nowrap;text-align: center">Program Studi</th>
+                                <th style="white-space: nowrap;text-align: center">Nama</th>
+                                <th style="white-space: nowrap;text-align: center">Jenis</th>
+                                <th style="white-space: nowrap;text-align: center">SKS</th>
                                 <th style="white-space: nowrap;text-align: center" width="150">Aksi</th>
                             </thead>
                             <tbody>
                                 @if ($data->count() > 0)
                                     @foreach ($data as $item)
                                         <tr>
-                                            <td style="white-space: nowrap">{{ $loop->iteration }}</td>
-                                            <td style="white-space: nowrap">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="d-flex align-items-center justify-content-center border bg-light" style="width: 60px;height: 60px;border-radius: 50%;overflow: hidden">
-                                                        <img src="{{ asset('storage/images/gedungs/'. $item->foto) }}" width="70" alt="">
-                                                    </div>
-                                                    <div class="ml-3">
-                                                        <h6 style="font-weight: bold">{{ $item->kode  }} - {{ $item->nama }}</h6>
-                                                        <table>
-                                                            <tr>
-                                                                <td style="border: 0!important;padding: 0px!important;padding-right: 5px!important;">Lokasi</td>
-                                                                <td style="border: 0!important;padding: 0px!important;padding-right: 5px!important;">: {{ $item->lokasi }}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="border: 0!important;padding: 0px!important;padding-right: 5px!important;">Luas</td>
-                                                                <td style="border: 0!important;padding: 0px!important;padding-right: 5px!important;">: {{ $item->luas }} M<sup>2</sup></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $loop->iteration }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->kode }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->programStudi->nama }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->nama }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->jenis }}</td>
+                                            <td style="white-space: nowrap;text-align: center;">{{ $item->sks }}</td>
                                             <td style="white-space: nowrap;width: 150px;">
-                                                <a href="{{ route('gedung.edit', $item->id) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i>
+                                                <a href="{{ route('mata-kuliah.edit', $item->id) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i>
                                                     Edit</a>
                                                 <button class="btn btn-warning btn-sm text-white" data-toggle="modal" data-target="#deleteModal{{ $item->id }}">
                                                     <i class="fas fa-trash-alt"></i>
@@ -89,7 +78,7 @@
                                                 <div class="modal fade" id="deleteModal{{ $item->id }}" role="dialog">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
-                                                            <form action="{{ route('gedung.delete', $item->id) }}" method="post">
+                                                            <form action="{{ route('mata-kuliah.delete', $item->id) }}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <div class="modal-header">

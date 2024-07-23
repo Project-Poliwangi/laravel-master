@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->dateTime('waktu_pinjam');
             $table->dateTime('waktu_selesai');
             $table->char('foto_selesai', 100);
+            $table->enum('status', ['pending', 'reject', 'approve'])->default('pending');
 
             $table->timestamps();
         });
