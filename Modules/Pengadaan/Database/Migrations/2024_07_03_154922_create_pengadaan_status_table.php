@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +19,15 @@ class CreatePengadaanStatusTable extends Migration
             $table->string('status');
             $table->timestamps();
         });
+
+        // Insert default values
+        DB::table('pengadaan_status')->insert([
+            ['status' => 'Pra dipa'],
+            ['status' => 'Pemenuhan Dokumen'],
+            ['status' => 'Pemilihan Penyedia'],
+            ['status' => 'Kontrak'],
+            ['status' => 'Serah Terima']
+        ]);
     }
 
     /**

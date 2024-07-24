@@ -13,46 +13,25 @@ return new class extends Migration {
         Schema::create('sub_perencanaans', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->char('kegiatan', 150);
-            $table->enum('metode_pengadaan', [
-                'Swakelola',
-                'Pengadaan Langsung',
-                'E-purchasing',
-                'Tender',
-                'Seleksi',
-                'Penunjukan Langsung',
-            ]);
+            $table->unsignedBigInteger('metode_pengadaan_id');
             $table->char('satuan', 50);
             $table->integer('volume');
             $table->integer('harga_satuan');
             $table->char('output');
             $table->date('rencana_mulai');
             $table->date('rencana_bayar');
-            $table->varchar('file_hps', 255)->nullable();
-            $table->varchar('file_kak', 255)->nullable();
-            $table->varchar('file_hps', 255)->nullable();
-            $table->varchar('file_kak', 255)->nullable();
             $table->unsignedBigInteger('perencanaan_id');
             $table->unsignedBigInteger('pic_id');
             $table->unsignedBigInteger('ppk_id');
             $table->bigInteger('pp_id')->nullable();
-            $table->enum('jenis', [
-                'Barang',
-                'Jasa Konsultansi',
-                'Operasional',
-                'Pekerjaan Konstruksi',
-            ]);
-            $table->enum('status', [
-                'Pra Dipa',
-                'Pemenuhan Dokumen',
-                'Pemilihan Penyedia',
-                'Kontrak',
-                'Serah Terima',
-            ])->nullable();
+            $table->unsignedBigInteger('jenis_pengadaan_id');
             $table->timestamps();
 
             $table->foreign('perencanaan_id')->references('id')->on('perencanaans')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('pic_id')->references('id')->on('pegawais')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('ppk_id')->references('id')->on('pegawais')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('metode_pengadaan_id')->references('id')->on('metode_pengadaans')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('jenis_pengadaan_id')->references('id')->on('jenis_pengadaans')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -65,6 +44,10 @@ return new class extends Migration {
             $table->dropForeign(['perencanaan_id']);
             $table->dropForeign(['pic_id']);
             $table->dropForeign(['ppk_id']);
+            $table->dropForeign(['metode_pengadaan_id']);
+            $table->dropForeign(['jenis_pengadaan_id']);
         });
+
+        Schema::dropIfExists('sub_perencanaans');
     }
 };

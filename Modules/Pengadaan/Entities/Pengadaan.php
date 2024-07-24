@@ -14,17 +14,28 @@ class Pengadaan extends Model
 
     protected $fillable = [
         'nomor_surat',
-        'jenis_pengadaan',
         'total_biaya',
         'dokumen_kak',
         'dokumen_hps',
         'dokumen_stock_opname',
         'dokumen_surat_ijin_impor',
         'status_id',
+        'sub_perencanaan_id',
+        'jenis_pengadaan_id',
     ];
 
     public function status()
     {
         return $this->belongsTo(Status::class);
+    }
+
+    public function subPerencanaan()
+    {
+        return $this->belongsTo(SubPerencanaan::class, 'sub_perencanaan_id');
+    }
+
+    public function jenisPengadaan()
+    {
+        return $this->belongsTo(JenisPengadaan::class, 'jenis_pengadaan_id');
     }
 }
