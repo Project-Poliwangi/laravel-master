@@ -62,6 +62,7 @@ class MenusController extends Controller
     public function store(Request $request) 
     {
         $request->validate([
+            'modul' => 'required',
             'name' => 'required',
             'can' => 'required',
             'icon' => 'required',
@@ -70,6 +71,7 @@ class MenusController extends Controller
         $active="";
         if($request->url!="")$active=serialize([$request->url,$request->url."*"]);
         $menu = Menu::create([
+            'modul' => $request->modul,
             'label' => $request->name,
             'url' => $request->url,
             'can' => serialize($request->can),
@@ -102,6 +104,7 @@ class MenusController extends Controller
     public function update(Request $request, $menu)
     {
         $request->validate([
+            'modul' => 'required',
             'name' => 'required',
             'can' => 'required',
             'icon' => 'required',
@@ -110,6 +113,7 @@ class MenusController extends Controller
         if($request->url!="")$active=serialize([$request->url,$request->url."*"]);
         $menu = Menu::where('id',$menu)->first();
         if($menu){
+            $menu->modul = $request->modul;
             $menu->label = $request->name;
             $menu->url= $request->url;
             $menu->can= serialize($request->can);
