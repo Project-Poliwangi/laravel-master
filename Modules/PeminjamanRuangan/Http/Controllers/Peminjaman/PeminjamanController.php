@@ -3,6 +3,7 @@
 namespace Modules\PeminjamanRuangan\Http\Controllers\Peminjaman;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -21,7 +22,7 @@ class PeminjamanController extends Controller
             $show = $request->show;
         }
 
-        $query = RuangPenggunaanKuliah::query();
+        $query = RuangPenggunaanKuliah::query()->whereDate('jadwal_mulai', '>=', Carbon::today());
         $dataPeminjaman = $query->paginate($show)->map(function($item) {
             $item->jadwal_mulai = Carbon::parse($item->jadwal_mulai)->format('d M Y') .', '. Carbon::parse($item->waktu_pinjam)->format('H:i') .' WIB';
             $item->jadwal_akhir = Carbon::parse($item->jadwal_akhir)->format('d M Y') .', '. Carbon::parse($item->waktu_selesai)->format('H:i') .' WIB';
@@ -94,8 +95,13 @@ class PeminjamanController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function destroy($id)
+    public function destroy(RuangPenggunaanKuliah $peminjaman)
     {
-        //
+        try {
+            $peminjaman->delete();
+            return redirect()->route('peminjaman')->with('success', 'Peminjaman Berhasil di hapus');
+        } catch(Exception $e) {
+            echo response()->json($e->getMessage());
+        }
     }
 }

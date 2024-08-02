@@ -20,7 +20,7 @@ use Modules\PeminjamanRuangan\Http\Controllers\Peminjaman\PeminjamanController;
 use Modules\PeminjamanRuangan\Http\Controllers\Penjadwalan\PenjadwalanController;
 use Modules\PeminjamanRuangan\Http\Controllers\Ruang\RuangController;
 
-Route::middleware(['auth', 'permission'])->group(function() {
+Route::middleware(['auth'])->group(function() {
     Route::prefix('kelola-peminjaman')->group(function() {
         Route::get('', [KelolaPeminjamanController::class, 'index']);
     });
@@ -61,9 +61,13 @@ Route::middleware(['auth', 'permission'])->group(function() {
         Route::get('check/{kode}', [RuangController::class, 'checkKodeQR'])->name('ruang.check-kode');
         Route::get('tersedia', [RuangController::class, 'ruanganTersedia'])->name('ruang.tersedia');
         Route::get('terpakai', [RuangController::class, 'ruanganTerpakai'])->name('ruang.terpakai');
+        Route::get('detail/{ruang}', [RuangController::class, 'detailRuangan'])->name('ruang.detail');
+        Route::get('pinjam/{ruang?}', [RuangController::class, 'createPeminjaman'])->name('ruang.create-peminjaman');
+        Route::post('simpan-peminjaman', [RuangController::class, 'storePeminjaman'])->name('ruang.store-peminjaman');
     });
 });
 
 Route::prefix('peminjaman')->group(function() {
     Route::get('', [PeminjamanController::class, 'index'])->name('peminjaman');
+    Route::delete('{peminjaman}/delete', [PeminjamanController::class, 'destroy'])->name('peminjaman.delete');
 });

@@ -78,7 +78,7 @@ class KelolaGedungController extends Controller
         ]);
 
         try {
-            DB::beginTransation();
+            DB::beginTransaction();
             if($request->hasFile('file')) {
                 $file = $request->file('file');
                 $filename = 'Gedung_'. rand(0, 999999999999) .'.'. $file->getClientOriginalExtension();

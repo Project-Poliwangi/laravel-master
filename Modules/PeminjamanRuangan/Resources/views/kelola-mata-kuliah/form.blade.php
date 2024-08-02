@@ -28,7 +28,7 @@
                             <select name="program_studi_id" class="form-control @error('kode') is-invalid @enderror">
                                 <option value=""></option>
                                 @foreach($programStudis as $item) 
-                                    <option value="{{ $item->id }}" @if(old('program_studi_id', isset($mataKuliah) ? $mataKuliah->program_studi_id : '') === '{{ $item->id }}') selected @endif>{{ $item->nama }}</option>
+                                    <option value="{{ $item->id }}" @if(old('program_studi_id', isset($mataKuliah) ? $mataKuliah->program_studi_id : '') == $item->id) selected @endif>{{ $item->nama }}</option>
                                 @endforeach
                             </select>
                             @error('program_studi_id')

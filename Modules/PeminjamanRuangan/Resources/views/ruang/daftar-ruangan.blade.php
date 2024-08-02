@@ -24,13 +24,13 @@
                     <div class="card-body">
                         <h5 style="font-weight: bold">{{ $ruang->nama }}</h5>
                         <hr>
-                        <div class="d-block border bg-light" style="height: 350px;border-radius: 8px;">
-
+                        <div class="d-flex align-items-center justify-content-center border bg-light" style="height: 350px;border-radius: 8px;">
+                            <img src="{{ asset('storage/images/ruangs/'. $ruang->foto) }}" width="100%" alt="">
                         </div>
                     </div>
                     <div class="d-flex w-100 border">
-                        <button class="btn {{ isset($type) && $type == 'terpakai' ? 'btn-success' : 'btn-primary' }} w-50 py-2 border" style="border-radius: 0;">Detail</button>
-                        <button class="btn {{ isset($type) && $type == 'terpakai' ? 'btn-success' : 'btn-primary' }} w-50 py-2 border" style="border-radius: 0;">{{ isset($type) && $type == 'terpakai' ? 'Pengguna' : 'Pinjam' }}</button>
+                        <a href="{{ route('ruang.detail', $ruang->id) }}" class="btn {{ isset($type) && $type == 'terpakai' ? 'btn-success' : 'btn-primary' }} w-50 py-2 border" style="border-radius: 0;">Detail</a>
+                        <a href="{{ route('ruang.create-peminjaman', $ruang->id) }}" class="btn {{ isset($type) && $type == 'terpakai' ? 'btn-success' : 'btn-primary' }} w-50 py-2 border" style="border-radius: 0;">{{ isset($type) && $type == 'terpakai' ? 'Pengguna' : 'Pinjam' }}</a>
                     </div>
                 </div>
             </div>

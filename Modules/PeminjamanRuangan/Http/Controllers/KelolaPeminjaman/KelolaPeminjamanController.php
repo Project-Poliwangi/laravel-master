@@ -21,7 +21,8 @@ class KelolaPeminjamanController extends Controller
             $show = $request->show;
         }
 
-        $ruangPenggunaanKuliah = RuangPenggunaanKuliah::paginate($show)->map(function($item) {
+        $query = RuangPenggunaanKuliah::query();
+        $ruangPenggunaanKuliah = $query->paginate($show)->map(function($item) {
             $item->jadwal_mulai = Carbon::parse($item->jadwal_mulai)->format('d M Y');
             $item->jadwal_akhir = Carbon::parse($item->jadwal_akhir)->format('d M Y');
             $item->waktu_pinjam = Carbon::parse($item->waktu_pinjam)->format('H:i');
