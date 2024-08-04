@@ -9,7 +9,7 @@
                     <h4 style="font-weight: bold" class="my-2">{{ strtoupper($title) }}</h4>
                 </div>
                 <div class="col-sm-6 col-12 text-right">
-                    <a href="{{ route('ruang.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
+                    <a href="{{ route('penjadwalan.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
                         Tambah Jadwal</a>
                 </div>
             </div>
@@ -64,9 +64,55 @@
                                 <th style="white-space: nowrap;text-align: center">Aksi</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="12" class="text-center">Tidak ada data yang dapat ditampilkan.</td>
-                                </tr>
+                                @if($data->count() > 0)
+                                    @foreach($data as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->mataKuliah->kode }} - {{ $item->mataKuliah->nama }}</td>
+                                            <td>{{ $item->semester }}</td>
+                                            <td>{{ $item->kelas }}</td>
+                                            <td>{{ $item->programStudi->nama }}</td>
+                                            <td>{{ $item->pegawai->NIK }} - {{ $item->pegawai->nama }}</td>
+                                            <td>{{ $item->hari }}</td>
+                                            <td>{{ $item->jam_mulai }}</td>
+                                            <td>{{ $item->jam_selesai }}</td>
+                                            <td>{{ $item->ruang->kode_bmn }} - {{ $item->ruang->nama }}</td>
+                                            <td>{{ $item->description }}</td>
+                                            <td>
+                                                <a href="{{ route('penjadwalan.edit', $item->id) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i>
+                                                    Edit</a>
+                                                <button class="btn btn-warning btn-sm text-white" data-toggle="modal" data-target="#deleteModal{{ $item->id }}">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                    Hapus
+                                                </button>
+                                                <div class="modal fade" id="deleteModal{{ $item->id }}" role="dialog">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <form action="{{ route('penjadwalan.delete', $item->id) }}" method="post">
+                                                                @method('delete')
+                                                                @csrf
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Delete Penjadwalan?</h5>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Data yang dihapus tidak dapat dikembalikan, anda yakin ingin melanjutkan?</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary">Ya, lanjutkan</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="12" class="text-center">Tidak ada data yang dapat ditampilkan.</td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>

@@ -11,3 +11,9 @@ if(!function_exists('generateQRCode')) {
         return 'data:image/png;base64,'. base64_encode($qrcode);
     }
 }
+
+if(!function_exists('userInfo')) {
+    function userInfo() {
+        return auth()->user();
+    }
+}

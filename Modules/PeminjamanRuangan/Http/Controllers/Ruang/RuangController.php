@@ -116,12 +116,9 @@ class RuangController extends Controller
 
     public function createPeminjaman(Ruang $ruang)
     {
-        $ruangs = Ruang::all();
-
-        // dd($ruangs);
         $data = [
             'title' => 'Form Pinjam Ruangan',
-            'ruangs' => $ruangs,
+            'ruangs' => Ruang::all(),
             'programStudis' => ProgramStudi::all(),
             'mataKuliahs' => MataKuliah::all(),
             'pegawais' => Pegawai::all(),
@@ -152,7 +149,7 @@ class RuangController extends Controller
 
             // check jadwal peminjaman harus lebih dari tanggal atau waktu sekarang
             if(!$inputTime->gt($currentTime)) {
-                redirect()->route('ruang.create-peminjaman', $request->ruang_id)->with('error', 'Jadwal peminjaman harus lebih dari tanggal atau waktu sekarang');
+                return redirect()->back()->with('error', 'Peminjaman ruangan harus lebih dari tanggal atau waktu sekarang')->withInput();
             }
 
             // check ketersediaan ruangan
@@ -160,7 +157,7 @@ class RuangController extends Controller
                 $dateStart = Carbon::createFromFormat('Y-m-d H:i', $request->jadwal_mulai .' '. $request->waktu_mulai);
                 $dateEnd = Carbon::createFromFormat('Y-m-d H:i', $request->jadwal_akhir .' '. $request->waktu_selesai);
 
-                $q->whereStatus('approve');
+                // $q->whereStatus('approve');
                 $q->whereDate('jadwal_mulai', $dateStart->format('Y-m-d'));
                 $q->whereTime('jadwal_mulai', '<=', $dateStart->format('H:i:s'));
                 $q->whereTime('jadwal_akhir', '>=', $dateEnd->format('H:i:s'));
@@ -168,7 +165,7 @@ class RuangController extends Controller
             });
 
             if($check->count() > 0) {
-                redirect()->route('ruang.create-peminjaman', $request->ruang_id)->with('error', 'Ruangan sudah dipinjam pada waktu yang sama');
+                return redirect()->back()->with('error', 'Ruangan Tidak Tersedia di tanggal atau waktu yang dipilih')->withInput();
             }
 
             $request->merge([

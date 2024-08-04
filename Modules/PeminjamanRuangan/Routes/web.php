@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use Modules\PeminjamanRuangan\Http\Controllers\Dashboard\DashboardController;
 use Modules\PeminjamanRuangan\Http\Controllers\KelolaGedung\KelolaGedungController;
 use Modules\PeminjamanRuangan\Http\Controllers\KelolaMataKuliah\KelolaMataKuliahController;
 use Modules\PeminjamanRuangan\Http\Controllers\KelolaPeminjaman\KelolaPeminjamanController;
@@ -21,8 +22,16 @@ use Modules\PeminjamanRuangan\Http\Controllers\Penjadwalan\PenjadwalanController
 use Modules\PeminjamanRuangan\Http\Controllers\Ruang\RuangController;
 
 Route::middleware(['auth'])->group(function() {
+    Route::prefix('home')->group(function() {
+        Route::get('', [DashboardController::class, 'index'])->name('peminjamanruangan.dashboard');
+    });
+
     Route::prefix('kelola-peminjaman')->group(function() {
-        Route::get('', [KelolaPeminjamanController::class, 'index']);
+        Route::get('', [KelolaPeminjamanController::class, 'index'])->name('kelola-peminjaman');
+        Route::get('{peminjaman}/edit', [KelolaPeminjamanController::class, 'edit'])->name('kelola-peminjaman.edit');
+        Route::post('{peminjaman}/update', [KelolaPeminjamanController::class, 'update'])->name('kelola-peminjaman.update');
+        Route::get('{peminjaman}/accept', [KelolaPeminjamanController::class, 'accept'])->name('kelola-peminjaman.accept');
+        Route::get('{peminjaman}/reject', [KelolaPeminjamanController::class, 'reject'])->name('kelola-peminjaman.reject');
     });
     
     Route::prefix('kelola-gedung')->group(function() {
@@ -54,6 +63,11 @@ Route::middleware(['auth'])->group(function() {
     
     Route::prefix('penjadwalan')->group(function() {
         Route::get('', [PenjadwalanController::class, 'index'])->name('penjadwalan');
+        Route::get('create', [PenjadwalanController::class, 'create'])->name('penjadwalan.create');
+        Route::post('store', [PenjadwalanController::class, 'store'])->name('penjadwalan.store');
+        Route::delete('{jadwalKuliah}/delete', [PenjadwalanController::class, 'destroy'])->name('penjadwalan.delete');
+        Route::post('{jadwalKuliah}/update', [PenjadwalanController::class, 'update'])->name('penjadwalan.update');
+        Route::get('{jadwalKuliah}/edit', [PenjadwalanController::class, 'edit'])->name('penjadwalan.edit');
     });
     
     Route::prefix('ruangan')->group(function() {
@@ -70,4 +84,6 @@ Route::middleware(['auth'])->group(function() {
 Route::prefix('peminjaman')->group(function() {
     Route::get('', [PeminjamanController::class, 'index'])->name('peminjaman');
     Route::delete('{peminjaman}/delete', [PeminjamanController::class, 'destroy'])->name('peminjaman.delete');
+    Route::post('{peminjaman}/update', [PeminjamanController::class, 'update'])->name('peminjaman.update');
+    Route::get('{peminjaman}/edit', [PeminjamanController::class, 'edit'])->name('peminjaman.edit');
 });

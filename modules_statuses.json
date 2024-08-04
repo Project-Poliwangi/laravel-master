@@ -2,5 +2,7 @@
     "Kepegawaian": false,
     "Monitoring": false,
     "Pengadaan": false,
-    "PeminjamanRuangan": true
+    "PeminjamanRuangan": true,
+    "Model": true,
+    "JadwalKuliah": true
 }

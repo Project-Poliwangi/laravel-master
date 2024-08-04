@@ -71,43 +71,43 @@
                                 <td style="white-space:nowrap">{{ $loop->iteration }}</td>
                                 <td style="white-space:nowrap">{{ $item->ruang->kode_bmn }} - {{ $item->ruang->nama }}
                                 </td>
-                                {{-- <td style="white-space:nowrap">{{ $item->programStudi->nama }}</td>
-                                <td style="white-space:nowrap">{{ $item->mataKuliah->kode }} - {{
-                                    $item->mataKuliah->nama }}</td>
-                                <td style="white-space:nowrap">{{ $item->pegawai->NIK }} - {{ $item->pegawai->nama }}
-                                </td> --}}
                                 <td style="white-space:nowrap">{{ $item->peminjam_nim }}</td>
                                 <td style="white-space:nowrap">{{ $item->jadwal_mulai }}</td>
                                 <td style="white-space:nowrap">{{ $item->jadwal_akhir }}</td>
-                                {{-- <td style="white-space:nowrap">{{ $item->waktu_pinjam }}</td>
-                                <td style="white-space:nowrap">{{ $item->waktu_selesai }}</td> --}}
                                 <td style="white-space:nowrap">
                                     <span
                                         class="badge py-1 px-2 {{ $item->status == 'pending' ? 'bg-warning' : ($item->status == 'approve' ? 'bg-success' : 'bg-danger') }}">{{
                                         ucfirst($item->status) }}</span>
                                 </td>
-                                {{-- <td style="white-space:nowrap">{{ $item->foto_selesai }}</td> --}}
                                 <td style="white-space:nowrap" width="150">
                                     <button class="btn btn-secondary btn-sm" data-toggle="modal"
                                         data-target="#myModal{{ $item->id }}"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#deleteModal{{ $item->id }}"><i class="fas fa-trash-alt"></i></button>
+                                    @if($item->status == 'pending')
+                                    <a href="{{ route('peminjaman.edit', $item->id) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                    <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                        data-target="#deleteModal{{ $item->id }}"><i
+                                            class="fas fa-trash-alt"></i></button>
+                                    @endif
 
                                     <div class="modal fade" id="deleteModal{{ $item->id }}" role="dialog">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form action="{{ route('peminjaman.delete', $item->id) }}" method="post">
+                                                <form action="{{ route('peminjaman.delete', $item->id) }}"
+                                                    method="post">
                                                     @method('delete')
                                                     @csrf
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Delete Permohonan?</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p>Data yang dihapus tidak dapat dikembalikan, anda yakin ingin melanjutkan?</p>
+                                                        <p>Data yang dihapus tidak dapat dikembalikan, anda yakin ingin
+                                                            melanjutkan?</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-primary">Ya, lanjutkan</button>
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-primary">Ya,
+                                                            lanjutkan</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -185,27 +185,38 @@
                                                 <div class="modal-footer">
                                                     <button class="btn btn-secondary" type="button"
                                                         data-dismiss="modal">Close</button>
-                                                    <button class="btn btn-success"><i class="fas fa-edit"></i>
-                                                        Edit</button>
-                                                    {{-- <button class="btn btn-warning btn-sm text-white" data-toggle="modal" data-dismiss="modal" data-target="#deleteModal{{ $item->id }}">
+                                                    @if($item->status == 'pending')
+                                                    <a href="{{ route('peminjaman.edit', $item->id) }}" class="btn btn-success"><i class="fas fa-edit"></i>
+                                                        Edit</a>
+                                                    @endif
+                                                    {{-- <button class="btn btn-warning btn-sm text-white"
+                                                        data-toggle="modal" data-dismiss="modal"
+                                                        data-target="#deleteModal{{ $item->id }}">
                                                         <i class="fas fa-trash-alt"></i>
                                                         Hapus
                                                     </button>
-                                                    <div class="modal fade" id="deleteModal{{ $item->id }}" role="dialog">
+                                                    <div class="modal fade" id="deleteModal{{ $item->id }}"
+                                                        role="dialog">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
-                                                                <form action="{{ route('peminjaman.delete', $item->id) }}" method="post">
+                                                                <form
+                                                                    action="{{ route('peminjaman.delete', $item->id) }}"
+                                                                    method="post">
                                                                     @method('delete')
                                                                     @csrf
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title">Delete Permohonan?</h5>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <p>Data yang dihapus tidak dapat dikembalikan, anda yakin ingin melanjutkan?</p>
+                                                                        <p>Data yang dihapus tidak dapat dikembalikan,
+                                                                            anda yakin ingin melanjutkan?</p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                                                                        <button type="submit" class="btn btn-primary">Ya, lanjutkan</button>
+                                                                        <button type="button" class="btn btn-danger"
+                                                                            data-dismiss="modal">Batal</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Ya,
+                                                                            lanjutkan</button>
                                                                     </div>
                                                                 </form>
                                                             </div>

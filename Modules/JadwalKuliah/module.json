@@ -1,0 +1,13 @@
+{
+    "name": "JadwalKuliah",
+    "alias": "jadwalkuliah",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\JadwalKuliah\\Providers\\JadwalKuliahServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
