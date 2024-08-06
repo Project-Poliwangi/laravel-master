@@ -22,8 +22,9 @@ class DashboardController extends Controller
         
         $data = [
             'title' => 'Dashboard',
-            'approved' => RuangPenggunaanKuliah::whereStatus('approve')->get()->count(),
+            'pending' => RuangPenggunaanKuliah::whereStatus('pending')->get()->count(),
             'history' => RuangPenggunaanKuliah::where('jadwal_mulai', '<', Carbon::today())->get()->count(),
+            'approve' => RuangPenggunaanKuliah::whereStatus('pending')->get()->count(),
         ];
 
         return view('peminjamanruangan::dashboard.index', $data);

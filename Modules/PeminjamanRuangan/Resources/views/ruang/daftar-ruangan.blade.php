@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <h5 style="font-weight: bold">{{ $ruang->nama }}</h5>
                         <hr>
-                        <div class="d-flex align-items-center justify-content-center border bg-light" style="height: 350px;border-radius: 8px;">
+                        <div class="d-flex align-items-center justify-content-center border bg-light" style="height: 350px;border-radius: 8px;overflow: hidden">
                             <img src="{{ asset('storage/images/ruangs/'. $ruang->foto) }}" width="100%" alt="">
                         </div>
                     </div>

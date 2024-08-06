@@ -23,7 +23,7 @@
                         <h1 style="font-weight: bold;font-size: 2.5rem">Persetujuan Peminjaman</h1>
                         <br>
                         <br>
-                        <h2 class="text-right">{{ $approved }} Permohonan</h2>
+                        <h2 class="text-right">{{ $pending }} Permohonan</h2>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                         <h1 style="font-weight: bold;font-size: 2.5rem">Dokumen Bukti</h1>
                         <br>
                         <br>
-                        <h2 class="text-right">10 Permohonan</h2>
+                        <h2 class="text-right">{{ $approve }} Permohonan</h2>
                     </div>
                 </div>
             </div>

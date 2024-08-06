@@ -23,7 +23,7 @@ use Modules\PeminjamanRuangan\Http\Controllers\Ruang\RuangController;
 
 Route::middleware(['auth'])->group(function() {
     Route::prefix('home')->group(function() {
-        Route::get('', [DashboardController::class, 'index'])->name('peminjamanruangan.dashboard');
+        Route::get('', [DashboardController::class, 'index'])->name('home.index');
     });
 
     Route::prefix('kelola-peminjaman')->group(function() {

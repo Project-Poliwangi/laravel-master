@@ -70,6 +70,8 @@
                                 <label for="">Jenis Kelas <span class="text-danger">*</span></label>
                                 <select name="jenis" class="form-control @error('jenis') is-invalid @enderror">
                                     <option value=""></option>
+                                    <option value="Interaktif Kelas" @if(old('jenis', isset($ruang) ? $ruang->jenis : '') == 'Interaktif Kelas') selected @endif>Interaktif Kelas</option>
+                                    <option value="Classical Kelas" @if(old('jenis', isset($ruang) ? $ruang->jenis : '') == 'Classical Kelas') selected @endif>Classical Kelas</option>
                                     <option value="Ruang Kelas" @if(old('jenis', isset($ruang) ? $ruang->jenis : '') == 'Ruang Kelas') selected @endif>Ruang Kelas</option>
                                     <option value="Ruang Laboratorium" @if(old('jenis', isset($ruang) ? $ruang->jenis : '') == 'Ruang Laboratorium') selected @endif>Ruang Laboratorium</option>
                                     <option value="Ruang Kerja" @if(old('jenis', isset($ruang) ? $ruang->jenis : '') == 'Ruang Kerja') selected @endif>Ruang Kerja</option>

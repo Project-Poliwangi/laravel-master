@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->integer('lantai');
             $table->char('foto', 100);
             $table->enum('jenis', [
+                'Interaktif Kelas',
+                'Classical Kelas',
                 'Ruang Kelas',
                 'Ruang Laboratorium',
                 'Ruang Kerja',
