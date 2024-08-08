@@ -9,6 +9,8 @@
                     <h4 style="font-weight: bold" class="my-2">{{ strtoupper($title) }}</h4>
                 </div>
                 <div class="col-sm-6 col-12 text-right">
+                    <a href="{{ route('ruang.create') }}" class="btn btn-info btn-sm my-2"><i class="fas fa-sync-alt"></i>
+                        Sinkronisasi Ruangan</a>
                     <a href="{{ route('ruang.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
                         Tambah Ruangan</a>
                 </div>
@@ -92,7 +94,7 @@
                                                                 @method('delete')
                                                                 @csrf
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">Delete Gedung?</h5>
+                                                                    <h5 class="modal-title">Delete Ruangan?</h5>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <p>Data yang dihapus tidak dapat dikembalikan, anda yakin ingin melanjutkan?</p>

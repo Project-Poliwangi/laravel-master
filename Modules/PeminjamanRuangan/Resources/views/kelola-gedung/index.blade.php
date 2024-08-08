@@ -9,6 +9,8 @@
                     <h4 style="font-weight: bold" class="my-2">{{ strtoupper($title) }}</h4>
                 </div>
                 <div class="col-sm-6 col-12 text-right">
+                    <a href="{{ route('gedung.sync') }}" class="btn btn-info btn-sm my-2"><i class="fas fa-sync-alt"></i>
+                        Sinkronisasi Gedung</a>
                     <a href="{{ route('gedung.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
                         Tambah Gedung</a>
                 </div>

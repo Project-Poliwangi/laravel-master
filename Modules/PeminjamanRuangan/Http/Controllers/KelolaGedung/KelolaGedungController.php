@@ -3,6 +3,7 @@
 namespace Modules\PeminjamanRuangan\Http\Controllers\KelolaGedung;
 
 use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -177,6 +178,28 @@ class KelolaGedungController extends Controller
             return redirect()->route('gedung')->with('success', 'Data gedung berhasil dihapus.');
         } catch(Exception $e) {
             abort(500);
+        }
+    }
+
+    public function sync()
+    {
+        try {
+            // $client = new Client([
+            //     'verify' => false
+            // ]);
+            // $response = $client->request('GET', 'https://sit.poliwangi.ac.id/v2/api/v1/sitapi/pegawai?filter[status_karyawan]=7', [
+            //     'headers' => [
+            //         'Accept' => 'application/json',
+            //         'Authorization' => 'Bearer '. env('SIT_TOKEN')
+            //     ],
+            // ]);
+
+            // $data = json_decode($response->getBody()->getContents(), true);
+
+            // return response()->json(['data' => $data]);
+        } catch(Exception $e) {
+            // abort(500);
+            return response()->json(['message' => $e->getMessage()]);
         }
     }
 }

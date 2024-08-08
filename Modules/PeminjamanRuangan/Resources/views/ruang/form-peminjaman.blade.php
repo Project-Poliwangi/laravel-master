@@ -9,8 +9,8 @@
     </div>
 
     <div class="col-md-5 col-sm-10 col-12">
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }} <button class="close"
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }} <button class="close"
                 data-dismiss="alert">&times;</button></div>
         @endif
         <div class="card shadow-sm">

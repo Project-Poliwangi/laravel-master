@@ -30,7 +30,7 @@
                     </div>
                     <div class="d-flex w-100 border">
                         <a href="{{ route('ruang.detail', $ruang->id) }}" class="btn {{ isset($type) && $type == 'terpakai' ? 'btn-success' : 'btn-primary' }} w-50 py-2 border" style="border-radius: 0;">Detail</a>
-                        <a href="{{ route('ruang.create-peminjaman', $ruang->id) }}" class="btn {{ isset($type) && $type == 'terpakai' ? 'btn-success' : 'btn-primary' }} w-50 py-2 border" style="border-radius: 0;">{{ isset($type) && $type == 'terpakai' ? 'Pengguna' : 'Pinjam' }}</a>
+                        <a href="{{ isset($type) && $type == 'terpakai' ? route('ruang.detail', $ruang->id) : route('ruang.create-peminjaman', $ruang->id) }}" class="btn {{ isset($type) && $type == 'terpakai' ? 'btn-success' : 'btn-primary' }} w-50 py-2 border" style="border-radius: 0;">{{ isset($type) && $type == 'terpakai' ? 'Pengguna' : 'Pinjam' }}</a>
                     </div>
                 </div>
             </div>

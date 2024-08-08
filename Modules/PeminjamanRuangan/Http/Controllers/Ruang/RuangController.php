@@ -143,7 +143,6 @@ class RuangController extends Controller
         ]);
 
         try {
-            DB::beginTransaction();
             $inputTime = Carbon::createFromFormat('Y-m-d H:i', $request->jadwal_mulai .' '. $request->waktu_mulai);
             $currentTime = Carbon::now();
 
@@ -177,7 +176,6 @@ class RuangController extends Controller
                 'foto_selesai' => 'default.png',
             ]);
             RuangPenggunaanKuliah::create($request->only('ruang_id', 'program_studi_id', 'mata_kuliah_id', 'dosen_id', 'jadwal_mulai', 'jadwal_akhir', 'peminjam_nim', 'waktu_pinjam', 'waktu_selesai', 'foto_selesai'));
-            DB::commit();
 
             return redirect()->route('peminjaman')->with('success', 'Peminjaman Ruangan Berhasil');
         } catch(Exception $e) {

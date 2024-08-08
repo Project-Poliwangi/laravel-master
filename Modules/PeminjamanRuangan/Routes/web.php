@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('{gedung}/delete', [KelolaGedungController::class, 'destroy'])->name('gedung.delete');
         Route::post('{gedung}/update', [KelolaGedungController::class, 'update'])->name('gedung.update');
         Route::get('{gedung}/edit', [KelolaGedungController::class, 'edit'])->name('gedung.edit');
+        Route::get('sync', [KelolaGedungController::class, 'sync'])->name('gedung.sync');
     });
     
     Route::prefix('kelola-ruangan')->group(function() {
