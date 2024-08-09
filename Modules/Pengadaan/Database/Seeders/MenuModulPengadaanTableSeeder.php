@@ -26,7 +26,7 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'url' => '',
             'can' => serialize(['admin']),
             'icon' => 'fas fa-users-cog',
-            'urut' => 1,
+            'urut' => 4,
             'parent_id' => 0,
             'active' => serialize(['pengadaan']),
         ]);
@@ -39,90 +39,67 @@ class MenuModulPengadaanTableSeeder extends Seeder
                 'icon' => 'fas fa-folder',
                 'urut' => 1,
                 'parent_id' => $menu->id,
-                'active' => serialize(['pengadaan/templatedokumen','pengadaan/templatedokumen*']),
+                'active' => serialize(['admin/templatedokumen','admin/templatedokumen*']),
             ]);
         }
 
         // Menu Direktur
         Menu::create([
             'modul' => 'Pengadaan',
-            'label' => 'Daftar Permohonan',
-            'url' => 'direktur/daftarpermohonan',
+            'label' => 'Dashboard',
+            'url' => 'direktur/dashboard',
             'can' => serialize(['direktur']),
-            'icon' => 'fas fa-solid fa-list',
+            'icon' => 'fas fa-home',
             'urut' => 1,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['direktur/dashboard','direktur/dashboard*']),
         ]);
 
         Menu::create([
             'modul' => 'Pengadaan',
-            'label' => 'Permohonan Diproses',
-            'url' => 'direktur/permohonandiproses',
+            'label' => 'Daftar Pengadaan',
+            'url' => 'direktur/daftarpengadaan',
             'can' => serialize(['direktur']),
-            'icon' => 'fas fa-circle-notch',
+            'icon' => 'fas fa-solid fa-list',
             'urut' => 2,
             'parent_id' => 0,
-            'active' => '',
-        ]);
-
-        Menu::create([
-            'modul' => 'Pengadaan',
-            'label' => 'Permohonan Selesai',
-            'url' => 'direktur/permohonanselesai',
-            'can' => serialize(['direktur']),
-            'icon' => 'fas fa-check-circle',
-            'urut' => 3,
-            'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['direktur/daftarpengadaan','direktur/daftarpengadaan*']),
         ]);
 
         // Menu PPK
         Menu::create([
             'modul' => 'Pengadaan',
-            'label' => 'Daftar Permohonan',
-            'url' => 'daftarpermohonan',
+            'label' => 'Dashboard',
+            'url' => 'ppk/dashboard',
             'can' => serialize(['ppk']),
-            'icon' => 'fas fa-solid fa-list',
+            'icon' => 'fas fa-home',
             'urut' => 1,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['ppk/dashboard','ppk/dashboard*']),
         ]);
 
         Menu::create([
             'modul' => 'Pengadaan',
-            'label' => 'Permohonan Diproses',
-            'url' => 'permohonandiproses',
+            'label' => 'Daftar Pengadaan',
+            'url' => 'ppk/daftarpengadaan',
             'can' => serialize(['ppk']),
-            'icon' => 'fas fa-circle-notch',
+            'icon' => 'fas fa-solid fa-list',
             'urut' => 2,
-            'parent_id'=> 0,
-            'active' => '',
-        ]);
-
-        Menu::create([
-            'modul' => 'Pengadaan',
-            'label' => 'Permohonan Selesai',
-            'url' => 'permohonanselesai',
-            'can' => serialize(['ppk']),
-            'icon' => 'fas fa-check-circle',
-            'urut' => 3,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['ppk/daftarpengadaan','ppk/daftarpengadaan*']),
         ]);
 
-
-        $menu = Menu::create([
+        $menuppk = Menu::create([
             'modul' => 'Pengadaan',
             'label' => 'Dokumen',
             'url' => '',
             'can' => serialize(['ppk']),
             'icon' => 'fas fa-folder',
-            'urut' => 4,
+            'urut' => 3,
             'parent_id' => 0,
             'active' => serialize(['pengadaan']),
         ]);
-        if($menu){
+        if($menuppk){
             Menu::create([
                 'modul' => 'Pengadaan',
                 'label' => 'Penetapan',
@@ -130,8 +107,8 @@ class MenuModulPengadaanTableSeeder extends Seeder
                 'can' => serialize(['ppk']),
                 'icon' => 'far fa-file',
                 'urut' => 1,
-                'parent_id' => $menu->id,
-                'active' => serialize(['pengadaan/penetapan','pengadaan/penetapan*']),
+                'parent_id' => $menuppk->id,
+                'active' => serialize(['ppk/penetapan','ppk/penetapan*']),
             ]);
 
             Menu::create([
@@ -141,8 +118,8 @@ class MenuModulPengadaanTableSeeder extends Seeder
                 'can' => serialize(['ppk']),
                 'icon' => 'far fa-file',
                 'urut' => 2,
-                'parent_id' => $menu->id,
-                'active' => serialize(['pengadaan/kontrak','pengadaan/kontrak*']),
+                'parent_id' => $menuppk->id,
+                'active' => serialize(['ppk/kontrak','ppk/kontrak*']),
             ]);
 
             Menu::create([
@@ -152,54 +129,67 @@ class MenuModulPengadaanTableSeeder extends Seeder
                 'can' => serialize(['ppk']),
                 'icon' => 'far fa-file',
                 'urut' => 3,
-                'parent_id' => $menu->id,
-                'active' => serialize(['pengadaan/serahterima','pengadaan/serahterima*']),
+                'parent_id' => $menuppk->id,
+                'active' => serialize(['ppk/serahterima','ppk/serahterima*']),
             ]);
         }
 
         // Menu Unit/Jurusan
         Menu::create([
             'modul' => 'Pengadaan',
-            'label' => 'Daftar Permohonan',
-            'url' => 'unit/daftarpermohonan',
-            'can' => serialize(['unit']),
-            'icon' => 'fas fa-solid fa-list',
+            'label' => 'Dashboard',
+            'url' => 'unit/dashboard',
+            'can' => serialize(['kajur, kaunit']),
+            'icon' => 'fas fa-home',
             'urut' => 1,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['unit/dashboard','unit/dashboard*']),
         ]);
 
         Menu::create([
             'modul' => 'Pengadaan',
-            'label' => 'Permohonan Diproses',
-            'url' => 'unit/permohonandiproses',
-            'can' => serialize(['unit']),
-            'icon' => 'fas fa-circle-notch',
+            'label' => 'Daftar Pengadaan',
+            'url' => 'unit/daftarpengadaan',
+            'can' => serialize(['kajur, kaunit']),
+            'icon' => 'fas fa-solid fa-list',
             'urut' => 2,
             'parent_id' => 0,
-            'active' => '',
-        ]);
-
-        Menu::create([
-            'modul' => 'Pengadaan',
-            'label' => 'Permohonan Selesai',
-            'url' => 'unit/permohonanselesai',
-            'can' => serialize(['unit']),
-            'icon' => 'fas fa-check-circle',
-            'urut' => 3,
-            'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['unit/daftarpengadaan','unit/daftarpengadaan*']),
         ]);
 
         Menu::create([
             'modul' => 'Pengadaan',
             'label' => 'Template Dokumen',
             'url' => 'unit/templatedokumen',
-            'can' => serialize(['unit']),
+            'can' => serialize(['kajur, kaunit']),
             'icon' => 'fas fa-file-download',
-            'urut' => 4,
+            'urut' => 3,
             'parent_id' => 0,
-            'active' => '',
+            'active' => serialize(['unit/templatedokumen','unit/templatedokumen*']),
+        ]);
+
+         // Menu Role PP
+         Menu::create([
+            'modul' => 'Pengadaan',
+            'label' => 'Dashboard',
+            'url' => 'pp/dashboard',
+            'can' => serialize(['pp']),
+            'icon' => 'fas fa-home',
+            'urut' => 1,
+            'parent_id' => 0,
+            'active' => serialize(['pp/dashboard', 'pp/dashboard*']),
+        ]);
+
+        // Menu Role PP
+        Menu::create([
+            'modul' => 'Pengadaan',
+            'label' => 'Daftar Pengadaan',
+            'url' => 'pp/daftarpengadaan',
+            'can' => serialize(['pp']),
+            'icon' => 'fas fa-list',
+            'urut' => 2,
+            'parent_id' => 0,
+            'active' => serialize(['pp/daftarpengadaan', 'pp/daftarpengadaan*']),
         ]);
 
         // $this->call("OthersTableSeeder");

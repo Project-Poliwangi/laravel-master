@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Autentikasi;
 
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
-use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -41,7 +42,7 @@ class LoginController extends Controller
         Auth::login($user);
 		
 		
-        \DB::table('sessions')
+        DB::table('sessions')
             ->where('user_id', \Auth::user()->id)
             ->where('id', '!=', \Session::getId())->delete();
         

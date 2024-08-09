@@ -2,14 +2,16 @@
 
 namespace App\Models\Core;
 
+use Auth;
+use Laravel\Sanctum\HasApiTokens;
+use Modules\Pengadaan\Entities\Unit;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Modules\Kepegawaian\Entities\Pegawai;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
-
-use Auth;
 
 class User extends Authenticatable
 {
@@ -57,7 +59,11 @@ class User extends Authenticatable
 	
 	public function adminlte_image()
 	{
-		return asset('storage/assets/img/avatar/'.$this->avatar);
+		if(!\Storage::exists('/path/to/your/directory')) {
+			return asset('/assets/img/avatar.png');
+		}else{
+			return asset('storage/assets/img/avatar/'.$this->avatar);
+		}
 	}
 
 	public function adminlte_desc()
@@ -93,4 +99,14 @@ class User extends Authenticatable
 		if($rol[$this->role_aktif]==$roleCheck)return true;
 		return false;
 	}
+
+	public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit', 'id');
+    }
+
+	public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'pegawais_id', 'id');
+    }
 }

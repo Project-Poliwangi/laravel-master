@@ -28,6 +28,7 @@ class CreateAdminUserSeeder extends Seeder
 			'password' => Hash::make('12345678'),
 			'unit' => 0,
 			'staff' => 0,
+            'role_aktif' => 'admin',
 			'status' => 2
         ]);
         
