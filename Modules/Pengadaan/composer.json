@@ -10,14 +10,19 @@
     "extra": {
         "laravel": {
             "providers": [],
-            "aliases": {
-
-            }
+            "aliases": {}
         }
     },
     "autoload": {
         "psr-4": {
-            "Modules\\Pengadaan\\": ""
+            "App\\": "app/",
+            "Modules\\": "Modules/",
+            "Modules\\Pengadaan\\": "Modules/Pengadaan/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Database\\Factories\\": "Modules/Pengadaan/Database/factories/"
         }
     },
     "require": {

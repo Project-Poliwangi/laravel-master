@@ -12,10 +12,10 @@ class Perencanaan extends Model
     protected $primary = 'id';
 
     protected $fillable = [
-        'nama', 'kode', 'sumber', 'revisi', 'unit_id'
+        'nama', 'kode', 'sumber', 'pagu', 'revisi', 'tahun',
     ];
 
-    public function subPerencanaans()
+    public function subperencanaan()
     {
         return $this->hasMany(SubPerencanaan::class, 'perencanaan_id');
     }

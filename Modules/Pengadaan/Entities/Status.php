@@ -13,11 +13,21 @@ class Status extends Model
     protected $primary = 'id';
 
     protected $fillable = [
-        'status',
+        'nama_status',
     ];
 
     public function pengadaans()
     {
         return $this->hasMany(Pengadaan::class);
+    }
+
+    public function subperencanaans()
+    {
+        return $this->hasMany(SubPerencanaan::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
     }
 }

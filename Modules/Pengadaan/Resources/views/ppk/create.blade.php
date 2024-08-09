@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Tambah Permohonan')
+@section('title', 'Tambah Pengadaan')
 @section('content_header')
     <h1 class="m-0 text-dark"></h1>
 @stop
@@ -8,8 +8,8 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-12 order-md-1 order-last">
-                    <h3>Pengajuan Permohonan</h3>
-                    <p class="text-subtitle text-muted">Formulir untuk menambahkan pengajuan permohonan</p>
+                    <h3>Perencanaan Pengadaan</h3>
+                    <p class="text-subtitle text-muted">Formulir untuk menambahkan pengadaan</p>
 
                     @if (session('success'))
                         <div class="alert alert-success">
@@ -25,11 +25,11 @@
                         </ul>
                     @endif
 
-                    <form method="POST" action="{{ url('/unit/store') }}" accept-charset="UTF-8" class="form-horizontal"
+                    <form method="POST" action="{{ url('/ppk/store') }}" accept-charset="UTF-8" class="form-horizontal"
                         enctype="multipart/form-data">
                         {{ csrf_field() }}
 
-                        @include ('pengadaan::unit.form', ['formMode' => $formMode])
+                        @include ('pengadaan::ppk.form', ['formMode' => $formMode])
 
                         {{-- <div class="col-sm-12 d-flex justify-content-end">
                             <button type="button" class="btn btn-warning" onclick="history.back();">

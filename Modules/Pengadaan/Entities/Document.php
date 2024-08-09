@@ -10,12 +10,12 @@ class Document extends Model
     use HasFactory;
 
     protected $table = 'pengadaan_documents';
-    protected $primary = 'id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'nama_dokumen',
         'file',
-        'description',
+        'deskripsi',
     ];
 
     public function status()

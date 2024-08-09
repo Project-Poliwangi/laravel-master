@@ -27,7 +27,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('pengadaan::create');
+        //
     }
 
     /**
@@ -37,26 +37,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
-        $validatedData = $request->validate([
-            'nama_dokumen' => 'required|string|max:255',
-            'file' => 'required|mimes:doc,docx|max:10240',
-            'description' => 'nullable|string',
-        ]);
-
-        // Penanganan file yang diunggah
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            $file_name = Str::random(20) . '.' . $extension;
-            $file->storeAs('dokumen_template', $file_name, 'public');
-            $validatedData['file'] = $file_name;
-        }
-
-        // Menyimpan data ke database
-        Document::create($validatedData);
-
-        return redirect('/admin/keloladokumen')->with('success', 'Dokumen berhasil diubah.');
+        // 
     }
 
     /**
@@ -108,7 +89,7 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'nama_dokumen' => 'string|max:255',
             'deskripsi' => 'nullable|string',
-            'file' => 'nullable|mimes:doc,docx|max:10240',
+            'file' => 'nullable|mimes:doc,docx,xls,xlsx|max:10240',
         ]);
 
         // Proses file upload
@@ -124,7 +105,7 @@ class AdminController extends Controller
         $documents->update($validatedData);
 
         // Redirect dengan pesan sukses
-        return redirect('/admin/keloladokumen')->with('success', 'Dokumen ' . $documents->nama_dokumen . 'berhasil diperbarui.');
+        return redirect('/admin/keloladokumen')->with('success_edit', 'Dokumen ' . $documents->nama_dokumen . ' berhasil diperbarui.');
     }
 
     /**

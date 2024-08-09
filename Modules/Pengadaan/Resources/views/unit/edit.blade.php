@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Edit Permohonan')
+@section('title', 'Edit Formulir')
 @section('content_header')
     <h1 class="m-0 text-dark"></h1>
 @stop
@@ -7,6 +7,9 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Edit Formulir Pengadaan</h4>
+                </div>
                 <div class="card-body">
 
                     @if ($errors->any())
@@ -17,12 +20,16 @@
                         </ul>
                     @endif
 
-                    <form method="POST" action="{{ url('unit/update/' . $pengadaan->id) }}" accept-charset="UTF-8"
+                    <form method="POST" action="{{ url('unit/update/' . $subPerencanaan->id) }}" accept-charset="UTF-8"
                         class="form-horizontal" enctype="multipart/form-data">
-                        {{ method_field('PATCH') }}
-                        {{ csrf_field() }}
+                        @csrf
+                        @method('PUT')
 
-                        @include ('pengadaan::unit.form', ['formMode' => $formMode, 'pengadaan' => $pengadaan])
+                        @include ('pengadaan::unit.form', [
+                            'formMode' => $formMode,
+                            'pengadaan' => $pengadaan,
+                            'subPerencanaan' => $subPerencanaan,
+                        ])
 
                         {{-- <div class="col-sm-12 d-flex justify-content-end">
                             <button type="button" class="btn btn-warning" onclick="history.back();">

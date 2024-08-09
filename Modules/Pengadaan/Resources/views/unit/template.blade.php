@@ -1,14 +1,13 @@
 @extends('adminlte::page')
 @section('title', 'Template Dokumen')
 @section('content_header')
-    <h1 class="m-0 text-dark"></h1>
+    <h1 class="m-0 text-dark">Template Dokumen Pengadaan</h1>
 @stop
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h1>Template Dokumen</h1>
                     <div class="lead">
                         Tabel berisi file template dokumen permohonan pengadaan.
                     </div>
@@ -21,47 +20,25 @@
                         <tr>
                             <th width="1%">ID</th>
                             <th>Nama</th>
-                            <th>File</th>
+                            <th class="text-center">Deskripsi</th>
+                            <th class="text-center">File</th>
                         </tr>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Kerangka Acuan Kerja (KAK)</td>
-                                <td>
-                                    <a href="#" class="btn icon icon-left btn-secondary btn-sm"><i
-                                            class="bi bi-eye"></i> Download</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Harga Perkiraan Sendiri (HPS)</td>
-                                <td>
-                                    <a href="#" class="btn icon icon-left btn-secondary btn-sm"><i
-                                            class="bi bi-eye"></i> Download</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Stock Opname</td>
-                                <td>
-                                    <a href="#" class="btn icon icon-left btn-secondary btn-sm"><i
-                                            class="bi bi-eye"></i> Download</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Surat Ijin Impor</td>
-                                <td>
-                                    <a href="#" class="btn icon icon-left btn-secondary btn-sm"><i
-                                            class="bi bi-eye"></i> Download</a>
-                                </td>
-                            </tr>
+                            @foreach ($templateDokumens as $templateDokumen)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $templateDokumen->nama_dokumen }}</td>
+                                    <td>{{ $templateDokumen->deskripsi }}</td>
+                                    <td>
+                                        <a href="{{ asset('storage/dokumen_template/' . $templateDokumen->file) }}"
+                                            class="btn btn-secondary btn-sm" download>
+                                            Download
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
-
-                    <div class="d-flex">
-                    </div>
-
                 </div>
             </div>
         </div>

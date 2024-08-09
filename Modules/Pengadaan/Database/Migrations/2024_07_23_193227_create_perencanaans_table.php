@@ -15,22 +15,19 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->char('nama', 150);
             $table->char('kode', 100);
-            $table->enum('sumber', ['PNP', 'RM', 'Hibah']);
+            $table->enum('sumber', ['PNP', 'RM', 'Hibah', 'BOPTN', 'PNBP', 'CF']);
+            $table->integer('pagu');
             $table->integer('revisi');
-            $table->unsignedBigInteger('unit_id');
+            $table->integer('tahun');
             $table->timestamps();
-
-            $table->foreign('unit_id')->references('id')->on('units')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
-        Schema::table('perencanaans', function (Blueprint $table) {
-        $table->dropForeign(['unit_id']);
-        });
+        Schema::dropIfExists('perencanaans');
     }
 };

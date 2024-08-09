@@ -16,7 +16,7 @@ class CreatePengadaanStatusTable extends Migration
     {
         Schema::create('pengadaan_status', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
+            $table->string('nama_status');
             $table->timestamps();
         });
 

@@ -16,8 +16,6 @@ class CreatePengadaanTable extends Migration
         Schema::create('pengadaan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('subperencanaan_id');
-            $table->string('nomor_surat');
-            $table->decimal('total_biaya', 15, 2);
             $table->string('dokumen_kak')->nullable();
             $table->string('dokumen_hps')->nullable();
             $table->string('dokumen_stock_opname')->nullable();
