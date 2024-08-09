@@ -9,6 +9,11 @@ class Document extends Model
 {
     use HasFactory;
 
+    protected static function newFactory()
+    {
+        return \Modules\Pengadaan\Database\factories\DocumentFactory::new();
+    }
+
     protected $table = 'pengadaan_documents';
     protected $primaryKey = 'id';
 

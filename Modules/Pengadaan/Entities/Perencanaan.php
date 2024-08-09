@@ -15,7 +15,6 @@ class Perencanaan extends Model
         'nama',
         'kode',
         'sumber',
-        'pagu',
         'revisi',
         'tahun',
     ];

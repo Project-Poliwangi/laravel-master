@@ -20,6 +20,7 @@ class SubPerencanaan extends Model
         'satuan',
         'volume',
         'harga_satuan',
+        'pagu',
         'output',
         'rencana_mulai',
         'rencana_bayar',

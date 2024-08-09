@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->char('satuan', 50);
             $table->integer('volume');
             $table->integer('harga_satuan');
+            $table->bigInteger('pagu');
             $table->char('output');
             $table->date('rencana_mulai');
             $table->date('rencana_bayar');
