@@ -10,7 +10,7 @@ class Pengadaan extends Model
     use HasFactory;
 
     protected $table = 'pengadaan';
-    protected $primary = 'id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'catatan',
@@ -18,16 +18,13 @@ class Pengadaan extends Model
         'dokumen_hps',
         'dokumen_stock_opname',
         'dokumen_surat_ijin_impor',
-        'status_id',
+        'dokumen_kontrak',
+        'dokumen_serah_terima',
         'subperencanaan_id',
     ];
 
-    public function status() // Renamed to 'status' for clarity
-    {
-        return $this->belongsTo(Status::class, 'status_id');
-    }
-
-    public function subperencanaan()
+    // Relasi ke Model SubPerencanaan
+    public function subPerencanaan()
     {
         return $this->belongsTo(SubPerencanaan::class, 'subperencanaan_id');
     }

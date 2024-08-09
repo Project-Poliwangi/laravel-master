@@ -25,14 +25,4 @@ class JenisPengadaan extends Model
     {
         return $this->hasMany(SubPerencanaan::class, 'jenis_pengadaan_id');
     }
-
-    /**
-     * Relasi ke model Pengadaan.
-     * 
-     * JenisPengadaan dapat memiliki banyak Pengadaan.
-     */
-    // public function pengadaans()
-    // {
-    //     return $this->hasMany(Pengadaan::class, 'jenis_pengadaan_id');
-    // }
 }

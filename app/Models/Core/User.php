@@ -102,11 +102,11 @@ class User extends Authenticatable
 
 	public function unit()
     {
-        return $this->belongsTo(Unit::class, 'unit');
+        return $this->belongsTo(Unit::class, 'unit', 'id');
     }
 
 	public function pegawai()
     {
-        return $this->belongsTo(Pegawai::class, 'id');
+        return $this->belongsTo(Pegawai::class, 'pegawais_id', 'id');
     }
 }

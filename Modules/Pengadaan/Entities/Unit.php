@@ -15,7 +15,9 @@ class Unit extends Model
     protected $table = 'units';
     protected $primaryKey = 'id';
 
-    public function pegawais()
+    protected $fillable = ['nama'];
+
+    public function pegawai()
     {
         return $this->hasMany(Pegawai::class, 'unit_id');
     }
@@ -38,12 +40,12 @@ class Unit extends Model
         return $this->belongsTo(Pegawai::class, 'pp_id');
     }
 
-    public function users()
+    public function user()
     {
-        return $this->hasMany(User::class, 'unit');
+        return $this->hasMany(User::class, 'unit', 'id');
     }
 
-    public function subperencanaan()
+    public function subPerencanaan()
     {
         return $this->hasMany(SubPerencanaan::class, 'unit_id');
     }

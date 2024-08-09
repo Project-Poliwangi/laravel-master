@@ -11,18 +11,42 @@ class SubPerencanaan extends Model
     use HasFactory;
 
     protected $table = 'sub_perencanaans';
-    protected $primary = 'id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'kegiatan', 'metode_pengadaan_id', 'satuan', 'volume', 'harga_satuan',
-        'output', 'rencana_mulai', 'rencana_bayar', 'perencanaan_id', 'unit_id',
-        'pic_id', 'ppk_id', 'pp_id', 'jenis_pengadaan_id'
+        'kegiatan',
+        'metode_pengadaan_id',
+        'jenis_pengadaan_id',
+        'satuan',
+        'volume',
+        'harga_satuan',
+        'output',
+        'rencana_mulai',
+        'rencana_bayar',
+        'perencanaan_id',
+        'status_id',
+        'unit_id',
+        'pic_id',
+        'ppk_id',
+        'pp_id',
     ];
 
     // Relasi ke model Perencanaan
-    public function perencanaans()
+    public function perencanaan()
     {
         return $this->belongsTo(Perencanaan::class, 'perencanaan_id');
+    }
+
+    // Relasi ke Model Status
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+
+    // Relasi ke Model Unit
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 
     // Relasi ke model Pegawai untuk PIC
@@ -44,13 +68,13 @@ class SubPerencanaan extends Model
     }
 
     // Relasi ke Model JenisPengadaan
-    public function jenispengadaans()
+    public function jenisPengadaan()
     {
         return $this->belongsTo(JenisPengadaan::class, 'jenis_pengadaan_id');
     }
 
     // Relasi ke Model MetodePengadaan
-    public function metodepengadaans()
+    public function metodePengadaan()
     {
         return $this->belongsTo(MetodePengadaan::class, 'metode_pengadaan_id');
     }
@@ -59,11 +83,5 @@ class SubPerencanaan extends Model
     public function pengadaan()
     {
         return $this->hasOne(Pengadaan::class, 'subperencanaan_id');
-    }
-
-    // Relasi ke Model Unit
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

@@ -17,9 +17,4 @@ class Document extends Model
         'file',
         'deskripsi',
     ];
-
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
-    }
 }

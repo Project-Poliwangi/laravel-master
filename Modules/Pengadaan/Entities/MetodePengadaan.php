@@ -16,7 +16,7 @@ class MetodePengadaan extends Model
         'nama_metode'
     ];
 
-    public function subPerencanaans()
+    public function subPerencanaan()
     {
         return $this->hasMany(SubPerencanaan::class, 'metode_pengadaan_id');
     }

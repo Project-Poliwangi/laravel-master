@@ -9,15 +9,19 @@ class Perencanaan extends Model
 {
     use HasFactory;
     protected $table = 'perencanaans';
-    protected $primary = 'id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'nama', 'kode', 'sumber', 'pagu', 'revisi', 'tahun',
+        'nama',
+        'kode',
+        'sumber',
+        'pagu',
+        'revisi',
+        'tahun',
     ];
 
-    public function subperencanaan()
+    public function subPerencanaan()
     {
         return $this->hasMany(SubPerencanaan::class, 'perencanaan_id');
     }
-
 }
