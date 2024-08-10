@@ -2,6 +2,7 @@
 
 namespace Modules\Pengadaan\Http\Controllers;
 
+use App\Models\Core\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Pengadaan\Entities\Unit;
@@ -20,19 +21,9 @@ class SubPerencanaanController extends Controller
      */
     public function index(Request $request)
     {
-        $perencanaan = Perencanaan::all();
-        $keyword = $request->get('search'); 
-        $perPage = 10;
+        $subPerencanaan = SubPerencanaan::all();
 
-        if (!empty($keyword)) {
-            $subperencanaan = SubPerencanaan::where('nomor_surat', 'LIKE', "%$keyword%")
-                ->orWhere('jenis_pengadaan', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
-        } else {
-            $subperencanaan = SubPerencanaan::latest()->paginate($perPage);
-        }
-
-        return view('pengadaan::subperencanaan.subperencanaan', compact('subperencanaan', 'perencanaan'));
+        return view('pengadaan::subperencanaan.subperencanaan', compact('subPerencanaan'));
     }
 
     /**
@@ -42,12 +33,12 @@ class SubPerencanaanController extends Controller
     public function create()
     {
         $formMode = 'create';
-        $jenispengadaans = JenisPengadaan::all();
-        $perencanaans = Perencanaan::all();
-        $units = Unit::all();
+        $jenisPengadaan = JenisPengadaan::all();
+        $perencanaan = Perencanaan::all();
+        $unit = Unit::all();
         $ppk = Pegawai::all();
 
-        return view('pengadaan::subperencanaan.create', compact('formMode', 'jenispengadaans', 'perencanaans', 'units', 'ppk'));
+        return view('pengadaan::subperencanaan.create', compact('formMode', 'jenisPengadaan', 'perencanaan', 'unit', 'ppk'));
     }
 
     /**
@@ -57,12 +48,19 @@ class SubPerencanaanController extends Controller
      */
     public function store(Request $request)
     {
+        // Menghapus pemisah ribuan pada harga_satuan sebelum validasi
+        $request->merge([
+            'harga_satuan' => str_replace('.', '', $request->input('harga_satuan')),
+            'pagu' => str_replace('.', '', $request->input('pagu')),
+        ]);
+
         // Validasi data yang masuk
         $validatedData = $request->validate([
             'kegiatan' => 'required|string|max:150',
             'satuan' => 'required|string|max:50',
             'volume' => 'required|integer|min:1',
             'harga_satuan' => 'required|integer|min:1',
+            'pagu' => 'required|integer|min:1',
             'output' => 'required|string|max:255',
             'rencana_mulai' => 'required|date',
             'rencana_bayar' => 'required|date',
@@ -75,7 +73,7 @@ class SubPerencanaanController extends Controller
         // Simpan data ke dalam database
         SubPerencanaan::create($validatedData);
 
-        return redirect('/subperencanaan/subperencanaan')->with('success', 'Program/Kegiatan Pengadaan berhasil ditambahkan.');
+        return redirect('/subperencanaan/subperencanaan')->with('success', 'Sub Perencanaan berhasil ditambahkan.');
     }
 
     /**
@@ -85,8 +83,8 @@ class SubPerencanaanController extends Controller
      */
     public function show($id)
     {
-        $subperencanaan= SubPerencanaan::findOrFail($id);
-        return view('pengadaan::subperencanaan.show', compact('subperencanaan'));
+        $subPerencanaan = SubPerencanaan::with('perencanaan', 'unit', 'jenisPengadaan', 'ppk')->find($id);
+        return view('pengadaan::subperencanaan.show', compact('subPerencanaan'));
     }
 
     /**
@@ -96,14 +94,14 @@ class SubPerencanaanController extends Controller
      */
     public function edit($id)
     {
-        $jenispengadaans = JenisPengadaan::all();
-        $subperencanaan = SubPerencanaan::findOrFail($id);
-        $perencanaans = Perencanaan::all(); // Mengambil semua data perencanaan
+        $subPerencanaan = SubPerencanaan::findOrFail($id);
+        $jenisPengadaan = JenisPengadaan::all();
+        $perencanaan = Perencanaan::all(); // Mengambil semua data perencanaan
         $ppk = Pegawai::all();
-        $units = Unit::all();
+        $unit = Unit::all();
         $formMode = 'edit';
 
-        return view('pengadaan::subperencanaan.edit', compact('subperencanaan', 'formMode', 'jenispengadaans', 'perencanaans', 'ppk', 'units'));
+        return view('pengadaan::subperencanaan.edit', compact('subPerencanaan', 'formMode', 'jenisPengadaan', 'perencanaan', 'ppk', 'unit'));
     }
 
     /**
@@ -114,7 +112,13 @@ class SubPerencanaanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $subperencanaan = SubPerencanaan::findOrFail($id);
+        $subPerencanaan = SubPerencanaan::findOrFail($id);
+
+        // Menghapus pemisah ribuan pada harga_satuan sebelum validasi
+        $request->merge([
+            'harga_satuan' => str_replace('.', '', $request->input('harga_satuan')),
+            'pagu' => str_replace('.', '', $request->input('pagu')),
+        ]);
 
         // Validasi data yang masuk
         $validatedData = $request->validate([
@@ -122,6 +126,7 @@ class SubPerencanaanController extends Controller
             'satuan' => 'required|string|max:50',
             'volume' => 'required|integer|min:1',
             'harga_satuan' => 'required|integer|min:1',
+            'pagu' => 'required|integer|min:1',
             'output' => 'required|string|max:255',
             'rencana_mulai' => 'required|date',
             'rencana_bayar' => 'required|date',
@@ -131,9 +136,9 @@ class SubPerencanaanController extends Controller
             'jenis_pengadaan_id' => 'required|exists:jenis_pengadaans,id',
         ]);
 
-        $subperencanaan->update($validatedData);
+        $subPerencanaan->update($validatedData);
 
-        return redirect('/subperencanaan/subperencanaan')->with('success', 'Program/Kegiatan Pengadaan berhasil diperbarui!');
+        return redirect('/subperencanaan/subperencanaan')->with('success', 'Sub Perencanaan berhasil diperbarui!');
     }
 
     /**
@@ -143,22 +148,22 @@ class SubPerencanaanController extends Controller
      */
     public function destroy($id)
     {
-        $subperencanaan = SubPerencanaan::findOrFail($id);
-        $subperencanaan->delete();
-        return redirect('/subperencanaan/subperencanaan')->with('success', 'Program/Kegiatan Pengadaan berhasil dihapus!');
+        $subPerencanaan = SubPerencanaan::findOrFail($id);
+        $subPerencanaan->delete();
+        return redirect('/subperencanaan/subperencanaan')->with('success', 'Sub Perencanaan berhasil dihapus!');
     }
 
     public function showPermohonan($id)
     {
         $subperencanaan = Perencanaan::find($id); // Mengambil data perencanaan berdasarkan ID
-    
+
         return view('pengadaan::subperencanaan.subperencanaan', compact('subperencanaan'));
     }
 
     // public function showMetodePengadaan($id)
     // {
     //     $subperencanaan = MetodePengadaan::find($id); // Mengambil data metodepengadaan berdasarkan ID
-    
+
     //     return view('pengadaan::subperencanaan.subperencanaan', compact('subperencanaan'));
     // }
 }

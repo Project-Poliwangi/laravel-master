@@ -3,7 +3,7 @@
 @section('title', 'Daftar Sub Perencanaan')
 
 @section('content_header')
-    <h1 class="m-0 text-dark text-center">Daftar Sub Perencanaan</h1>
+    <h1 class="m-0 text-dark"></h1>
 @stop
 
 @section('content')
@@ -11,52 +11,41 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
+                    <div class="card-header bg-dark">
+                        <h4 class="text-center">Daftar Sub Perencanaan</h4>
+                    </div>
                     <div class="card-body">
                         <a href="{{ url('/subperencanaan/create') }}" class="btn btn-success btn-sm"
-                            title="Tambah Sub Perencanaan">
+                            title="Tambah SubPerencanaan">
                             <i class="fa fa-plus" aria-hidden="true"></i> Tambah
                         </a>
 
-                        <form method="GET" action="{{ url('/subperencanaan/index') }}" accept-charset="UTF-8"
-                            class="form-inline my-2 my-lg-0 float-right" role="search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="search" placeholder="Cari..."
-                                    value="{{ request('search') }}">
-                                <span class="input-group-append">
-                                    <button class="btn btn-secondary" type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-
-                        <br />
-                        <br />
-
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table id="myTable" class="table table-striped table-bordered">
                                 <thead>
-                                    <tr class="text-center">
-                                        <th>Perencanaan</th>
-                                        <th>Kegiatan</th>
-                                        <th>Jenis Pengadaan</th>
-                                        <th>Unit</th>
-                                        <th colspan="3">Aksi</th>
+                                    <tr class="text-center bg-dark">
+                                        <th class="text-center">Perencanaan</th>
+                                        <th class="text-center">Kegiatan</th>
+                                        <th class="text-center">Jenis Pengadaan</th>
+                                        <th class="text-center">Unit</th>
+                                        <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($subperencanaan as $sub)
-                                        <tr class="text-center">
-                                            <td id="nama_perencanaan_{{ $sub->id }}">{{ $sub->perencanaans->nama }}
+                                    @foreach ($subPerencanaan as $sub)
+                                        <tr>
+                                            <td class="text-center" id="nama_perencanaan_{{ $sub->id }}">
+                                                {{ $sub->perencanaan->nama }}
                                             </td>
-                                            <td id="kegiatan_{{ $sub->id }}">{{ $sub->kegiatan }}</td>
-                                            <td id="jenis_pengadaan_{{ $sub->id }}">
-                                                {{ $sub->jenisPengadaans->nama_jenis }}</td>
-                                            <td id="unit_{{ $sub->unit }}">{{ $sub->unit->nama }}</td>
+                                            <td class="text-center" id="kegiatan_{{ $sub->id }}">{{ $sub->kegiatan }}
+                                            </td>
+                                            <td class="text-center" id="jenis_pengadaan_{{ $sub->id }}">
+                                                {{ $sub->jenisPengadaan->nama_jenis }}</td>
+                                            <td class="text-center" id="unit_{{ $sub->unit }}">{{ $sub->unit->nama }}
+                                            </td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
-                                                    <button
-                                                        onclick="window.location.href='{{ url('/subperencanaan/show/' . $sub->id) }}'"
+                                                    <button onclick="window.location.href='{{ url('/subperencanaan/show/' . $sub->id) }}'"
                                                         title="Detail" class="btn btn-info btn-sm mr-1">
                                                         <i class="fas fa-eye" aria-hidden="true"></i>
                                                     </button>
@@ -71,8 +60,7 @@
                                                         method="POST" accept-charset="UTF-8" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" title="Hapus" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus perencanaan ini?')">
+                                                        <button type="submit" title="Hapus" class="btn btn-danger btn-sm">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
@@ -82,9 +70,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="d-flex justify-content-center">
-                                {!! $subperencanaan->links('pagination::bootstrap-4') !!}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -94,13 +79,57 @@
 @stop
 
 @section('css')
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- DataTables.net-DT -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/dt-2.1.3/datatables.min.css">
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 @stop
 
 @section('js')
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+    <!-- Bootstrap 4 JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- DataTables.net-DT -->
+    <script src="https://cdn.datatables.net/v/dt/dt-2.1.3/datatables.min.js"></script>
+
+    {{-- SweetAlert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.querySelectorAll('form button[type="submit"]').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Cegah pengiriman form langsung
+                console.log('Tombol hapus diklik'); // Debugging
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data ini akan dihapus secara permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        let table = new DataTable('#myTable');
+    </script>
+
 @stop
