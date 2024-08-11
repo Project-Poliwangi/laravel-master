@@ -24,6 +24,14 @@ class PeminjamanController extends Controller
         }
 
         $query = RuangPenggunaanKuliah::query()->whereDate('jadwal_mulai', '>=', Carbon::today());
+
+        if($request->has('search') && $request->search != '') {
+            $query = $query->where('peminjam_nim', 'like', '%'.$request->search.'%')
+                    ->orWhereHas('ruang', function($q) use ($request) {
+                        $q->where('nama', 'like', '%'.$request->search.'%');
+                        $q->orWhere('kode_bmn', 'like', '%'.$request->search.'%');
+                    });
+        }
         $dataPeminjaman = $query->paginate($show)->map(function($item) {
             $item->jadwal_mulai = Carbon::parse($item->jadwal_mulai)->format('d M Y') .', '. Carbon::parse($item->waktu_pinjam)->format('H:i') .' WIB';
             $item->jadwal_akhir = Carbon::parse($item->jadwal_akhir)->format('d M Y') .', '. Carbon::parse($item->waktu_selesai)->format('H:i') .' WIB';

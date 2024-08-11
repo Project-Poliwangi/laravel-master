@@ -52,16 +52,10 @@
                         <thead class="thead-light">
                             <th style="white-space: nowrap;text-align: center" width="1%">No.</th>
                             <th style="white-space: nowrap;text-align: center">Kode Ruangan</th>
-                            {{-- <th style="white-space: nowrap;text-align: center">Kode Program Studi</th>
-                            <th style="white-space: nowrap;text-align: center">Kode Mata Kuliah</th>
-                            <th style="white-space: nowrap;text-align: center">Kode Dosen Pengampu</th> --}}
                             <th style="white-space: nowrap;text-align: center">NIM</th>
                             <th style="white-space: nowrap;text-align: center">Jadwal Mulai</th>
                             <th style="white-space: nowrap;text-align: center">Jadwal Selesai</th>
-                            {{-- <th style="white-space: nowrap;text-align: center">Waktu Mulai</th>
-                            <th style="white-space: nowrap;text-align: center">Waktu Selesai</th> --}}
                             <th style="white-space: nowrap;text-align: center">Keterangan</th>
-                            {{-- <th style="white-space: nowrap;text-align: center">Gambar</th> --}}
                             <th style="white-space: nowrap;text-align: center" width="150">Aksi</th>
                         </thead>
                         <tbody>

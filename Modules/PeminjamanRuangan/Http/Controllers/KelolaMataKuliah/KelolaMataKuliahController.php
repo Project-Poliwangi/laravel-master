@@ -25,6 +25,11 @@ class KelolaMataKuliahController extends Controller
         }
 
         $query = MataKuliah::query();
+
+        if($request->search) {
+            $query = $query->where('nama', 'like', '%'.$request->search.'%');
+            $query = $query->orWhere('kode', 'like', '%'.$request->search.'%');
+        }
         $dataMataKuliah = $query->paginate($show);
 
         $data = [

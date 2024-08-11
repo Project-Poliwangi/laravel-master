@@ -26,6 +26,13 @@ class KelolaGedungController extends Controller
         }
 
         $query = Gedung::query();
+
+        if($request->has('search')) {
+            $query = $query->where('kode', 'like', '%'.$request->search.'%');
+            $query = $query->orWhere('nama', 'like', '%'.$request->search.'%');
+            $query = $query->orWhere('lokasi', 'like', '%'.$request->search.'%');
+        }
+
         $dataGedung = $query->paginate($show);
 
         $data = [
@@ -184,19 +191,19 @@ class KelolaGedungController extends Controller
     public function sync()
     {
         try {
-            // $client = new Client([
-            //     'verify' => false
-            // ]);
-            // $response = $client->request('GET', 'https://sit.poliwangi.ac.id/v2/api/v1/sitapi/pegawai?filter[status_karyawan]=7', [
-            //     'headers' => [
-            //         'Accept' => 'application/json',
-            //         'Authorization' => 'Bearer '. env('SIT_TOKEN')
-            //     ],
-            // ]);
+            $client = new Client([
+                'verify' => false
+            ]);
+            $response = $client->request('GET', 'https://sit.poliwangi.ac.id/v2/api/v1/sitapi/kuliah', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer '. env('SIT_TOKEN')
+                ],
+            ]);
 
-            // $data = json_decode($response->getBody()->getContents(), true);
+            $data = json_decode($response->getBody()->getContents(), true);
 
-            // return response()->json(['data' => $data]);
+            return response()->json(['data' => $data]);
         } catch(Exception $e) {
             // abort(500);
             return response()->json(['message' => $e->getMessage()]);

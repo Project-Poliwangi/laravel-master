@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Modules\PeminjamanRuangan\Entities\Gedung;
 use Modules\PeminjamanRuangan\Entities\Pegawai;
 use Modules\PeminjamanRuangan\Entities\MataKuliah;
 use Modules\PeminjamanRuangan\Entities\ProgramStudi;
@@ -58,7 +59,7 @@ class RuangController extends Controller
         }
     }
 
-    public function ruanganTersedia()
+    public function ruanganTersedia(Request $request)
     {
         $dataRuangTerpakai = Ruang::whereHas('ruangPenggunaanKuliah', function($q) {
             $date = Carbon::now();
@@ -67,27 +68,55 @@ class RuangController extends Controller
             $q->whereTime('jadwal_mulai', '<=', $date->format('H:i:s'));
             $q->whereTime('jadwal_akhir', '>=', $date->format('H:i:s'));
         })->pluck('id')->all();
+        $ruang = Ruang::query();
+
+        if($request->has('search') && $request->search != '') {
+            $ruang = $ruang->where('nama', 'like', '%'.$request->search.'%');
+        }
+
+        if($request->has('gedung_id') && $request->gedung_id != '') {
+            $ruang = $ruang->where('gedung_id', $request->gedung_id);
+        }
+        
+        $ruang = $ruang->whereNotIn('id', $dataRuangTerpakai)->get();
 
         $data = [
             'title' => 'Ruangan Tersedia',
-            'ruangs' => Ruang::whereNotIn('id', $dataRuangTerpakai)->get()
+            'ruangs' => $ruang,
+            'gedungs' => Gedung::all(),
+            'gedung_id' => $request->has('gedung_id') ? $request->gedung_id : '',
+            'search' => $request->has('search') ? $request->search : ''
         ];
 
         return view('peminjamanruangan::ruang.daftar-ruangan', $data);
     }
 
-    public function ruanganTerpakai()
+    public function ruanganTerpakai(Request $request)
     {
+        $ruang = Ruang::query();
+
+        if($request->has('search') && $request->search != '') {
+            $ruang = $ruang->where('nama', 'like', '%'.$request->search.'%');
+        }
+
+        if($request->has('gedung_id') && $request->gedung_id != '') {
+            $ruang = $ruang->where('gedung_id', $request->gedung_id);
+        }
+        
+        $ruang = $ruang->whereHas('ruangPenggunaanKuliah', function($q) {
+            $date = Carbon::now();
+            $q->whereStatus('approve');
+            $q->whereDate('jadwal_mulai', $date->format('Y-m-d'));
+            $q->whereTime('jadwal_mulai', '<=', $date->format('H:i:s'));
+            $q->whereTime('jadwal_akhir', '>=', $date->format('H:i:s'));
+        })->get();
         $data = [
             'title' => 'Ruangan Terpakai',
             'type' => 'terpakai',
-            'ruangs' => Ruang::whereHas('ruangPenggunaanKuliah', function($q) {
-                $date = Carbon::now();
-                $q->whereStatus('approve');
-                $q->whereDate('jadwal_mulai', $date->format('Y-m-d'));
-                $q->whereTime('jadwal_mulai', '<=', $date->format('H:i:s'));
-                $q->whereTime('jadwal_akhir', '>=', $date->format('H:i:s'));
-            })->get()
+            'ruangs' => $ruang,
+            'gedungs' => Gedung::all(),
+            'gedung_id' => $request->has('gedung_id') ? $request->gedung_id : '',
+            'search' => $request->has('search') ? $request->search : ''
         ];
 
         return view('peminjamanruangan::ruang.daftar-ruangan', $data);

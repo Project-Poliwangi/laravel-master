@@ -28,6 +28,15 @@ class KelolaPeminjamanController extends Controller
         }
 
         $query = RuangPenggunaanKuliah::query()->whereDate('jadwal_mulai', '>=', Carbon::today());
+
+        if($request->has('search')) {
+            $query = $query->where('peminjam_nim', 'like', '%'.$request->search.'%')
+                ->orWhereHas('ruang', function($q) use ($request) {
+                    $q->where('nama', 'like', '%'.$request->search.'%');
+                    $q->orWhere('kode_bmn', 'like', '%'.$request->search.'%');
+                });
+        }
+
         $ruangPenggunaanKuliah = $query->paginate($show)->map(function($item) {
             $item->jadwal_mulai = Carbon::parse($item->jadwal_mulai)->format('d M Y');
             $item->jadwal_akhir = Carbon::parse($item->jadwal_akhir)->format('d M Y');

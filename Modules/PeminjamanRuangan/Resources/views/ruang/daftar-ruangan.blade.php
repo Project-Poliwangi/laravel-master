@@ -7,13 +7,25 @@
             <h4 style="font-weight: bold" class="my-2">{{ strtoupper($title) }}</h4>
         </div>
         <div class="col-sm-6 col-12">
-            <div class="col-md-6 col-sm-8 ml-auto">
-                <div class="d-flex align-items-center my-2 small">
-                    <div style="font-weight: bold;white-space: nowrap">Search :</div>
-                    <input type="text" name="search" value=""
-                        class="form-control ml-2" style="border-radius: 60px;">
+            <form action="">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-8 ml-auto">
+                        <div class="d-flex align-items-center my-2 small">
+                            <div style="font-weight: bold;white-space: nowrap">Search :</div>
+                            <input type="text" name="search" value="{{ $search }}"
+                                class="form-control ml-2" style="border-radius: 60px;">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-2">
+                        <select name="gedung_id" class="form-control" onChange="this.form.submit()">
+                            <option value="">All</option>
+                            @foreach($gedungs as $gedung)
+                                <option value="{{ $gedung->id }}" @if($gedung_id == $gedung->id) selected @endif>{{ $gedung->kode }} - {{ $gedung->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 

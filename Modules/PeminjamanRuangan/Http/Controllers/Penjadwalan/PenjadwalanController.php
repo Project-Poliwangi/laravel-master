@@ -26,6 +26,19 @@ class PenjadwalanController extends Controller
         }
 
         $query = JadwalKuliah::query();
+
+        if($request->has('search')) {
+            $query = $query->whereHas('mataKuliah', function($q) use ($request) {
+                $q->where('kode', 'like', '%'.$request->search.'%');
+                $q->orWhere('nama', 'like', '%'.$request->search.'%');
+            });
+            $query = $query->whereHas('programStudi', function($q) use ($request) {
+                $q->orWhere('nama', 'like', '%'.$request->search.'%');
+            });
+            $query = $query->orWhere('hari', 'like', '%'.$request->search.'%');
+            $query = $query->orWhere('kelas', 'like', '%'.$request->search.'%');
+        }
+
         $dataPenjadwalan = $query->paginate($show);
 
         $data = [

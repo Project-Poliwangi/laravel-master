@@ -112,7 +112,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="7" class="text-center">Tidak ada data yang dapat ditampilkan</td>
+                                        <td colspan="10" class="text-center">Tidak ada data yang dapat ditampilkan</td>
                                     </tr>
                                 @endif
                             </tbody>

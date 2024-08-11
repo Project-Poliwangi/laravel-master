@@ -25,6 +25,16 @@ class KelolaRuanganController extends Controller
         }
 
         $query = Ruang::query();
+
+        if($request->has('search')) {
+            $query = $query->where('kode_bmn', 'like', '%'.$request->search.'%');
+            $query = $query->orWhere('nama', 'like', '%'.$request->search.'%');
+            $query = $query->orWhereHas('gedung', function($q) use ($request) {
+                $q->where('kode', 'like', '%'.$request->search.'%');
+                $q->orWhere('nama', 'like', '%'.$request->search.'%');
+            });
+        }
+
         $dataRuangan = $query->paginate($show);
 
         $data = [
