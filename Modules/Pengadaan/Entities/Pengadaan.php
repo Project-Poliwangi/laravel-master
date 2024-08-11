@@ -37,31 +37,47 @@ class Pengadaan extends Model
         return $this->belongsTo(Status::class, 'status_id');
     }
 
-    // Model Pengadaan
-    public function updateStatusBasedOnDocuments(Request $request)
+    public function checkAndUpdateStatus()
     {
-        $currentDate = now();
-        $status = 'Belum dalam periode';
-
-        if ($currentDate >= $this->subPerencanaan->rencana_mulai) {
-            if (!$request->hasFile('dokumen_pemilihan_penyedia') && !$request->hasFile('dokumen_kontrak') && !$request->hasFile('dokumen_serah_terima')) {
-                if ($request->hasFile('dokumen_kak') && $request->hasFile('dokumen_hps') && $request->hasFile('dokumen_stock_opname') && $request->hasFile('dokumen_surat_ijin_impor')) {
-                    $status = 'Pemenuhan Dokumen';
-                } else {
-                    $status = 'Pra DIPA';
-                }
-            } elseif ($request->hasFile('dokumen_pemilihan_penyedia')) {
-                $status = 'Pemilihan Penyedia';
-            } elseif ($request->hasFile('dokumen_kontrak')) {
-                $status = 'Kontrak';
-            } elseif ($request->hasFile('dokumen_serah_terima')) {
-                $status = 'Serah Terima';
-            }
+        // Periksa apakah pengadaan memiliki relasi dengan subPerencanaan
+        if (!$this->subPerencanaan) {
+            return;
         }
 
-        if ($status != 'Belum dalam periode') {
+        $subPerencanaan = $this->subPerencanaan;
+        $currentDate = now()->toDateString(); // Ambil tanggal saat ini dalam format Y-m-d
+
+        // Cek tipe dari rencana_mulai
+        $rencanaMulai = $subPerencanaan->rencana_mulai;
+        if (is_string($rencanaMulai)) {
+            // Jika rencana_mulai adalah string, gunakan langsung
+            $rencanaMulai = $rencanaMulai;
+        } else {
+            // Jika bukan string, ubah menjadi string
+            $rencanaMulai = $rencanaMulai->toDateString();
+        }
+
+        // Cek apakah tanggal saat ini sudah sama atau lebih besar dari tanggal rencana mulai
+        if ($currentDate >= $rencanaMulai) {
+            // Periksa apakah salah satu dokumen penting ada
+            if ($this->dokumen_kak || $this->dokumen_hps || $this->dokumen_stock_opname || $this->dokumen_surat_ijin_impor) {
+                $status = 'Pemenuhan Dokumen';
+            } elseif ($this->dokumen_pemilihan_penyedia) {
+                $status = 'Pemilihan Penyedia';
+            } elseif ($this->dokumen_kontrak) {
+                $status = 'Kontrak';
+            } elseif ($this->dokumen_serah_terima) {
+                $status = 'Serah Terima';
+            } else {
+                $status = 'Pra DIPA'; // Status default jika tidak memenuhi syarat lainnya
+            }
+
+            // Temukan status berdasarkan nama
             $statusRecord = Status::where('nama_status', $status)->first();
-            $this->status_id = $statusRecord->id;
+            if ($statusRecord) {
+                $this->status_id = $statusRecord->id;
+                $this->save();
+            }
         }
     }
 }
