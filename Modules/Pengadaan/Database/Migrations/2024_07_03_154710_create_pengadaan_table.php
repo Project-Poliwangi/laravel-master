@@ -16,6 +16,7 @@ class CreatePengadaanTable extends Migration
         Schema::create('pengadaan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('subperencanaan_id');
+            $table->unsignedBigInteger('status_id');
             $table->string('dokumen_kak')->nullable();
             $table->string('dokumen_hps')->nullable();
             $table->string('dokumen_stock_opname')->nullable();
@@ -26,6 +27,7 @@ class CreatePengadaanTable extends Migration
             $table->timestamps();
 
             $table->foreign('subperencanaan_id')->references('id')->on('sub_perencanaans')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('status_id')->references('id')->on('pengadaan_status')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -38,6 +40,7 @@ class CreatePengadaanTable extends Migration
     {
         Schema::table('pengadaan', function (Blueprint $table) {
             $table->dropForeign(['subperencanaan_id']);
+            $table->dropForeign(['status_id']);
             });
     }
 }
