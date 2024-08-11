@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Dokumen')
+@section('title', 'Tambah Dokumen')
 
 @section('content_header')
     <h1 class="m-0 text-dark"></h1>
@@ -9,21 +9,18 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-10 col-md-10 order-md-1 order-last">
+            <div class="col-md-2"></div>
+            <div class="col-8 col-md-8 order-md-1 order-last">
 
                 <div class="card-header bg-dark">
-                    <h5 class="text-center">Formulir Edit Dokumen</h5>
+                    <h5 class="text-center">Formulir Tambah Template Dokumen</h5>
                 </div>
 
-                <form id="dokumen-edit" method="POST" action="{{ url('admin/dokumen/update/' . $documents->id) }}"
-                    accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
-                    {{ method_field('PATCH') }}
+                <form id="dokumen-form" method="POST" action="{{ url('admin/dokumen/store') }}" accept-charset="UTF-8" class="form-horizontal"
+                    enctype="multipart/form-data">
                     {{ csrf_field() }}
 
-                    @include ('pengadaan::admin.form', [
-                        'formMode' => $formMode, 'documents' => $documents
-                    ])
+                    @include ('pengadaan::admin.form', ['formMode' => $formMode])
                 </form>
             </div>
         </div>
@@ -35,15 +32,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        document.getElementById('dokumen-edit').addEventListener('submit', function(event) {
+        document.getElementById('dokumen-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the form from submitting immediately
 
             Swal.fire({
                 title: 'Konfirmasi',
-                text: 'Apakah Anda yakin ingin mengubah data ini?',
+                text: 'Apakah Anda yakin ingin mengirimkan data ini?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, lanjutkan!',
+                confirmButtonText: 'Ya, kirim!',
                 cancelButtonText: 'Tidak, batalkan'
             }).then((result) => {
                 if (result.isConfirmed) {
