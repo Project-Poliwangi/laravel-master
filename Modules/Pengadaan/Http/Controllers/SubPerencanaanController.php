@@ -6,7 +6,9 @@ use App\Models\Core\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Pengadaan\Entities\Unit;
+use Modules\Pengadaan\Entities\Status;
 use Modules\Kepegawaian\Entities\Pegawai;
+use Modules\Pengadaan\Entities\Pengadaan;
 use Modules\Pengadaan\Entities\Perencanaan;
 use Illuminate\Contracts\Support\Renderable;
 use Modules\Pengadaan\Entities\JenisPengadaan;
@@ -58,11 +60,11 @@ class SubPerencanaanController extends Controller
         $validatedData = $request->validate([
             'kegiatan' => 'required|string|max:150',
             'satuan' => 'required|string|max:50',
-            'volume' => 'required|integer|min:1',
-            'harga_satuan' => 'required|integer|min:1',
-            'pagu' => 'required|integer|min:1',
+            'volume' => 'required|integer|min:0',
+            'harga_satuan' => 'required|integer|min:0',
+            'pagu' => 'required|integer|min:0',
             'output' => 'required|string|max:255',
-            'rencana_mulai' => 'required|date',
+            'rencana_mulai' => 'required|date|after_or_equal:today',
             'rencana_bayar' => 'required|date',
             'perencanaan_id' => 'required|exists:perencanaans,id',
             'unit_id' => 'required|exists:units,id',
@@ -70,8 +72,27 @@ class SubPerencanaanController extends Controller
             'jenis_pengadaan_id' => 'required|exists:jenis_pengadaans,id',
         ]);
 
-        // Simpan data ke dalam database
-        SubPerencanaan::create($validatedData);
+        // Simpan data SubPerencanaan
+        $subPerencanaan = SubPerencanaan::create($validatedData);
+
+        // Simpan id subPerencanaan ke tabel Pengadaan 
+        $pengadaan = Pengadaan::create([
+            'subperencanaan_id' => $subPerencanaan->id,
+        ]);
+
+        // Perbarui status berdasarkan tanggal rencana_mulai
+        $currentDate = now()->toDateString(); // Hanya ambil tanggal
+        if ($currentDate >= $subPerencanaan->rencana_mulai) {
+            $status = 'Pra DIPA';
+        } else {
+            $status = 'Belum dalam periode'; // Atau status lain yang Anda inginkan
+        }
+
+        $statusRecord = Status::where('nama_status', $status)->first();
+        if ($statusRecord) {
+            $pengadaan->status_id = $statusRecord->id;
+            $pengadaan->save();
+        }
 
         return redirect('/subperencanaan/subperencanaan')->with('success', 'Sub Perencanaan berhasil ditambahkan.');
     }
@@ -128,7 +149,7 @@ class SubPerencanaanController extends Controller
             'harga_satuan' => 'required|integer|min:1',
             'pagu' => 'required|integer|min:1',
             'output' => 'required|string|max:255',
-            'rencana_mulai' => 'required|date',
+            'rencana_mulai' => 'required|date|after_or_equal:today',
             'rencana_bayar' => 'required|date',
             'perencanaan_id' => 'required|exists:perencanaans,id',
             'unit_id' => 'required|exists:units,id',

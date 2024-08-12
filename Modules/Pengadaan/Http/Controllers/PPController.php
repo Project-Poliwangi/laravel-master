@@ -41,8 +41,9 @@ class PPController extends Controller
 
         // Get SubPerencanaan records where ppk_id matches Pegawai's id
         $subPerencanaan = SubPerencanaan::where('pp_id', $pegawai->id)->paginate(15);
+        $status = Status::all();
 
-        return view('pengadaan::pp.daftarpengadaan', compact('subPerencanaan'));
+        return view('pengadaan::pp.daftarpengadaan', compact('subPerencanaan', 'status'));
     }
 
     /**
@@ -71,7 +72,7 @@ class PPController extends Controller
      */
     public function show($id)
     {
-        $subPerencanaan = SubPerencanaan::with(['perencanaans', 'pengadaan'])->find($id);
+        $subPerencanaan = SubPerencanaan::with(['perencanaan', 'pengadaan'])->find($id);
         if (!$subPerencanaan) {
             return response()->json(['message' => 'SubPerencanaan tidak ditemukan'], 404);
         }
@@ -88,13 +89,13 @@ class PPController extends Controller
     {
         $subPerencanaan = SubPerencanaan::findOrFail($id);
         $pengadaan = Pengadaan::where('subperencanaan_id', $id)->first(); // Ambil data pengadaan terkait
-        $metodepengadaans = MetodePengadaan::all();
-        $jenisPengadaans = JenisPengadaan::all();
-        $pengadaanstatus = Status::all();
+        $metodePengadaan = MetodePengadaan::all();
+        $jenisPengadaan = JenisPengadaan::all();
+        $status = Status::all();
         $unit = Unit::all();
         $formMode = 'edit';
 
-        return view('pengadaan::pp.edit', compact('subPerencanaan', 'formMode', 'pengadaan', 'metodepengadaans', 'jenisPengadaans', 'pengadaanstatus', 'unit'));
+        return view('pengadaan::pp.edit', compact('subPerencanaan', 'formMode', 'pengadaan', 'metodePengadaan', 'jenisPengadaan', 'status', 'unit'));
     }
 
     /**
@@ -121,7 +122,7 @@ class PPController extends Controller
         }
 
         // Periksa apakah status pengadaan adalah "Pemilihan Penyedia"
-        if ($pengadaan->status->nama_status != 'Pemilihan Penyedia') {
+        if ($pengadaan->status->nama_status != 'Pemenuhan Dokumen') {
             return redirect()->back()->withErrors(['message' => 'Anda hanya bisa mengunggah dokumen pemilihan penyedia jika status pengadaan adalah Pemilihan Penyedia']);
         }
 
@@ -134,23 +135,14 @@ class PPController extends Controller
         $request->validate($rules);
 
         // Update dokumen jika file baru diunggah
-        if ($request->hasFile('dokumen_kak')) {
-            $pengadaan->dokumen_kak = $request->file('dokumen_kak')->store('dokumen_kak', 'public');
-        }
-        if ($request->hasFile('dokumen_hps')) {
-            $pengadaan->dokumen_hps = $request->file('dokumen_hps')->store('dokumen_hps', 'public');
-        }
-        if ($request->hasFile('dokumen_stock_opname')) {
-            $pengadaan->dokumen_stock_opname = $request->file('dokumen_stock_opname')->store('dokumen_stock_opname', 'public');
-        }
-        if ($request->hasFile('dokumen_surat_ijin_impor')) {
-            $pengadaan->dokumen_surat_ijin_impor = $request->file('dokumen_surat_ijin_impor')->store('dokumen_surat_ijin_impor', 'public');
-        }
         if ($request->hasFile('dokumen_pemilihan_penyedia')) {
             $pengadaan->dokumen_pemilihan_penyedia = $request->file('dokumen_pemilihan_penyedia')->store('dokumen_pemilihan_penyedia', 'public');
         }
 
         $pengadaan->save();
+
+        // Panggil fungsi checkAndUpdateStatus
+        $pengadaan->checkAndUpdateStatus();
 
         return redirect('/pp/daftarpengadaan')->with('success_edit', 'Data Pengadaan berhasil diperbarui!');
     }

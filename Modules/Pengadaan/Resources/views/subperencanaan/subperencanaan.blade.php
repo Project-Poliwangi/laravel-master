@@ -12,9 +12,9 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header bg-dark">
-                        <h4 class="text-center">Daftar Sub Perencanaan</h4>
+                        <h5 class="text-center">Daftar Sub Perencanaan</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="font-size: 13px;">
                         <a href="{{ url('/subperencanaan/create') }}" class="btn btn-success btn-sm"
                             title="Tambah SubPerencanaan">
                             <i class="fa fa-plus" aria-hidden="true"></i> Tambah
@@ -24,8 +24,8 @@
                             <table id="myTable" class="table table-striped table-bordered">
                                 <thead>
                                     <tr class="text-center bg-dark">
-                                        <th class="text-center">Perencanaan</th>
-                                        <th class="text-center">Kegiatan</th>
+                                        <th>Perencanaan</th>
+                                        <th>Kegiatan</th>
                                         <th class="text-center">Jenis Pengadaan</th>
                                         <th class="text-center">Unit</th>
                                         <th class="text-center">Aksi</th>
@@ -34,10 +34,10 @@
                                 <tbody>
                                     @foreach ($subPerencanaan as $sub)
                                         <tr>
-                                            <td class="text-center" id="nama_perencanaan_{{ $sub->id }}">
+                                            <td id="nama_perencanaan_{{ $sub->id }}">
                                                 {{ $sub->perencanaan->nama }}
                                             </td>
-                                            <td class="text-center" id="kegiatan_{{ $sub->id }}">{{ $sub->kegiatan }}
+                                            <td id="kegiatan_{{ $sub->id }}">{{ $sub->kegiatan }}
                                             </td>
                                             <td class="text-center" id="jenis_pengadaan_{{ $sub->id }}">
                                                 {{ $sub->jenisPengadaan->nama_jenis }}</td>
@@ -129,7 +129,20 @@
         });
     </script>
     <script>
-        let table = new DataTable('#myTable');
+        $(document).ready(function() {
+            let table = new DataTable('#myTable', {
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                },
+                search: {
+                    caseInsensitive: true
+                },
+                paging: true,
+                ordering: true,
+                info: true,
+                autoWidth: false,
+            });
+        });
     </script>
 
 @stop

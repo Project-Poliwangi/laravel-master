@@ -18,11 +18,12 @@
                                             @foreach ($perencanaan as $perencanaans)
                                                 <option value="{{ $perencanaans->id }}"
                                                     {{ isset($subPerencanaan) && $subPerencanaan->perencanaan_id == $perencanaans->id ? 'selected' : '' }}>
+                                                    {{ $perencanaans->kode }} - {{ $perencanaans->sumber }} -
                                                     {{ $perencanaans->nama }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        {!! $errors->first('perencanaan', '<p class="help-block">:message</p>') !!}
+                                        {!! $errors->first('perencanaan_id', '<p class="help-block">:message</p>') !!}
                                     </div>
 
                                     <div class="col-md-6 form-group">
@@ -41,7 +42,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Kegiatan dan Output --}}
+                                {{-- Kegiatan --}}
                                 <div class="row">
                                     <div class="col-md-12 form-group">
                                         <label for="kegiatan" class="control-label">{{ 'Kegiatan' }}</label>
@@ -59,7 +60,7 @@
                                         <div class="input-group">
                                             <!-- Label untuk Volume -->
                                             <input class="form-control" name="volume" type="number" id="volume"
-                                                required
+                                                required min="0"
                                                 value="{{ isset($subPerencanaan->volume) ? $subPerencanaan->volume : old('volume') }}"
                                                 oninput="updatePagu()">
 
@@ -98,14 +99,13 @@
                                         {!! $errors->first('pagu', '<p class="help-block">:message</p>') !!}
                                     </div>
                                 </div>
-                                
 
                                 {{-- Rencana Mulai dan Rencana Bayar --}}
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="rencana_mulai" class="control-label">{{ 'Rencana Mulai' }}</label>
                                         <input class="form-control" name="rencana_mulai" type="date"
-                                            id="rencana_mulai" required
+                                            id="rencana_mulai" required min="{{ now()->toDateString() }}"
                                             value="{{ isset($subPerencanaan->rencana_mulai) ? $subPerencanaan->rencana_mulai : old('rencana_mulai') }}">
                                         {!! $errors->first('rencana mulai', '<p class="help-block">:message</p>') !!}
                                     </div>
@@ -232,6 +232,5 @@
         updatePagu();
     });
 </script>
-
 
 <!-- // Basic Horizontal form layout section end -->

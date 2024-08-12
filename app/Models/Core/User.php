@@ -84,9 +84,9 @@ class User extends Authenticatable
 		return $this->hasOne(Unit::class,'id','unit');
 	}
 	
-	public function getStaff(){
-		return $this->hasOne(Staff::class,'id','staff');
-	}
+	// public function getStaff(){
+	// 	return $this->hasOne(Staff::class,'id','staff');
+	// }
 	
 	public function hasRoleAktif($roleCheck){
 		$rol=$this->roles->pluck('name')->toArray();

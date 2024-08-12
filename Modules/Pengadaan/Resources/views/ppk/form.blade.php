@@ -2,311 +2,430 @@
 <section id="basic-horizontal-layouts">
     <div class="row match-height">
         <div class="col-md-12 col-12">
-            <form class="form form-horizontal">
-                <div class="form-body">
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label for="akun_belanja" class="control-label">{{ 'Akun Belanja' }}</label>
-                            <input class="form-control" name="perencanaan_id" type="text" disabled id="perencanaan_id"
-                                value="{{ isset($subPerencanaan->perencanaans->nama) ? $subPerencanaan->perencanaans->nama : old('perencanaan') }}">
-                            {!! $errors->first('akun belanja', '<p class="help-block">:message</p>') !!}
-                        </div>
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <form class="form form-horizontal">
+                            <div class="form-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="kode" class="control-label">{{ 'Kode' }}</label>
+                                                <div class="form-control-plaintext bg-light border rounded px-2 py-1"
+                                                    id="kode">
+                                                    {{ $subPerencanaan->perencanaan->kode ?? old('kode') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="sumber" class="control-label">{{ 'Sumber' }}</label>
+                                                <div class="form-control-plaintext bg-light border rounded px-2 py-1"
+                                                    id="sumber">
+                                                    {{ $subPerencanaan->perencanaan->sumber ?? old('sumber') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="perencanaan_id"
+                                                    class="control-label">{{ 'Perencanaan' }}</label>
+                                                <div class="form-control-plaintext bg-light border rounded px-2 py-1"
+                                                    id="perencanaan_id">
+                                                    {{ $subPerencanaan->perencanaan->nama ?? old('perencanaan') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="col-md-6 form-group">
-                            <label for="kegiatan" class="control-label">{{ 'Kegiatan' }}</label>
-                            <input class="form-control" name="kegiatan" type="text" disabled id="kegiatan"
-                                value="{{ isset($subPerencanaan->kegiatan) ? $subPerencanaan->kegiatan : old('kegiatan') }}">
-                            {!! $errors->first('kegiatan', '<p class="help-block">:message</p>') !!}
-                        </div>
-                        <!-- Metode and Jenis -->
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="metode" class="col-sm-4 col-form-label">{{ 'Metode Pengadaan' }}</label>
-                                <div
-                                    class="col-sm-8 form-group  {{ $errors->has('metode_pengadaan_id') ? 'has-error' : '' }}">
-                                    <select class="form-control" id="metode_pengadaan_id" name="metode_pengadaan_id"
-                                        required>
-                                        <option value="" disabled
-                                            {{ old('metode_pengadaan_id', isset($subPerencanaan->metode_pengadaaan_id) ? $subPerencanaan->metode_pengadaan_id : '') == '' ? 'selected' : '' }}>
-                                            --- Pilih Metode Pengadaan ---</option>
-                                        @foreach ($metodepengadaans as $metode)
-                                            <option value="{{ $metode->id }}"
-                                                {{ isset($subPerencanaan) && $subPerencanaan->metode_pengadaan_id == $metode->id ? 'selected' : '' }}>
-                                                {{ $metode->nama_metode }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    {!! $errors->first('metode pengadaan ', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="jenis" class="col-sm-4 col-form-label">{{ 'Jenis Pengadaan' }}</label>
-                                <div class="col-sm-8 form-group ">
-                                    <input class="form-control" name="jenis_pengadaan_id" type="text" disabled
-                                        id="jenis_pengadaan_id"
-                                        value="{{ isset($subPerencanaan->jenisPengadaans->nama_jenis) ? $subPerencanaan->jenisPengadaans->nama_jenis : old('jenis_pengadaan') }}">
-                                    {!! $errors->first('jenis pengadaan', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Satuan and Volume -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="satuan" class="col-sm-4 col-form-label">{{ 'Satuan' }}</label>
-                                <div class="col-sm-8 form-group {{ $errors->has('satuan') ? 'has-error' : '' }}">
-                                    <input class="form-control" name="satuan" type="text" id="satuan"
-                                        value="{{ isset($subPerencanaan->satuan) ? $subPerencanaan->satuan : old('satuan') }}">
-                                    {!! $errors->first('satuan', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="volume" class="col-sm-4 col-form-label">{{ 'Volume' }}</label>
-                                <div class="col-sm-8 form-group {{ $errors->has('volume') ? 'has-error' : '' }}">
-                                    <input class="form-control" name="volume" type="number" id="volume"
-                                        value="{{ isset($subPerencanaan->volume) ? $subPerencanaan->volume : old('volume') }}">
-                                    {!! $errors->first('volume', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Harga Satuan and Output -->
-                    <div class="row">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="jenis_pengadaaan_id"
+                                                    class="control-label">{{ 'Jenis Pengadaan' }}</label>
+                                                <div class="form-control-plaintext bg-light border rounded px-2 py-1"
+                                                    id="jenis_pengadaaan_id">
+                                                    {{ $subPerencanaan->jenisPengadaan->nama_jenis ?? old('jenis_pengadaan') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="kegiatan" class="control-label">{{ 'Kegiatan' }}</label>
+                                                <div class="form-control-plaintext bg-light border rounded px-2 py-1"
+                                                    id="kegiatan">
+                                                    {{ $subPerencanaan->kegiatan ?? old('kegiatan') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="harga_satuan" class="col-sm-4 col-form-label">{{ 'Harga Satuan' }}</label>
-                                <div class="col-sm-8 form-group {{ $errors->has('harga_satuan') ? 'has-error' : '' }}">
-                                    <input class="form-control" name="harga_satuan" type="number" id="harga_satuan"
-                                        value="{{ isset($subPerencanaan->harga_satuan) ? $subPerencanaan->harga_satuan : old('harga_satuan') }}">
-                                    {!! $errors->first('harga_satuan', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="output" class="col-sm-4 col-form-label">{{ 'Output' }}</label>
-                                <div class="col-sm-8 form-group {{ $errors->has('output') ? 'has-error' : '' }}">
-                                    <input class="form-control" name="output" type="text" id="output"
-                                        value="{{ isset($subPerencanaan->output) ? $subPerencanaan->output : old('output') }}">
-                                    {!! $errors->first('output', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Rencana Mulai and Rencana Bayar -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="rencana_mulai"
-                                    class="col-sm-4 col-form-label">{{ 'Rencana Mulai' }}</label>
-                                <div
-                                    class="col-sm-8 form-group {{ $errors->has('rencana_mulai') ? 'has-error' : '' }}">
-                                    <input class="form-control" name="rencana_mulai" type="date" id="rencana_mulai"
-                                        value="{{ isset($subPerencanaan->rencana_mulai) ? $subPerencanaan->rencana_mulai : old('rencana_mulai') }}">
-                                    {!! $errors->first('rencana_mulai', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="rencana_bayar"
-                                    class="col-sm-4 col-form-label">{{ 'Rencana Bayar' }}</label>
-                                <div
-                                    class="col-sm-8 form-group {{ $errors->has('rencana_bayar') ? 'has-error' : '' }}">
-                                    <input class="form-control" name="rencana_bayar" type="date"
-                                        id="rencana_bayar"
-                                        value="{{ isset($subPerencanaan->rencana_bayar) ? $subPerencanaan->rencana_bayar : old('rencana_bayar') }}">
-                                    {!! $errors->first('rencana_bayar', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- Fields for Pengadaan documents --}}
-                    {{-- Dokumen KAK dan Dokumen HPS --}}
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="dokumen_kak" class="col-sm-4 col-form-label">{{ 'Dokumen KAK' }}</label>
-                                <div class="col-sm-8 form-group {{ $errors->has('dokumen_kak') ? 'has-error' : '' }}">
-                                    <!-- Basic file uploader -->
-                                    <input type="file" name="dokumen_kak" class="basic-filepond"><small
-                                        class="form-text text-muted">*Format PDF dengan maksimal ukuran file 10
-                                        MB</small>
-                                    @if (isset($pengadaan->dokumen_kak))
-                                        <p>Dokumen KAK sudah ada : <a
-                                                href="{{ asset('storage/dokumen_kak/' . $pengadaan->dokumen_kak) }}"
-                                                target="_blank">Lihat Dokumen</a></p>
-                                        <input type="hidden" name="existing_dokumen_kak"
-                                            value="{{ $pengadaan->dokumen_kak }}">
-                                    @endif
-                                    @if ($errors->has('dokumen_kak'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('dokumen_kak') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="dokumen_hps" class="col-sm-4 col-form-label">{{ 'Dokumen HPS' }}</label>
-                                <div class="col-sm-8 form-group {{ $errors->has('dokumen_hps') ? 'has-error' : '' }}">
-                                    <!-- Basic file uploader -->
-                                    <input type="file" name="dokumen_hps" class="basic-filepond"><small
-                                        class="form-text text-muted">*Format PDF dengan maksimal ukuran file 10
-                                        MB</small>
-                                    @if (isset($pengadaan->dokumen_hps))
-                                        <p>Dokumen HPS sudah ada : <a
-                                                href="{{ asset('storage/dokumen_hps/' . $pengadaan->dokumen_hps) }}"
-                                                target="_blank">Lihat Dokumen</a></p>
-                                        <input type="hidden" name="existing_dokumen_hps"
-                                            value="{{ $pengadaan->dokumen_hps }}">
-                                    @endif
-                                    @if ($errors->has('dokumen_hps'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('dokumen_hps') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="volume"
+                                                    class="control-label">{{ 'Volume dan Satuan' }}</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" name="volume" type="number"
+                                                        id="volume" required min="0"
+                                                        value="{{ isset($subPerencanaan->volume) ? $subPerencanaan->volume : old('volume') }}"
+                                                        oninput="updatePagu()">
+                                                    <input class="form-control" name="satuan" type="text"
+                                                        id="satuan" required
+                                                        value="{{ isset($subPerencanaan->satuan) ? $subPerencanaan->satuan : old('satuan') }}">
+                                                </div>
+                                                {!! $errors->first('volume', '<p class="text-danger">:message</p>') !!}
+                                                {!! $errors->first('satuan', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
 
-                    {{-- Dokumen Stock Opname dan Dokumen Surat Ijin Impor --}}
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="dokumen_stock_opname"
-                                    class="col-sm-4 col-form-label">{{ 'Dokumen Stock Opname' }}</label>
-                                <div
-                                    class="col-sm-8 form-group {{ $errors->has('dokumen_stock_opname') ? 'has-error' : '' }}">
-                                    <!-- Basic file uploader -->
-                                    <input type="file" name="dokumen_stock_opname" class="basic-filepond"><small
-                                        class="form-text text-muted">*Format PDF dengan maksimal ukuran file 10
-                                        MB</small>
-                                    @if (isset($pengadaan->dokumen_stock_opname))
-                                        <p>Dokumen Stock Opname sudah ada : <a
-                                                href="{{ asset('storage/dokumen_stock_opname/' . $pengadaan->dokumen_stock_opname) }}"
-                                                target="_blank">Lihat Dokumen</a></p>
-                                        <input type="hidden" name="existing_dokumen_stock_opname"
-                                            value="{{ $pengadaan->dokumen_stock_opname }}">
-                                    @endif
-                                    @if ($errors->has('dokumen_stock_opname'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('dokumen_stock_opname') }}</strong>
-                                        </span>
-                                    @endif
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="harga_satuan"
+                                                    class="control-label">{{ 'Harga Satuan' }}</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Rp.</span>
+                                                    </div>
+                                                    <input class="form-control" name="harga_satuan" type="text"
+                                                        id="harga_satuan" required
+                                                        value="{{ isset($subPerencanaan->harga_satuan) ? number_format($subPerencanaan->harga_satuan, 0, ',', '.') : old('harga_satuan') }}">
+                                                </div>
+                                                {!! $errors->first('harga_satuan', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="pagu" class="control-label">{{ 'Pagu' }}</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Rp.</span>
+                                                    </div>
+                                                    <input class="form-control" name="pagu" type="text"
+                                                        id="pagu" required readonly
+                                                        value="{{ isset($subPerencanaan->pagu) ? number_format($subPerencanaan->pagu, 0, ',', '.') : old('pagu') }}">
+                                                </div>
+                                                {!! $errors->first('pagu', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="rencana_mulai"
+                                                    class="control-label">{{ 'Rencana Mulai' }}</label>
+                                                <input class="form-control" name="rencana_mulai" type="date"
+                                                    id="rencana_mulai" required
+                                                    value="{{ isset($subPerencanaan->rencana_mulai) ? $subPerencanaan->rencana_mulai : old('rencana_mulai') }}">
+                                                {!! $errors->first('rencana_mulai', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="rencana_bayar"
+                                                    class="control-label">{{ 'Rencana Bayar' }}</label>
+                                                <input class="form-control" name="rencana_bayar" type="date"
+                                                    id="rencana_bayar"
+                                                    value="{{ isset($subPerencanaan->rencana_bayar) ? $subPerencanaan->rencana_bayar : old('rencana_bayar') }}">
+                                                {!! $errors->first('rencana_bayar', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="metode"
+                                                    class="control-label">{{ 'Metode Pengadaan' }}</label>
+                                                <select class="form-control" id="metode_pengadaan_id"
+                                                    name="metode_pengadaan_id" required>
+                                                    <option value="" disabled
+                                                        {{ old('metode_pengadaan_id', isset($subPerencanaan->metode_pengadaan_id) ? $subPerencanaan->metode_pengadaan_id : '') == '' ? 'selected' : '' }}>
+                                                        --- Pilih Metode ---
+                                                    </option>
+                                                    @foreach ($metodePengadaan as $metode)
+                                                        <option value="{{ $metode->id }}"
+                                                            {{ isset($subPerencanaan) && $subPerencanaan->metode_pengadaan_id == $metode->id ? 'selected' : '' }}>
+                                                            {{ $metode->nama_metode }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                {!! $errors->first('metode_pengadaan', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="pp_id"
+                                                    class="control-label">{{ 'Pejabat Pengadaan (PP)' }}</label>
+                                                <select name="pp_id" class="form-control" id="pp_id" required>
+                                                    <option value="">Pilih PP</option>
+                                                    @foreach ($pp as $pps)
+                                                        <option value="{{ $pps->id }}"
+                                                            {{ isset($subPerencanaan) && $subPerencanaan->pp_id == $pps->id ? 'selected' : '' }}>
+                                                            {{ $pps->nama }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                {!! $errors->first('pp_id', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Output dan Catatan --}}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="output"
+                                                    class="control-label">{{ 'Output' }}</label>
+                                                <textarea class="form-control" name="output" id="output" rows="3">{{ isset($subPerencanaan->output) ? $subPerencanaan->output : old('output') }}</textarea>
+                                                {!! $errors->first('output', '<p class="text-danger">:message</p>') !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label for="catatan" class="control-label">{{ 'Catatan' }}</label>
+                                            @if (isset($pengadaan) && isset($pengadaan->status) && $pengadaan->status->nama_status == 'Pemenuhan Dokumen')
+                                                <textarea id="catatan" name="catatan" rows="3" class="form-control"
+                                                    placeholder="Tulis catatan jika dokumen belum terpenuhi...">{{ old('catatan', $pengadaan->catatan) }}</textarea>
+                                                <small class="form-text text-muted">Catatan ini hanya akan terlihat
+                                                    ketika status
+                                                    pengadaan adalah "Pemenuhan Dokumen".</small>
+                                            @else
+                                                <textarea id="catatan" name="catatan" rows="3" class="form-control" disabled
+                                                    placeholder="Catatan tidak tersedia untuk status ini.">{{ old('catatan', isset($pengadaan) ? $pengadaan->catatan : '') }}</textarea>
+                                                <small class="form-text text-muted">Catatan hanya dapat ditambahkan
+                                                    ketika status
+                                                    pengadaan adalah "Pemenuhan Dokumen".</small>
+                                            @endif
+                                        </div>
+                                        {!! $errors->first('catatan', '<p class="help-block">:message</p>') !!}
+                                    </div>
+
+                                    {{-- Fields for Pengadaan documents --}}
+                                    {{-- Dokumen KAK dan Dokumen HPS --}}
+                                    <div class="container">
+                                        <div class="card mb-3">
+                                            <div class="card-header bg-primary text-white">
+                                                <i class="fa fa-file-alt"></i> Dokumen Pengadaan
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    {{-- Dokumen KAK --}}
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label
+                                                                class="col-sm-6 col-form-label">{{ 'Dokumen KAK' }}</label>
+                                                            <div class="col-sm-6">
+                                                                @if (isset($pengadaan->dokumen_kak))
+                                                                    <a href="{{ asset('storage/' . $pengadaan->dokumen_kak) }}"
+                                                                        target="_blank"
+                                                                        class="btn btn-outline-primary btn-sm">
+                                                                        <i class="fa fa-download"></i> Lihat Dokumen
+                                                                    </a>
+                                                                @else
+                                                                    <span class="badge badge-warning"><i
+                                                                            class="fa fa-exclamation-circle"></i>
+                                                                        Dokumen belum
+                                                                        tersedia</span>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Dokumen HPS --}}
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label
+                                                                class="col-sm-6 col-form-label">{{ 'Dokumen HPS' }}</label>
+                                                            <div class="col-sm-6">
+                                                                @if (isset($pengadaan->dokumen_hps))
+                                                                    <a href="{{ asset('storage/' . $pengadaan->dokumen_hps) }}"
+                                                                        target="_blank"
+                                                                        class="btn btn-outline-primary btn-sm">
+                                                                        <i class="fa fa-download"></i> Lihat Dokumen
+                                                                    </a>
+                                                                @else
+                                                                    <span class="badge badge-warning"><i
+                                                                            class="fa fa-exclamation-circle"></i>
+                                                                        Dokumen belum
+                                                                        tersedia</span>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- Dokumen Stock Opname dan Dokumen Surat Ijin Impor --}}
+                                                <div class="row">
+                                                    {{-- Dokumen Stock Opname --}}
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label
+                                                                class="col-sm-6 col-form-label">{{ 'Dokumen Stock Opname' }}</label>
+                                                            <div class="col-sm-6">
+                                                                @if (isset($pengadaan->dokumen_stock_opname))
+                                                                    <a href="{{ asset('storage/' . $pengadaan->dokumen_stock_opname) }}"
+                                                                        target="_blank"
+                                                                        class="btn btn-outline-primary btn-sm">
+                                                                        <i class="fa fa-download"></i> Lihat Dokumen
+                                                                    </a>
+                                                                @else
+                                                                    <span class="badge badge-warning"><i
+                                                                            class="fa fa-exclamation-circle"></i>
+                                                                        Dokumen belum
+                                                                        tersedia</span>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Dokumen Surat Ijin Impor --}}
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label
+                                                                class="col-sm-6 col-form-label">{{ 'Dokumen Surat Ijin Impor' }}</label>
+                                                            <div class="col-sm-6">
+                                                                @if (isset($pengadaan->dokumen_surat_ijin_impor))
+                                                                    <a href="{{ asset('storage/' . $pengadaan->dokumen_surat_ijin_impor) }}"
+                                                                        target="_blank"
+                                                                        class="btn btn-outline-primary btn-sm">
+                                                                        <i class="fa fa-download"></i> Lihat Dokumen
+                                                                    </a>
+                                                                @else
+                                                                    <span class="badge badge-warning"><i
+                                                                            class="fa fa-exclamation-circle"></i>
+                                                                        Dokumen belum
+                                                                        tersedia</span>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- Dokumen Kontrak dan Serah Terima --}}
+                                                <div class="row">
+                                                    {{-- Dokumen Kontrak --}}
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label
+                                                                class="col-sm-6 col-form-label">{{ 'Dokumen Kontrak' }}</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="file" name="dokumen_kontrak"
+                                                                    class="form-control-file" id="dokumen_kontrak">
+                                                                <small class="form-text text-muted">*Format PDF,
+                                                                    maksimal
+                                                                    10 MB</small>
+                                                                @if (isset($pengadaan->dokumen_kontrak))
+                                                                    <p class="mt-2">Dokumen sudah ada:
+                                                                        <a href="{{ asset('storage/dokumen_kontrak/' . $pengadaan->dokumen_kontrak) }}"
+                                                                            target="_blank" class="btn btn-link"><i
+                                                                                class="fa fa-download"></i> Lihat
+                                                                            Dokumen</a>
+                                                                    </p>
+                                                                    <input type="hidden"
+                                                                        name="existing_dokumen_kontrak"
+                                                                        value="{{ $pengadaan->dokumen_kontrak }}">
+                                                                @endif
+                                                                @if ($errors->has('dokumen_kontrak'))
+                                                                    <p class="text-danger">
+                                                                        {{ $errors->first('dokumen_kontrak') }}</p>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Dokumen Serah Terima --}}
+                                                    <div class="col-md-6">
+                                                        <div class="form-group row">
+                                                            <label
+                                                                class="col-sm-6 col-form-label">{{ 'Dokumen Serah Terima' }}</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="file" name="dokumen_serah_terima"
+                                                                    class="form-control-file"
+                                                                    id="dokumen_serah_terima">
+                                                                <small class="form-text text-muted">*Format PDF,
+                                                                    maksimal
+                                                                    10 MB</small>
+                                                                @if (isset($pengadaan->dokumen_serah_terima))
+                                                                    <p class="mt-2">Dokumen sudah ada:
+                                                                        <a href="{{ asset('storage/dokumen_serah_terima/' . $pengadaan->dokumen_serah_terima) }}"
+                                                                            target="_blank" class="btn btn-link"><i
+                                                                                class="fa fa-download"></i> Lihat
+                                                                            Dokumen</a>
+                                                                    </p>
+                                                                    <input type="hidden"
+                                                                        name="existing_dokumen_serah_terima"
+                                                                        value="{{ $pengadaan->dokumen_serah_terima }}">
+                                                                @endif
+                                                                @if ($errors->has('dokumen_serah_terima'))
+                                                                    <p class="text-danger">
+                                                                        {{ $errors->first('dokumen_serah_terima') }}
+                                                                    </p>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 d-flex justify-content-end">
+                                        <button class="btn btn-warning" onclick="history.back();">
+                                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali
+                                        </button>&nbsp;
+                                        <button type="submit" class="btn btn-success">
+                                            {{ 'Simpan' }}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="dokumen_surat_ijin_impor"
-                                    class="col-sm-4 col-form-label">{{ 'Dokumen Surat Ijin Impor' }}</label>
-                                <div
-                                    class="col-sm-8 form-group {{ $errors->has('dokumen_surat_ijin_impor') ? 'has-error' : '' }}">
-                                    <!-- Basic file uploader -->
-                                    <input type="file" name="dokumen_surat_ijin_impor"
-                                        class="basic-filepond"><small class="form-text text-muted">*Format PDF dengan
-                                        maksimal ukuran file 10 MB</small>
-                                    @if (isset($pengadaan->dokumen_surat_ijin_impor))
-                                        <p>Dokumen Surat Ijin Impor sudah ada : <a
-                                                href="{{ asset('storage/dokumen_ijin_impor/' . $pengadaan->dokumen_surat_ijin_impor) }}"
-                                                target="_blank">Lihat Dokumen</a></p>
-                                        <input type="hidden" name="existing_dokumen_surat_ijin_impor"
-                                            value="{{ $pengadaan->dokumen_surat_ijin_impor }}">
-                                    @endif
-                                    @if ($errors->has('dokumen_surat_ijin_impor'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('dokumen_surat_ijin_impor') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
-
-                    <!-- PP and Status -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="pp"
-                                    class="col-sm-4 col-form-label">{{ 'Pejabat Pengadaan (PP)' }}</label>
-                                <div class="col-sm-8 form-group {{ $errors->has('pp_id') ? 'has-error' : '' }}">
-                                    <select name="pp_id" class="form-control" id="pp_id" required>
-                                        <option value="">Pilih PP</option>
-                                        <!-- Tambahkan opsi default jika diperlukan -->
-                                        @foreach ($pps as $pp)
-                                            <option value="{{ $pp->id }}"
-                                                {{ isset($subPerencanaan) && $subPerencanaan->pp_id == $pp->id ? 'selected' : '' }}>
-                                                {{ $pp->nama }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    {!! $errors->first('pp_id', '<p class="help-block">:message</p>') !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Form catatan -->
-                    <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label for="catatan" class="control-label">{{ 'Catatan' }}</label>
-                            <div class="col-md-6 form-group {{ $errors->has('status_id') ? 'has-error' : '' }}">
-                                @if (isset($pengadaan) && isset($pengadaan->status) && $pengadaan->status->nama_status == 'Pemenuhan Dokumen')
-                                    <textarea id="catatan" name="catatan" rows="4" class="form-control"
-                                        placeholder="Tulis catatan jika dokumen belum terpenuhi...">{{ old('catatan', $pengadaan->catatan) }}</textarea>
-                                    <small class="form-text text-muted">Catatan ini hanya akan terlihat ketika status
-                                        pengadaan adalah "Pemenuhan Dokumen".</small>
-                                @else
-                                    <textarea id="catatan" name="catatan" rows="4" class="form-control" disabled
-                                        placeholder="Catatan tidak tersedia untuk status ini.">{{ old('catatan', isset($pengadaan) ? $pengadaan->catatan : '') }}</textarea>
-                                    <small class="form-text text-muted">Catatan hanya dapat ditambahkan ketika status
-                                        pengadaan adalah "Pemenuhan Dokumen".</small>
-                                @endif
-                            </div>
-                            {!! $errors->first('catatan', '<p class="help-block">:message</p>') !!}
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 d-flex justify-content-end">
-                        <button class="btn btn-warning" onclick="history.back();">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali
-                        </button>&nbsp;
-                        <button type="submit" class="btn btn-success">
-                            {{ 'Simpan' }}
-                        </button>
-                    </div>
-
-                    <!-- Skrip SweetAlert -->
-                    @if (session('success_edit'))
-                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: "{{ session('success') }}",
-                                    showConfirmButton: true,
-                                    confirmButtonText: 'OK',
-                                    customClass: {
-                                        popup: 'swal-wide',
-                                        confirmButton: 'btn btn-success'
-                                    }
-                                });
-                            });
-                        </script>
-                    @endif
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </section>
 <!-- // Basic Horizontal form layout section end -->
+
+<script>
+    function updatePagu() {
+        var volume = parseFloat(document.getElementById('volume').value.replace(/\D/g, '')) || 0;
+        var hargaSatuan = parseFloat(removeFormatting(document.getElementById('harga_satuan').value)) || 0;
+        var pagu = volume * hargaSatuan;
+
+        document.getElementById('pagu').value = formatCurrency(pagu);
+    }
+
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+        }).format(value);
+    }
+
+    function removeFormatting(value) {
+        return value.replace(/[^0-9]/g, ''); // Menghapus semua karakter non-numerik
+    }
+
+    document.getElementById('harga_satuan').addEventListener('input', function(e) {
+        var value = e.target.value.replace(/\D/g, ''); // Menghapus semua karakter selain digit
+        e.target.value = formatCurrency(value);
+        updatePagu(); // Perbarui Pagu setiap kali harga_satuan berubah
+    });
+
+    document.getElementById('volume').addEventListener('input', function() {
+        updatePagu(); // Perbarui Pagu setiap kali volume berubah
+    });
+
+    document.getElementById('harga_satuan').addEventListener('blur', function() {
+        this.value = formatCurrency(removeFormatting(this.value));
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Menyegarkan harga_satuan dan pagu saat halaman dimuat
+        updatePagu();
+    });
+</script>

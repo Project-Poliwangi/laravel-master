@@ -58,26 +58,60 @@ class Pengadaan extends Model
         }
 
         // Cek apakah tanggal saat ini sudah sama atau lebih besar dari tanggal rencana mulai
+        // Cek apakah tanggal saat ini sudah sama atau lebih besar dari tanggal rencana mulai
         if ($currentDate >= $rencanaMulai) {
-            // Periksa apakah salah satu dokumen penting ada
-            if ($this->dokumen_kak || $this->dokumen_hps || $this->dokumen_stock_opname || $this->dokumen_surat_ijin_impor) {
-                $status = 'Pemenuhan Dokumen';
-            } elseif ($this->dokumen_pemilihan_penyedia) {
-                $status = 'Pemilihan Penyedia';
-            } elseif ($this->dokumen_kontrak) {
-                $status = 'Kontrak';
-            } elseif ($this->dokumen_serah_terima) {
-                $status = 'Serah Terima';
-            } else {
-                $status = 'Pra DIPA'; // Status default jika tidak memenuhi syarat lainnya
+            if ($this->status->nama_status === 'Pra DIPA') {
+                // Periksa apakah ada dokumen KAK, HPS, Stock Opname, atau Surat Ijin Impor yang diunggah
+                if ($this->dokumen_kak || $this->dokumen_hps || $this->dokumen_stock_opname || $this->dokumen_surat_ijin_impor) {
+                    $status = 'Pemenuhan Dokumen';
+                }
+            } elseif ($this->status->nama_status === 'Pemenuhan Dokumen') {
+                // Periksa apakah dokumen pemilihan penyedia telah diunggah oleh PP
+                if ($this->dokumen_pemilihan_penyedia) {
+                    $status = 'Pemilihan Penyedia';
+                }
+            } elseif ($this->status->nama_status === 'Pemilihan Penyedia') {
+                // Periksa apakah dokumen kontrak telah diunggah oleh PPK
+                if ($this->dokumen_kontrak) {
+                    $status = 'Kontrak';
+                }
+            } elseif ($this->status->nama_status === 'Kontrak') {
+                // Periksa apakah dokumen serah terima telah diunggah oleh PPK
+                if ($this->dokumen_serah_terima) {
+                    $status = 'Serah Terima';
+                }
             }
 
-            // Temukan status berdasarkan nama
-            $statusRecord = Status::where('nama_status', $status)->first();
-            if ($statusRecord) {
-                $this->status_id = $statusRecord->id;
-                $this->save();
+            // Temukan status berdasarkan nama dan simpan perubahan
+            if (isset($status)) {
+                $statusRecord = Status::where('nama_status', $status)->first();
+                if ($statusRecord) {
+                    $this->status_id = $statusRecord->id;
+                    $this->save();
+                }
             }
         }
+
+        // if ($currentDate >= $rencanaMulai) {
+        //     // Periksa apakah salah satu dokumen penting ada
+        //     if ($this->dokumen_kak || $this->dokumen_hps || $this->dokumen_stock_opname || $this->dokumen_surat_ijin_impor) {
+        //         $status = 'Pemenuhan Dokumen';
+        //     } elseif ($this->dokumen_pemilihan_penyedia) {
+        //         $status = 'Pemilihan Penyedia';
+        //     } elseif ($this->dokumen_kontrak) {
+        //         $status = 'Kontrak';
+        //     } elseif ($this->dokumen_serah_terima) {
+        //         $status = 'Serah Terima';
+        //     } else {
+        //         $status = 'Pra DIPA'; // Status default jika tidak memenuhi syarat lainnya
+        //     }
+
+        //     // Temukan status berdasarkan nama
+        //     $statusRecord = Status::where('nama_status', $status)->first();
+        //     if ($statusRecord) {
+        //         $this->status_id = $statusRecord->id;
+        //         $this->save();
+        //     }
+        // }
     }
 }

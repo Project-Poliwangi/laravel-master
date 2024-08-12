@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,9 +48,11 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 
     Route::prefix('admin')->group(function () {
         Route::get('/keloladokumen', 'AdminController@index')->name('admin.index');
-        Route::get('/dokumen/show/{id}', 'AdminController@show')->name('admin.show');
+        Route::get('/dokumen/create', 'AdminController@create')->name('admin.create');
+        Route::post('/dokumen/store', 'AdminController@store')->name('admin.store');
         Route::get('/dokumen/edit/{id}', 'AdminController@edit')->name('admin.edit');
         Route::patch('/dokumen/update/{id}', 'AdminController@update')->name('admin.update');
+        Route::delete('dokumen/destroy/{id}', 'AdminController@destroy')->name('admin.destroy');
     });
 
     Route::prefix('pp')->group(function () {

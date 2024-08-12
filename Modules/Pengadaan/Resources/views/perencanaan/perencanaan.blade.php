@@ -12,9 +12,9 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header bg-dark">
-                        <h4 class="text-center">Daftar Perencanaan</h4>
+                        <h5 class="text-center">Daftar Perencanaan</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="font-size: 13px;">
                         <a href="{{ url('/perencanaan/create') }}" class="btn btn-success btn-sm" title="Tambah Perencanaan">
                             <i class="fa fa-plus" aria-hidden="true"></i> Tambah
                         </a>
@@ -33,7 +33,7 @@
                                 <tbody>
                                     @foreach ($perencanaans as $perencanaan)
                                         <tr>
-                                            <td class="text-left">{{ $perencanaan->nama }}</td>
+                                            <td>{{ $perencanaan->nama }}</td>
                                             <td class="text-center">{{ $perencanaan->kode }}</td>
                                             <td class="text-center">{{ $perencanaan->sumber }}</td>
                                             <td class="text-center">{{ $perencanaan->tahun }}</td>
@@ -147,9 +147,9 @@
         }
 
         /* .modal-body th::after {
-                content: ":";
-                margin-left: 5px;
-            } */
+                    content: ":";
+                    margin-left: 5px;
+                } */
 
         .modal-body td {
             text-align: left;
@@ -225,6 +225,19 @@
         });
     </script>
     <script>
-        let table = new DataTable('#myTable');
+        $(document).ready(function() {
+            let table = new DataTable('#myTable', {
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                },
+                search: {
+                    caseInsensitive: true
+                },
+                paging: true,
+                ordering: true,
+                info: true,
+                autoWidth: false,
+            });
+        });
     </script>
 @stop

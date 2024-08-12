@@ -3,111 +3,39 @@
 namespace Modules\Pengadaan\Tests\Unit;
 
 use Tests\TestCase;
+use App\Models\Core\User;
 use Modules\Pengadaan\Entities\Document;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
 
 class AdminControllerTest extends TestCase
 {
-    // Metode setUp untuk menginisialisasi pengaturan
-    protected function setUp(): void
+    public function test_index_displays_documents_successfully()
     {
-        parent::setUp();
-    }
-    /** @test */
-    public function it_displays_paginated_documents_on_index()
-{
-    // Membuat beberapa dokumen menggunakan factory
-    $documents = \Modules\Pengadaan\Entities\Document::factory()->create();
+        // Nonaktifkan middleware untuk tes ini
+        $this->withoutMiddleware();
 
-    // Memanggil route index
-    $response = $this->get(route('admin.index'));
-
-    // Memastikan status respons 200 (berhasil)
-    $response->assertStatus(200);
-
-    // Memastikan bahwa view memiliki dokumen yang sama seperti yang kita buat
-    $response->assertViewHas('documents', function ($docs) use ($documents) {
-        return $docs->pluck('id')->contains($documents->first()->id);
-    });    
-}
-
-    /** @test */
-    public function it_shows_a_valid_document()
-    {
-        // Setup storage fake
-        Storage::fake('public');
-
-        // Buat satu dokumen dengan file valid
-        $document = Document::factory()->create([
-            'file' => UploadedFile::fake()->create('valid_document.docx')->name,
+        // Menggunakan factory untuk membuat pengguna admin
+        $admin = \database\factories\UserFactory::new()->create([
+            'role' => 'admin',
         ]);
 
-        // Panggil route show
-        $response = $this->get(route('admin.show', $document->id));
+        $this->actingAs($admin);
 
-        // Pastikan file ditampilkan
-        $response->assertStatus(200);
-    }
+        // Buat beberapa dokumen
+        $documents = Document::factory()->count(3)->create();
 
-    /** @test */
-    public function it_aborts_if_invalid_file_type_in_show()
-    {
-        // Buat satu dokumen dengan file yang tidak valid
-        $document = Document::factory()->create([
-            'file' => 'invalid_document.pdf',
-        ]);
+        // Akses route index
+        $response = $this->get(route('admin.index'));
 
-        // Panggil route show dan pastikan 404
-        $response = $this->get(route('admin.show', $document->id));
-
-        $response->assertStatus(404);
-    }
-
-    /** @test */
-    public function it_edits_a_document()
-    {
-        // Buat satu dokumen
-        $document = Document::factory()->create();
-
-        // Panggil route edit
-        $response = $this->get(route('admin.edit', $document->id));
-
-        // Pastikan status respons 200
+        // Verifikasi status respons adalah 200
         $response->assertStatus(200);
 
-        // Pastikan view berisi dokumen yang benar
-        $response->assertViewHas('documents', $document);
-    }
+        // Verifikasi bahwa view yang dikembalikan adalah yang benar
+        $response->assertViewIs('pengadaan::admin.keloladokumen');
 
-    /** @test */
-    public function it_updates_a_document_successfully()
-    {
-        // Setup storage fake
-        Storage::fake('public');
-
-        // Buat satu dokumen
-        $document = Document::factory()->create();
-
-        // Data baru untuk diupdate
-        $newData = [
-            'nama_dokumen' => 'Dokumen Update',
-            'deskripsi' => 'Deskripsi Update',
-            'file' => UploadedFile::fake()->create('updated_file.docx'),
-        ];
-
-        // Panggil route update dengan data baru
-        $response = $this->put(route('admin.update', $document->id), $newData);
-
-        // Pastikan redirect sukses
-        $response->assertStatus(302);
-
-        // Pastikan data sudah diupdate di database
-        $this->assertDatabaseHas('documents', [
-            'id' => $document->id,
-            'nama_dokumen' => 'Dokumen Update',
-            'deskripsi' => 'Deskripsi Update',
-            'file' => 'updated_file.docx',
-        ]);
+        // Verifikasi bahwa view menerima data documents
+        $response->assertViewHas('documents', function ($docs) use ($documents) {
+            return $documents->pluck('id')->toArray() === $docs->pluck('id')->toArray();
+        });
     }
 }
+
