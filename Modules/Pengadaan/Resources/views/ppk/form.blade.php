@@ -70,10 +70,10 @@
                                                     <input class="form-control" name="volume" type="number"
                                                         id="volume" required min="0"
                                                         value="{{ isset($subPerencanaan->volume) ? $subPerencanaan->volume : old('volume') }}"
-                                                        oninput="updatePagu()">
+                                                        oninput="updatePagu()" {{ $disabled }}>
                                                     <input class="form-control" name="satuan" type="text"
                                                         id="satuan" required
-                                                        value="{{ isset($subPerencanaan->satuan) ? $subPerencanaan->satuan : old('satuan') }}">
+                                                        value="{{ isset($subPerencanaan->satuan) ? $subPerencanaan->satuan : old('satuan') }}" {{ $disabled }}>
                                                 </div>
                                                 {!! $errors->first('volume', '<p class="text-danger">:message</p>') !!}
                                                 {!! $errors->first('satuan', '<p class="text-danger">:message</p>') !!}
@@ -90,7 +90,7 @@
                                                     </div>
                                                     <input class="form-control" name="harga_satuan" type="text"
                                                         id="harga_satuan" required
-                                                        value="{{ isset($subPerencanaan->harga_satuan) ? number_format($subPerencanaan->harga_satuan, 0, ',', '.') : old('harga_satuan') }}">
+                                                        value="{{ isset($subPerencanaan->harga_satuan) ? number_format($subPerencanaan->harga_satuan, 0, ',', '.') : old('harga_satuan') }}" {{ $disabled }}>
                                                 </div>
                                                 {!! $errors->first('harga_satuan', '<p class="text-danger">:message</p>') !!}
                                             </div>
@@ -105,7 +105,7 @@
                                                     </div>
                                                     <input class="form-control" name="pagu" type="text"
                                                         id="pagu" required readonly
-                                                        value="{{ isset($subPerencanaan->pagu) ? number_format($subPerencanaan->pagu, 0, ',', '.') : old('pagu') }}">
+                                                        value="{{ isset($subPerencanaan->pagu) ? number_format($subPerencanaan->pagu, 0, ',', '.') : old('pagu') }}" {{ $disabled }}>
                                                 </div>
                                                 {!! $errors->first('pagu', '<p class="text-danger">:message</p>') !!}
                                             </div>
@@ -118,7 +118,7 @@
                                                     class="control-label">{{ 'Rencana Mulai' }}</label>
                                                 <input class="form-control" name="rencana_mulai" type="date"
                                                     id="rencana_mulai" required
-                                                    value="{{ isset($subPerencanaan->rencana_mulai) ? $subPerencanaan->rencana_mulai : old('rencana_mulai') }}">
+                                                    value="{{ isset($subPerencanaan->rencana_mulai) ? $subPerencanaan->rencana_mulai : old('rencana_mulai') }}" {{ $disabled }}>
                                                 {!! $errors->first('rencana_mulai', '<p class="text-danger">:message</p>') !!}
                                             </div>
                                         </div>
@@ -129,7 +129,7 @@
                                                     class="control-label">{{ 'Rencana Bayar' }}</label>
                                                 <input class="form-control" name="rencana_bayar" type="date"
                                                     id="rencana_bayar"
-                                                    value="{{ isset($subPerencanaan->rencana_bayar) ? $subPerencanaan->rencana_bayar : old('rencana_bayar') }}">
+                                                    value="{{ isset($subPerencanaan->rencana_bayar) ? $subPerencanaan->rencana_bayar : old('rencana_bayar') }}" {{ $disabled }}>
                                                 {!! $errors->first('rencana_bayar', '<p class="text-danger">:message</p>') !!}
                                             </div>
                                         </div>
@@ -139,7 +139,7 @@
                                                 <label for="metode"
                                                     class="control-label">{{ 'Metode Pengadaan' }}</label>
                                                 <select class="form-control" id="metode_pengadaan_id"
-                                                    name="metode_pengadaan_id" required>
+                                                    name="metode_pengadaan_id" required {{ $disabled }}>
                                                     <option value="" disabled
                                                         {{ old('metode_pengadaan_id', isset($subPerencanaan->metode_pengadaan_id) ? $subPerencanaan->metode_pengadaan_id : '') == '' ? 'selected' : '' }}>
                                                         --- Pilih Metode ---
@@ -159,11 +159,11 @@
                                             <div class="form-group">
                                                 <label for="pp_id"
                                                     class="control-label">{{ 'Pejabat Pengadaan (PP)' }}</label>
-                                                <select name="pp_id" class="form-control" id="pp_id" required>
+                                                <select name="pp_id" class="form-control" id="pp_id" required {{ $disabled }}>
                                                     <option value="">Pilih PP</option>
                                                     @foreach ($pp as $pps)
                                                         <option value="{{ $pps->id }}"
-                                                            {{ isset($subPerencanaan) && $subPerencanaan->pp_id == $pps->id ? 'selected' : '' }}>
+                                                            {{ isset($subPerencanaan) && $subPerencanaan->pp_id == $pps->id ? 'selected' : '' }} {{ $disabled }}>
                                                             {{ $pps->nama }}
                                                         </option>
                                                     @endforeach
@@ -179,7 +179,7 @@
                                             <div class="form-group">
                                                 <label for="output"
                                                     class="control-label">{{ 'Output' }}</label>
-                                                <textarea class="form-control" name="output" id="output" rows="3">{{ isset($subPerencanaan->output) ? $subPerencanaan->output : old('output') }}</textarea>
+                                                <textarea class="form-control" name="output" id="output" rows="3" {{ $disabled }}>{{ isset($subPerencanaan->output) ? $subPerencanaan->output : old('output') }}</textarea>
                                                 {!! $errors->first('output', '<p class="text-danger">:message</p>') !!}
                                             </div>
                                         </div>
@@ -188,7 +188,7 @@
                                             @if (isset($pengadaan) && isset($pengadaan->status) && $pengadaan->status->nama_status == 'Pemenuhan Dokumen')
                                                 <textarea id="catatan" name="catatan" rows="3" class="form-control"
                                                     placeholder="Tulis catatan jika dokumen belum terpenuhi...">{{ old('catatan', $pengadaan->catatan) }}</textarea>
-                                                <small class="form-text text-muted">Catatan ini hanya akan terlihat
+                                                <small class="form-text text-muted">Catatan ini hanya akan dapat ditambahkan
                                                     ketika status
                                                     pengadaan adalah "Pemenuhan Dokumen".</small>
                                             @else
@@ -198,8 +198,8 @@
                                                     ketika status
                                                     pengadaan adalah "Pemenuhan Dokumen".</small>
                                             @endif
+                                            {!! $errors->first('catatan', '<p class="help-block">:message</p>') !!}
                                         </div>
-                                        {!! $errors->first('catatan', '<p class="help-block">:message</p>') !!}
                                     </div>
 
                                     {{-- Fields for Pengadaan documents --}}

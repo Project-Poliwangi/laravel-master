@@ -29,68 +29,68 @@ class PPKController extends Controller
     {
         // Mengimpor Carbon untuk mendapatkan tahun saat ini
         $currentYear = Carbon::now()->year;
-    
+
         // Menghitung total pengadaan
         $totalPengadaan = Pengadaan::count();
-    
+
         // Menghitung pengadaan baru dalam tahun ini
         $pengadaanBaru = Pengadaan::whereYear('created_at', $currentYear)->count();
-    
+
         // Menghitung pengadaan yang selesai dalam tahun ini
         $pengadaanSelesai = Pengadaan::where('status_id', 4) // Status 4 untuk "Selesai"
             ->whereYear('updated_at', $currentYear)
             ->count();
-    
+
         // Mengambil semua jenis pengadaan, status pengadaan, dan metode pengadaan
         $jenisPengadaans = JenisPengadaan::all();
         $pengadaanStatuses = Status::all();
         $metodePengadaans = MetodePengadaan::all();
-    
+
         // Menghitung jumlah pengadaan berdasarkan jenis
         $jenisPengadaanData = SubPerencanaan::select('jenis_pengadaan_id')
             ->selectRaw('count(*) as count')
             ->groupBy('jenis_pengadaan_id')
             ->get()
             ->pluck('count', 'jenis_pengadaan_id');
-    
+
         // Menghitung jumlah pengadaan berdasarkan status
         $pengadaanStatusData = Pengadaan::select('status_id')
             ->selectRaw('count(*) as count')
             ->groupBy('status_id')
             ->get()
             ->pluck('count', 'status_id');
-    
+
         // Menghitung jumlah pengadaan berdasarkan metode
         $metodePengadaanData = SubPerencanaan::select('metode_pengadaan_id')
             ->selectRaw('count(*) as count')
             ->groupBy('metode_pengadaan_id')
             ->get()
             ->pluck('count', 'metode_pengadaan_id');
-    
+
         // Memastikan setiap jenis pengadaan ada dalam data, meskipun nilainya nol
-        $jenisPengadaanChart = $jenisPengadaans->map(function($jenis) use ($jenisPengadaanData) {
+        $jenisPengadaanChart = $jenisPengadaans->map(function ($jenis) use ($jenisPengadaanData) {
             return [
                 'label' => $jenis->nama_jenis,
                 'count' => $jenisPengadaanData->get($jenis->id, 0),
             ];
         });
-    
+
         // Memastikan setiap status pengadaan ada dalam data, meskipun nilainya nol
-        $pengadaanStatusChart = $pengadaanStatuses->map(function($status) use ($pengadaanStatusData) {
+        $pengadaanStatusChart = $pengadaanStatuses->map(function ($status) use ($pengadaanStatusData) {
             return [
                 'label' => $status->nama_status,
                 'count' => $pengadaanStatusData->get($status->id, 0),
             ];
         });
-    
+
         // Memastikan setiap metode pengadaan ada dalam data, meskipun nilainya nol
-        $metodePengadaanChart = $metodePengadaans->map(function($metode) use ($metodePengadaanData) {
+        $metodePengadaanChart = $metodePengadaans->map(function ($metode) use ($metodePengadaanData) {
             return [
                 'label' => $metode->nama_metode,
                 'count' => $metodePengadaanData->get($metode->id, 0),
             ];
         });
-    
+
         // Mengirimkan data ke view
         return view('pengadaan::direktur.dashboard', compact(
             'jenisPengadaanChart',
@@ -100,7 +100,7 @@ class PPKController extends Controller
             'pengadaanBaru',
             'pengadaanSelesai'
         ));
-    } 
+    }
 
     public function daftarpengadaan(Request $request)
     {

@@ -14,7 +14,7 @@
                                         <input class="form-control" name="perencanaan" type="text" disabled
                                             id="perencanaan"
                                             value="{{ isset($subPerencanaan->perencanaan->nama) ? $subPerencanaan->perencanaan->nama : old('perencanaan') }}">
-                                            {!! $errors->first('perencanaan', '<p class="text-danger">:message</p>') !!}
+                                        {!! $errors->first('perencanaan', '<p class="text-danger">:message</p>') !!}
                                     </div>
 
                                     <div class="col-md-6 form-group">
@@ -22,7 +22,7 @@
                                         <input class="form-control" name="kegiatan" type="text" disabled
                                             id="kegiatan"
                                             value="{{ isset($subPerencanaan->kegiatan) ? $subPerencanaan->kegiatan : old('kegiatan') }}">
-                                            {!! $errors->first('kegiatan', '<p class="text-danger">:message</p>') !!}
+                                        {!! $errors->first('kegiatan', '<p class="text-danger">:message</p>') !!}
                                     </div>
                                 </div>
 
@@ -30,42 +30,52 @@
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="unit" class="control-label">{{ 'Unit' }}</label>
-                                        <input class="form-control" name="unit" type="text" disabled id="unit"
+                                        <input class="form-control" name="unit" type="text" disabled
+                                            id="unit"
                                             value="{{ isset($subPerencanaan->unit->nama) ? $subPerencanaan->unit->nama : old('unit') }}">
                                         {!! $errors->first('unit', '<p class="text-danger">:message</p>') !!}
                                     </div>
-                                
+
                                     <div class="col-md-3 form-group">
-                                        <label for="metode_pengadaan" class="control-label">{{ 'Metode Pengadaan' }}</label>
-                                        <input class="form-control" name="metode_pengadaan" type="text" disabled id="metode_pengadaan"
+                                        <label for="metode_pengadaan"
+                                            class="control-label">{{ 'Metode Pengadaan' }}</label>
+                                        <input class="form-control" name="metode_pengadaan" type="text" disabled
+                                            id="metode_pengadaan"
                                             value="{{ isset($subPerencanaan->metodePengadaan->nama_metode) ? $subPerencanaan->metodePengadaan->nama_metode : old('metodePengadaan') }}">
                                         {!! $errors->first('metodePengadaan', '<p class="text-danger">:message</p>') !!}
                                     </div>
-                                
+
                                     <div class="col-md-3 form-group">
-                                        <label for="jenis_pengadaan" class="control-label">{{ 'Jenis Pengadaan' }}</label>
-                                        <input class="form-control" name="jenis_pengadaan" type="text" disabled id="jenis_pengadaan"
+                                        <label for="jenis_pengadaan"
+                                            class="control-label">{{ 'Jenis Pengadaan' }}</label>
+                                        <input class="form-control" name="jenis_pengadaan" type="text" disabled
+                                            id="jenis_pengadaan"
                                             value="{{ isset($subPerencanaan->jenisPengadaan->nama_jenis) ? $subPerencanaan->jenisPengadaan->nama_jenis : old('jenisPengadaan') }}">
                                         {!! $errors->first('jenisPengadaan', '<p class="text-danger">:message</p>') !!}
                                     </div>
-                                </div>                                
+                                </div>
 
                                 <!-- Upload Dokumen Pemilihan Penyedia -->
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <label for="dokumen_pemilihan_penyedia" class="col-sm-4 col-form-label">{{ __('Dokumen Pemilihan Penyedia') }}</label>
+                                            <label for="dokumen_pemilihan_penyedia"
+                                                class="col-sm-4 col-form-label">{{ __('Dokumen Pemilihan Penyedia') }}</label>
                                             <div class="col-sm-8">
-                                                <input type="file" name="dokumen_pemilihan_penyedia" class="form-control-file" id="dokumen_pemilihan_penyedia">
-                                                <small class="form-text text-muted">*Format PDF dengan maksimal ukuran file 10 MB</small>
-                                                
+                                                <input type="file" name="dokumen_pemilihan_penyedia"
+                                                    class="form-control-file" id="dokumen_pemilihan_penyedia">
+                                                <small class="form-text text-muted">*Format PDF dengan maksimal ukuran
+                                                    file 10 MB</small>
+
                                                 @if (isset($pengadaan->dokumen_pemilihan_penyedia))
-                                                    <p class="mt-2">Dokumen sudah ada: 
-                                                        <a href="{{ Storage::url($pengadaan->dokumen_pemilihan_penyedia) }}" target="_blank" class="btn btn-link">Lihat Dokumen</a>
+                                                    <p class="mt-2">Dokumen sudah ada:
+                                                        <a href="{{ Storage::url($pengadaan->dokumen_pemilihan_penyedia) }}"
+                                                            target="_blank" class="btn btn-link">Lihat Dokumen</a>
                                                     </p>
-                                                    <input type="hidden" name="existing_dokumen_pemilihan_penyedia" value="{{ $pengadaan->dokumen_pemilihan_penyedia }}">
+                                                    <input type="hidden" name="existing_dokumen_pemilihan_penyedia"
+                                                        value="{{ $pengadaan->dokumen_pemilihan_penyedia }}">
                                                 @endif
-                                
+
                                                 @if ($errors->has('dokumen_pemilihan_penyedia'))
                                                     <span class="text-danger">
                                                         <strong>{{ $errors->first('dokumen_pemilihan_penyedia') }}</strong>
@@ -84,11 +94,10 @@
                                             <div class="col-sm-8">
                                                 @if (
                                                     $subPerencanaan->pengadaan &&
-                                                    $subPerencanaan->pengadaan->status &&
-                                                    $subPerencanaan->pengadaan->status->nama_status == 'Pemenuhan Dokumen'
-                                                )
+                                                        $subPerencanaan->pengadaan->status &&
+                                                        $subPerencanaan->pengadaan->status->nama_status == 'Pemenuhan Dokumen')
                                                     <div class="alert alert-info">
-                                                        {{ $subPerencanaan->pengadaan->catatan ?? 'Belum ada catatan' }}
+                                                        {{ $subPerencanaan->pengadaan->catatan}}
                                                     </div>
                                                 @else
                                                     <div class="alert alert-secondary">

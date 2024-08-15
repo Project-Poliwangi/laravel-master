@@ -11,8 +11,18 @@
                     <h5 class="text-center">Formulir Edit Pengadaan</h5>
                 </div>
 
-                <form id="ppk-edit" method="POST" action="{{ url('ppk/update/' . $subPerencanaan->id) }}" accept-charset="UTF-8"
-                    class="form-horizontal" enctype="multipart/form-data">
+                @php
+                    $disabled = in_array($pengadaan->status->nama_status, [
+                        'Pemilihan Penyedia',
+                        'Kontrak',
+                        'Serah Terima',
+                    ])
+                        ? 'disabled'
+                        : '';
+                @endphp
+
+                <form id="ppk-edit" method="POST" action="{{ url('ppk/update/' . $subPerencanaan->id) }}"
+                    accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                     {{ method_field('PATCH') }}
                     {{ csrf_field() }}
 

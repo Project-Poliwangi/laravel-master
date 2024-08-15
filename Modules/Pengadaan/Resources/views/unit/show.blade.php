@@ -156,7 +156,7 @@
                                                 $subPerencanaan->pengadaan->status &&
                                                 $subPerencanaan->pengadaan->status->nama_status == 'Pemenuhan Dokumen')
                                             <div class="alert alert-info mb-0">
-                                                {{ $subPerencanaan->pengadaan->catatan ?? 'Belum ada catatan' }}
+                                                {{ $subPerencanaan->pengadaan->catatan}}
                                             </div>
                                         @else
                                             <div class="alert alert-secondary mb-0">
