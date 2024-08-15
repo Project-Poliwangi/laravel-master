@@ -2,6 +2,7 @@
 
 namespace Modules\Pengadaan\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Core\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -26,31 +27,80 @@ class PPKController extends Controller
      */
     public function index()
     {
-        // Mengumpulkan data untuk distribusi status pengadaan
-        $statusCounts = DB::table('pengadaan')
-            ->join('pengadaan_status', 'pengadaan.status_id', '=', 'pengadaan_status.id')
-            ->select('pengadaan_status.nama_status', DB::raw('count(*) as total'))
-            ->groupBy('pengadaan_status.nama_status')
-            ->get();
-
-        // Mengumpulkan data untuk jumlah pengadaan per unit
-        $unitCounts = DB::table('pengadaan')
-            ->join('sub_perencanaans', 'pengadaan.subperencanaan_id', '=', 'sub_perencanaans.id')
-            ->join('perencanaans', 'sub_perencanaans.perencanaan_id', '=', 'perencanaans.id')
-            ->join('units', 'perencanaans.unit_id', '=', 'units.id')
-            ->select('units.nama', DB::raw('count(*) as total'))
-            ->groupBy('units.nama')
-            ->get();
-
-        // Mengumpulkan data untuk jenis pengadaan dari tabel sub_perencanaans
-        $jenisPengadaanCounts = DB::table('sub_perencanaans')
-            ->join('jenis_pengadaans', 'sub_perencanaans.jenis_pengadaan_id', '=', 'jenis_pengadaans.id')
-            ->select('jenis_pengadaans.nama_jenis', DB::raw('count(*) as total'))
-            ->groupBy('jenis_pengadaans.nama_jenis')
-            ->get();
-
-        return view('pengadaan::ppk.dashboard', compact('statusCounts', 'unitCounts', 'jenisPengadaanCounts'));
-    }
+        // Mengimpor Carbon untuk mendapatkan tahun saat ini
+        $currentYear = Carbon::now()->year;
+    
+        // Menghitung total pengadaan
+        $totalPengadaan = Pengadaan::count();
+    
+        // Menghitung pengadaan baru dalam tahun ini
+        $pengadaanBaru = Pengadaan::whereYear('created_at', $currentYear)->count();
+    
+        // Menghitung pengadaan yang selesai dalam tahun ini
+        $pengadaanSelesai = Pengadaan::where('status_id', 4) // Status 4 untuk "Selesai"
+            ->whereYear('updated_at', $currentYear)
+            ->count();
+    
+        // Mengambil semua jenis pengadaan, status pengadaan, dan metode pengadaan
+        $jenisPengadaans = JenisPengadaan::all();
+        $pengadaanStatuses = Status::all();
+        $metodePengadaans = MetodePengadaan::all();
+    
+        // Menghitung jumlah pengadaan berdasarkan jenis
+        $jenisPengadaanData = SubPerencanaan::select('jenis_pengadaan_id')
+            ->selectRaw('count(*) as count')
+            ->groupBy('jenis_pengadaan_id')
+            ->get()
+            ->pluck('count', 'jenis_pengadaan_id');
+    
+        // Menghitung jumlah pengadaan berdasarkan status
+        $pengadaanStatusData = Pengadaan::select('status_id')
+            ->selectRaw('count(*) as count')
+            ->groupBy('status_id')
+            ->get()
+            ->pluck('count', 'status_id');
+    
+        // Menghitung jumlah pengadaan berdasarkan metode
+        $metodePengadaanData = SubPerencanaan::select('metode_pengadaan_id')
+            ->selectRaw('count(*) as count')
+            ->groupBy('metode_pengadaan_id')
+            ->get()
+            ->pluck('count', 'metode_pengadaan_id');
+    
+        // Memastikan setiap jenis pengadaan ada dalam data, meskipun nilainya nol
+        $jenisPengadaanChart = $jenisPengadaans->map(function($jenis) use ($jenisPengadaanData) {
+            return [
+                'label' => $jenis->nama_jenis,
+                'count' => $jenisPengadaanData->get($jenis->id, 0),
+            ];
+        });
+    
+        // Memastikan setiap status pengadaan ada dalam data, meskipun nilainya nol
+        $pengadaanStatusChart = $pengadaanStatuses->map(function($status) use ($pengadaanStatusData) {
+            return [
+                'label' => $status->nama_status,
+                'count' => $pengadaanStatusData->get($status->id, 0),
+            ];
+        });
+    
+        // Memastikan setiap metode pengadaan ada dalam data, meskipun nilainya nol
+        $metodePengadaanChart = $metodePengadaans->map(function($metode) use ($metodePengadaanData) {
+            return [
+                'label' => $metode->nama_metode,
+                'count' => $metodePengadaanData->get($metode->id, 0),
+            ];
+        });
+    
+        // Mengirimkan data ke view
+        return view('pengadaan::direktur.dashboard', compact(
+            'jenisPengadaanChart',
+            'pengadaanStatusChart',
+            'metodePengadaanChart',
+            'totalPengadaan',
+            'pengadaanBaru',
+            'pengadaanSelesai'
+        ));
+    } 
 
     public function daftarpengadaan(Request $request)
     {
