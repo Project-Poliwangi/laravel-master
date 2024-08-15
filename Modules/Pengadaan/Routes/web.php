@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::get('/edit/{id}', 'PPKController@edit')->name('ppk.edit');
         Route::patch('/update/{id}', 'PPKController@update')->name('ppk.update');
         Route::patch('/updatestatus/{id}', 'PPKController@updatestatus')->name('ppk.updatestatus');
+        Route::post('/approve/{id}', 'PPKController@approve')->name('ppk.approve');
     });
 
     Route::prefix('unit')->group(function () {

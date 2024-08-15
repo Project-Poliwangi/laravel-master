@@ -78,7 +78,6 @@
                                                 }
 
                                                 $statusClass = match ($status) {
-                                                    'Pra DIPA' => 'badge-secondary',
                                                     'Pemenuhan Dokumen' => 'badge-danger',
                                                     'Pemilihan Penyedia' => 'badge-primary',
                                                     'Kontrak' => 'badge-warning',
@@ -98,7 +97,7 @@
 
                                                 @if (isset($pp->pengadaan) &&
                                                         isset($pp->pengadaan->status) &&
-                                                        !in_array($pp->pengadaan->status->nama_status, ['Pemilihan Penyedia']))
+                                                        $pp->pengadaan->status->nama_status ===  'Pemenuhan Dokumen')
                                                     <a href="{{ url('/pp/edit/' . $pp->id) }}" title="Edit"
                                                         class="btn btn-warning btn-sm">
                                                         <i class="fas fa-edit" aria-hidden="true"></i>

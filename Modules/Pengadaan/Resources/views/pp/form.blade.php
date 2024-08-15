@@ -8,7 +8,6 @@
                         <form class="form form-horizontal">
                             <div class="form-body">
                                 <div class="row">
-
                                     <!-- Informasi Perencanaan dan Kegiatan -->
                                     <div class="col-md-6 form-group">
                                         <label for="perencanaan" class="control-label">{{ 'Perencanaan' }}</label>
@@ -26,6 +25,30 @@
                                             {!! $errors->first('kegiatan', '<p class="text-danger">:message</p>') !!}
                                     </div>
                                 </div>
+
+                                {{-- Unit, Metode, Jenis --}}
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label for="unit" class="control-label">{{ 'Unit' }}</label>
+                                        <input class="form-control" name="unit" type="text" disabled id="unit"
+                                            value="{{ isset($subPerencanaan->unit->nama) ? $subPerencanaan->unit->nama : old('unit') }}">
+                                        {!! $errors->first('unit', '<p class="text-danger">:message</p>') !!}
+                                    </div>
+                                
+                                    <div class="col-md-3 form-group">
+                                        <label for="metode_pengadaan" class="control-label">{{ 'Metode Pengadaan' }}</label>
+                                        <input class="form-control" name="metode_pengadaan" type="text" disabled id="metode_pengadaan"
+                                            value="{{ isset($subPerencanaan->metodePengadaan->nama_metode) ? $subPerencanaan->metodePengadaan->nama_metode : old('metodePengadaan') }}">
+                                        {!! $errors->first('metodePengadaan', '<p class="text-danger">:message</p>') !!}
+                                    </div>
+                                
+                                    <div class="col-md-3 form-group">
+                                        <label for="jenis_pengadaan" class="control-label">{{ 'Jenis Pengadaan' }}</label>
+                                        <input class="form-control" name="jenis_pengadaan" type="text" disabled id="jenis_pengadaan"
+                                            value="{{ isset($subPerencanaan->jenisPengadaan->nama_jenis) ? $subPerencanaan->jenisPengadaan->nama_jenis : old('jenisPengadaan') }}">
+                                        {!! $errors->first('jenisPengadaan', '<p class="text-danger">:message</p>') !!}
+                                    </div>
+                                </div>                                
 
                                 <!-- Upload Dokumen Pemilihan Penyedia -->
                                 <div class="row">
@@ -52,28 +75,25 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
+                                <!-- Catatan -->
                                 {{-- <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group row">
-                                            <label for="dokumen_pemilihan_penyedia"
-                                                class="col-sm-4 col-form-label">{{ 'Dokumen Pemilihan Penyedia' }}</label>
-                                            <div class="col-sm-8 form-group">
-                                                <input type="file" name="dokumen_pemilihan_penyedia"
-                                                    class="basic-filepond">
-                                                <small class="form-text text-muted">*Format PDF dengan maksimal ukuran
-                                                    file 10 MB</small>
-                                                @if (isset($pengadaan->dokumen_pemilihan_penyedia))
-                                                    <p>Dokumen sudah ada : <a
-                                                            href="{{ Storage::url($pengadaan->dokumen_pemilihan_penyedia) }}"
-                                                            target="_blank">Lihat Dokumen</a></p>
-                                                    <input type="hidden" name="existing_dokumen_pemilihan_penyedia"
-                                                        value="{{ $pengadaan->dokumen_pemilihan_penyedia }}">
-                                                @endif
-                                                @if ($errors->has('dokumen_pemilihan_penyedia'))
-                                                    <span class="help-block">
-                                                        <strong>{{ $errors->first('dokumen_pemilihan_penyedia') }}</strong>
-                                                    </span>
+                                            <label class="col-sm-4 col-form-label">Catatan</label>
+                                            <div class="col-sm-8">
+                                                @if (
+                                                    $subPerencanaan->pengadaan &&
+                                                    $subPerencanaan->pengadaan->status &&
+                                                    $subPerencanaan->pengadaan->status->nama_status == 'Pemenuhan Dokumen'
+                                                )
+                                                    <div class="alert alert-info">
+                                                        {{ $subPerencanaan->pengadaan->catatan ?? 'Belum ada catatan' }}
+                                                    </div>
+                                                @else
+                                                    <div class="alert alert-secondary">
+                                                        Belum ada catatan
+                                                    </div>
                                                 @endif
                                             </div>
                                         </div>

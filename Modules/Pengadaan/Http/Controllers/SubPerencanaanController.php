@@ -83,7 +83,7 @@ class SubPerencanaanController extends Controller
         // Perbarui status berdasarkan tanggal rencana_mulai
         $currentDate = now()->toDateString(); // Hanya ambil tanggal
         if ($currentDate >= $subPerencanaan->rencana_mulai) {
-            $status = 'Pra DIPA';
+            $status = 'Pemenuhan Dokumen';
         } else {
             $status = 'Belum dalam periode'; // Atau status lain yang Anda inginkan
         }

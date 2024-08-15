@@ -25,7 +25,6 @@ class SubPerencanaan extends Model
         'rencana_mulai',
         'rencana_bayar',
         'perencanaan_id',
-        'status_id',
         'unit_id',
         'pic_id',
         'ppk_id',

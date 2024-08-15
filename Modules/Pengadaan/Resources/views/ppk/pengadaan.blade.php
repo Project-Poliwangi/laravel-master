@@ -75,7 +75,6 @@
                                                 }
 
                                                 $statusClass = match ($status) {
-                                                    'Pra DIPA' => 'badge-secondary',
                                                     'Pemenuhan Dokumen' => 'badge-danger',
                                                     'Pemilihan Penyedia' => 'badge-primary',
                                                     'Kontrak' => 'badge-warning',

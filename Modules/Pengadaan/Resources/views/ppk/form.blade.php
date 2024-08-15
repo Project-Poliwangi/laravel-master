@@ -314,11 +314,10 @@
                                                                 <input type="file" name="dokumen_kontrak"
                                                                     class="form-control-file" id="dokumen_kontrak">
                                                                 <small class="form-text text-muted">*Format PDF,
-                                                                    maksimal
-                                                                    10 MB</small>
+                                                                    maksimal 10 MB</small>
                                                                 @if (isset($pengadaan->dokumen_kontrak))
                                                                     <p class="mt-2">Dokumen sudah ada:
-                                                                        <a href="{{ asset('storage/dokumen_kontrak/' . $pengadaan->dokumen_kontrak) }}"
+                                                                        <a href="{{ asset('storage/' . $pengadaan->dokumen_kontrak) }}"
                                                                             target="_blank" class="btn btn-link"><i
                                                                                 class="fa fa-download"></i> Lihat
                                                                             Dokumen</a>
@@ -345,11 +344,10 @@
                                                                     class="form-control-file"
                                                                     id="dokumen_serah_terima">
                                                                 <small class="form-text text-muted">*Format PDF,
-                                                                    maksimal
-                                                                    10 MB</small>
+                                                                    maksimal 10 MB</small>
                                                                 @if (isset($pengadaan->dokumen_serah_terima))
                                                                     <p class="mt-2">Dokumen sudah ada:
-                                                                        <a href="{{ asset('storage/dokumen_serah_terima/' . $pengadaan->dokumen_serah_terima) }}"
+                                                                        <a href="{{ asset('storage/' . $pengadaan->dokumen_serah_terima) }}"
                                                                             target="_blank" class="btn btn-link"><i
                                                                                 class="fa fa-download"></i> Lihat
                                                                             Dokumen</a>

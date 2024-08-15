@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Modules\Pengadaan\Entities\Status;
+use Illuminate\Support\Facades\Storage;
 use Modules\Kepegawaian\Entities\Pegawai;
 use Modules\Pengadaan\Entities\Pengadaan;
 use Modules\Pengadaan\Entities\Perencanaan;
@@ -111,7 +112,18 @@ class PPKController extends Controller
             return response()->json(['message' => 'SubPerencanaan tidak ditemukan'], 404);
         }
 
-        return view('pengadaan::ppk.show', compact('subPerencanaan'));
+        // Ambil Pengadaan berdasarkan ID SubPerencanaan
+        $pengadaan = Pengadaan::where('subperencanaan_id', $id)->first();
+
+        // Status default jika tidak ada dalam database
+        $status = 0; // Misalnya status 0 untuk 'Belum Dalam Periode'
+
+        // Cek status yang ada di database
+        if ($pengadaan && $pengadaan->status_id && in_array($pengadaan->status_id, [1, 2, 3, 4])) {
+            $status = $pengadaan->status_id;
+        }
+
+        return view('pengadaan::ppk.show', compact('subPerencanaan', 'status'));
     }
 
     /**
@@ -174,7 +186,7 @@ class PPKController extends Controller
             'pp_id' => 'nullable|integer',
             'catatan' => 'nullable|string|max:65535', // Sesuaikan sesuai kebutuhan
             'dokumen_kontrak' => 'nullable|file|mimes:pdf|max:10240',
-            'dokumen_serah terima' => 'nullable|file|mimes:pdf|max:10240',
+            'dokumen_serah_terima' => 'nullable|file|mimes:pdf|max:10240',
         ];
 
         // Lakukan validasi
@@ -196,11 +208,24 @@ class PPKController extends Controller
         // Menambahkan catatan
         $pengadaan->catatan = $request->input('catatan');
 
+        // Handle dokumen_kontrak
         if ($request->hasFile('dokumen_kontrak')) {
+            if ($request->input('existing_dokumen_kontrak')) {
+                Storage::disk('public')->delete($request->input('existing_dokumen_kontrak'));
+            }
             $pengadaan->dokumen_kontrak = $request->file('dokumen_kontrak')->store('dokumen_kontrak', 'public');
+        } elseif ($request->input('existing_dokumen_kontrak')) {
+            $pengadaan->dokumen_kontrak = $request->input('existing_dokumen_kontrak');
         }
+
+        // Handle dokumen_serah_terima
         if ($request->hasFile('dokumen_serah_terima')) {
+            if ($request->input('existing_dokumen_serah_terima')) {
+                Storage::disk('public')->delete($request->input('existing_dokumen_serah_terima'));
+            }
             $pengadaan->dokumen_serah_terima = $request->file('dokumen_serah_terima')->store('dokumen_serah_terima', 'public');
+        } elseif ($request->input('existing_dokumen_serah_terima')) {
+            $pengadaan->dokumen_serah_terima = $request->input('existing_dokumen_serah_terima');
         }
 
         $pengadaan->save();

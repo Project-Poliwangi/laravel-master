@@ -64,7 +64,18 @@ class UnitController extends Controller
             return response()->json(['message' => 'SubPerencanaan tidak ditemukan'], 404);
         }
 
-        return view('pengadaan::unit.show', compact('subPerencanaan'));
+        // Ambil Pengadaan berdasarkan ID SubPerencanaan
+        $pengadaan = Pengadaan::where('subperencanaan_id', $id)->first();
+
+        // Status default jika tidak ada dalam database
+        $status = 0; // Misalnya status 0 untuk 'Belum Dalam Periode'
+
+        // Cek status yang ada di database
+        if ($pengadaan && $pengadaan->status_id && in_array($pengadaan->status_id, [1, 2, 3, 4])) {
+            $status = $pengadaan->status_id;
+        }
+
+        return view('pengadaan::unit.show', compact('subPerencanaan', 'status'));
     }
 
     /**

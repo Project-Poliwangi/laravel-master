@@ -65,7 +65,6 @@
                                                 @php
                                                     $status = $unit->pengadaan->status->nama_status;
                                                     $statusClass = match ($status) {
-                                                        'Pra DIPA' => 'badge-secondary',
                                                         'Pemenuhan Dokumen' => 'badge-danger',
                                                         'Pemilihan Penyedia' => 'badge-primary',
                                                         'Kontrak' => 'badge-warning',
@@ -88,7 +87,7 @@
                             
                                                 @if (isset($unit->pengadaan) &&
                                                         isset($unit->pengadaan->status) &&
-                                                        in_array($unit->pengadaan->status->nama_status, ['Pra DIPA', 'Pemenuhan Dokumen']))
+                                                        in_array($unit->pengadaan->status->nama_status, ['Pemenuhan Dokumen']))
                                                     <a href="{{ url('unit/edit/' . $unit->id) }}" title="Edit"
                                                         class="btn btn-warning btn-sm">
                                                         <i class="fas fa-edit" aria-hidden="true"></i>
