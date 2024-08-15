@@ -128,11 +128,13 @@
                             </tr>
                             <tr>
                                 <th class="bg-light" style="width: 30%; vertical-align: middle;">Pejabat Pengadaan (PP)</th>
-                                <td>@if ($subPerencanaan->pp)
-                                    {{ $subPerencanaan->pp->nama }}
-                                @else
-                                    <span class="text-muted">Belum ditetapkan</span>
-                                @endif</td>
+                                <td>
+                                    @if ($subPerencanaan->pp)
+                                        {{ $subPerencanaan->pp->nama }}
+                                    @else
+                                        <span class="text-muted">Belum ditetapkan</span>
+                                    @endif
+                                </td>
                             </tr>
                         </table>
                         <hr>
@@ -180,7 +182,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Status 3: Kontrak -->
                                 <div class="timeline-item">
                                     <div class="timeline-icon @if ($status == 3) active @endif">
@@ -193,7 +195,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Status 4: Serah Terima -->
                                 <div class="timeline-item">
                                     <div class="timeline-icon @if ($status == 4) active @endif">
@@ -205,7 +207,7 @@
                                             {{ isset($subPerencanaan->pengadaan->tanggal_status_4) ? date('d M Y', strtotime($subPerencanaan->pengadaan->tanggal_status_4)) : '-' }}
                                         </span>
                                     </div>
-                                </div>   
+                                </div>
                             </div>
 
                         </div>
@@ -384,9 +386,9 @@
         }
 
         /* #tableDetail th::after {
-                                content: ":";
-                                margin-left: 20px;
-                            } */
+                                    content: ":";
+                                    margin-left: 20px;
+                                } */
 
         #tableDetail td {
             text-align: left;
@@ -417,6 +419,10 @@
             color: #fff;
             border-radius: 4px;
             letter-spacing: 1px;
+        }
+
+        .timeline::before {
+            display: none;
         }
 
         .timeline {

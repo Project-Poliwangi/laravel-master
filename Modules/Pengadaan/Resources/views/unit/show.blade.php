@@ -20,7 +20,8 @@
                                 <!-- Konten detail -->
                                 <tr>
                                     <th class="bg-light">Kode - Perencanaan</th>
-                                    <td>{{ $subPerencanaan->perencanaan->kode }} - {{ $subPerencanaan->perencanaan->nama }}</td>
+                                    <td>{{ $subPerencanaan->perencanaan->kode }} - {{ $subPerencanaan->perencanaan->nama }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th class="bg-light">Nama Unit</th>
@@ -210,7 +211,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Status 3: Kontrak -->
                                 <div class="timeline-item">
                                     <div class="timeline-icon @if ($status == 3) active @endif">
@@ -223,7 +224,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Status 4: Serah Terima -->
                                 <div class="timeline-item">
                                     <div class="timeline-icon @if ($status == 4) active @endif">
@@ -235,7 +236,7 @@
                                             {{ isset($subPerencanaan->pengadaan->tanggal_status_4) ? date('d M Y', strtotime($subPerencanaan->pengadaan->tanggal_status_4)) : '-' }}
                                         </span>
                                     </div>
-                                </div>   
+                                </div>
                             </div>
 
                         </div>
@@ -414,9 +415,9 @@
         }
 
         /* #tableDetail th::after {
-                                                                                        content: ":";
-                                                                                        margin-left: 20px;
-                                                                                    } */
+                                                                                            content: ":";
+                                                                                            margin-left: 20px;
+                                                                                        } */
 
         #tableDetail td {
             text-align: left;
@@ -447,6 +448,10 @@
             color: #fff;
             border-radius: 4px;
             letter-spacing: 1px;
+        }
+
+        .timeline::before {
+            display: none;
         }
 
         .timeline {
