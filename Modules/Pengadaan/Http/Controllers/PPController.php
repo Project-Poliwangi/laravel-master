@@ -113,7 +113,7 @@ class PPController extends Controller
         }
 
         // Ambil pengadaan terkait subperencanaan
-        $pengadaan = $subPerencanaan->pengadaan; // Pastikan Anda memiliki relasi pengadaan di model SubPerencanaan
+        $pengadaan = $subPerencanaan->pengadaan; // memastikan relasi pengadaan di SubPerencanaan
 
         if (!$pengadaan) {
             // Jika tidak ada pengadaan terkait, buat yang baru
@@ -121,9 +121,9 @@ class PPController extends Controller
             $pengadaan->subperencanaan_id = $subPerencanaan->id;
         }
 
-        // Periksa apakah status pengadaan adalah "Pemilihan Penyedia"
+        // Periksa apakah status pengadaan adalah "Pemenuhan Dokumen"
         if ($pengadaan->status->nama_status != 'Pemenuhan Dokumen') {
-            return redirect()->back()->withErrors(['message' => 'Anda hanya bisa mengunggah dokumen pemilihan penyedia jika status pengadaan adalah Pemilihan Penyedia']);
+            return redirect()->back()->withErrors(['message' => 'Anda hanya bisa mengunggah dokumen pemilihan penyedia jika status pengadaan adalah Pemenuhan Dokumen']);
         }
 
         // Aturan validasi

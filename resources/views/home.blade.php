@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dasbor Simlitabmas')
+@section('title', 'Dasbor')
 
 @section('content_header')
     <h1 class="m-0 text-dark">Dashboard</h1>
@@ -12,8 +12,6 @@
             <div class="card">
                 <div class="card-body">
                     <p class="mb-0">You are logged in!
-                    <button type="button" class="btn btn-primary m-1" id="btnOpenSaltB">Open Sweetalert2 (Basic)</button>
-                    <button type="button" class="btn btn-success m-1" id="btnOpenSaltC">Open Sweetalert2 (Custom)</button>
 					</p>
                 </div>
             </div>

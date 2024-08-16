@@ -89,14 +89,14 @@ class UnitController extends Controller
         if (!$subPerencanaan) {
             return redirect()->back()->withErrors(['message' => 'SubPerencanaan tidak ditemukan']);
         }
+
+        $formMode = 'edit';
+        
         $pengadaan = Pengadaan::where('subperencanaan_id', $id)->first(); // Ambil data pengadaan terkait
         $pics = Pegawai::all(); // Ambil semua data PIC dari model Pegawai
 
-        // Mengirim data catatan ke view jika status pengadaan adalah "pemilihan penyedia"
-        $catatan = ($pengadaan->status->nama_status == 'Pemenuhan Dokumen') ? $pengadaan->catatan : '-';
-
-
-        $formMode = 'edit';
+        // Mengirim data catatan ke view jika status pengadaan adalah "Pemenuhan Dokumen"
+        $catatan = ($pengadaan->status->nama_status == 'Pemenuhan Dokumen') ? $pengadaan->catatan : '-';        
 
         return view('pengadaan::unit.edit', compact('pengadaan', 'formMode', 'subPerencanaan', 'pics', 'catatan'));
     }
@@ -116,7 +116,7 @@ class UnitController extends Controller
         }
 
         // Ambil pengadaan terkait subperencanaan
-        $pengadaan = $subPerencanaan->pengadaan; // Pastikan Anda memiliki relasi pengadaan di model SubPerencanaan
+        $pengadaan = $subPerencanaan->pengadaan;
 
         if (!$pengadaan) {
             // Jika tidak ada pengadaan terkait, buat yang baru

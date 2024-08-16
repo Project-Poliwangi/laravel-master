@@ -92,7 +92,7 @@ class PPKController extends Controller
         });
 
         // Mengirimkan data ke view
-        return view('pengadaan::direktur.dashboard', compact(
+        return view('pengadaan::ppk.dashboard', compact(
             'jenisPengadaanChart',
             'pengadaanStatusChart',
             'metodePengadaanChart',

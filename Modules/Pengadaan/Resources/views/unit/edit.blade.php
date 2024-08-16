@@ -12,8 +12,16 @@
                     <h5 class="text-center">Formulir Edit Pengadaan</h5>
                 </div>
 
-                <form id="unit-edit" method="POST" action="{{ url('unit/update/' . $subPerencanaan->id) }}" accept-charset="UTF-8"
-                    class="form-horizontal" enctype="multipart/form-data">
+                @if ($errors->any())
+                    <ul class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+
+                <form id="unit-edit" method="POST" action="{{ url('unit/update/' . $subPerencanaan->id) }}"
+                    accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 

@@ -12,6 +12,14 @@
                     <h5 class="text-center">Formulir Edit Pengadaan</h5>
                 </div>
 
+                @if ($errors->any())
+                            <ul class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+
                 <form method="POST" action="{{ url('pp/update/' . $subPerencanaan->id) }}" accept-charset="UTF-8"
                     class="form-horizontal" enctype="multipart/form-data">
                     {{ method_field('PATCH') }}
