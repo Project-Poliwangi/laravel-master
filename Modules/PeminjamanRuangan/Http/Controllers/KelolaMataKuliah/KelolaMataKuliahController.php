@@ -3,6 +3,7 @@
 namespace Modules\PeminjamanRuangan\Http\Controllers\KelolaMataKuliah;
 
 use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -158,6 +159,30 @@ class KelolaMataKuliahController extends Controller
             return redirect()->route('mata-kuliah')->with('success', 'Data mata kuliah berhasil dihapus.');
         } catch(Exception $e) {
             abort(500);
+        }
+    }
+
+    public function sync()
+    {
+        try {
+            $client = new Client([
+                'verify' => false
+            ]);
+            $response = $client->request('GET', 'https://sit.poliwangi.ac.id/v2/api/v1/sitapi', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer '. env('SIT_TOKEN')
+                ],
+            ]);
+    
+            if($response->getStatusCode() == 200) {
+                $items = json_decode($response->getBody()->getContents(), true);
+                $data = [];
+                
+                dd($items);
+            }
+        } catch(Exception $e) {
+            return response()->json($e->getMessage());
         }
     }
 }

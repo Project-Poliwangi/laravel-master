@@ -32,7 +32,7 @@
                         </tr>
                         <tr>
                             <th>Kapasitas</th>
-                            <td>: {{  $ruang->luas }} Orang</td>
+                            <td>: {{  $ruang->kapasitas }} Orang</td>
                         </tr>
                         <tr>
                             <th></th>

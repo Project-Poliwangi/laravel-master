@@ -2,6 +2,7 @@
 
 namespace Modules\PeminjamanRuangan\Entities;
 
+use App\Models\Core\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -30,5 +31,10 @@ class RuangPenggunaanKuliah extends Model
     public function pegawai()
     {
         return $this->belongsTo(Pegawai::class, 'dosen_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

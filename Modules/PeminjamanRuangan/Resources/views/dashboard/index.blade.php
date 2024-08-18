@@ -38,14 +38,14 @@
                 </div>
             </div>
             <div class="col-md-4 col-sm-6 col-12">
-                <div class="card shadow-sm bg-warning text-white" style="height: 100%">
+                <a href="{{ route('home.proof-documents') }}" class="card shadow-sm bg-warning text-white" style="height: 100%">
                     <div class="card-body">
                         <h1 style="font-weight: bold;font-size: 2.5rem">Dokumen Bukti</h1>
                         <br>
                         <br>
                         <h2 class="text-right">{{ $approve }} Permohonan</h2>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>

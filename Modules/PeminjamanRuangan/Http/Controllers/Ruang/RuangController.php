@@ -61,13 +61,24 @@ class RuangController extends Controller
 
     public function ruanganTersedia(Request $request)
     {
-        $dataRuangTerpakai = Ruang::whereHas('ruangPenggunaanKuliah', function($q) {
+        if($request->has('date')) {
+            $date = Carbon::parse($request->date .' '. $request->time);
+        } else {
             $date = Carbon::now();
+        }
+        $dataRuangTerpakai = Ruang::whereHas('ruangPenggunaanKuliah', function($q) use ($date) {
             $q->whereStatus('approve');
-            $q->whereDate('jadwal_mulai', $date->format('Y-m-d'));
-            $q->whereTime('jadwal_mulai', '<=', $date->format('H:i:s'));
-            $q->whereTime('jadwal_akhir', '>=', $date->format('H:i:s'));
+            $q->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'));
+            $q->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'));
+        })->get();
+        
+        $dataRuangTerpakai = $dataRuangTerpakai->filter(function($value, $key) use ($date) {
+            $jadwalMulai = Carbon::parse($value->ruangPenggunaanKuliah()->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'))->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'))->whereStatus('approve')->first()->jadwal_mulai);
+            $jadwalAkhir = Carbon::parse($value->ruangPenggunaanKuliah()->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'))->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'))->whereStatus('approve')->first()->jadwal_akhir);
+
+            return $jadwalMulai->timestamp <= $date->timestamp && $jadwalAkhir->timestamp >= $date->timestamp;
         })->pluck('id')->all();
+
         $ruang = Ruang::query();
 
         if($request->has('search') && $request->search != '') {
@@ -85,7 +96,8 @@ class RuangController extends Controller
             'ruangs' => $ruang,
             'gedungs' => Gedung::all(),
             'gedung_id' => $request->has('gedung_id') ? $request->gedung_id : '',
-            'search' => $request->has('search') ? $request->search : ''
+            'search' => $request->has('search') ? $request->search : '',
+            'date' => $request->date,
         ];
 
         return view('peminjamanruangan::ruang.daftar-ruangan', $data);
@@ -102,19 +114,41 @@ class RuangController extends Controller
         if($request->has('gedung_id') && $request->gedung_id != '') {
             $ruang = $ruang->where('gedung_id', $request->gedung_id);
         }
-        
-        $ruang = $ruang->whereHas('ruangPenggunaanKuliah', function($q) {
+
+        if($request->has('date')) {
+            $date = Carbon::parse($request->date);
+        } else {
             $date = Carbon::now();
-            $q->whereStatus('approve');
-            $q->whereDate('jadwal_mulai', $date->format('Y-m-d'));
-            $q->whereTime('jadwal_mulai', '<=', $date->format('H:i:s'));
-            $q->whereTime('jadwal_akhir', '>=', $date->format('H:i:s'));
+        }
+        
+        $ruang = $ruang->whereHas('ruangPenggunaanKuliah', function($query) use ($date) {
+            $query->whereStatus('approve');
+            $query->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'));
+            $query->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'));
         })->get();
+
+        $ruang = $ruang->filter(function($value, $key) use ($date) {
+            $jadwalMulai = Carbon::parse($value->ruangPenggunaanKuliah()->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'))->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'))->whereStatus('approve')->first()->jadwal_mulai);
+            $jadwalAkhir = Carbon::parse($value->ruangPenggunaanKuliah()->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'))->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'))->whereStatus('approve')->first()->jadwal_akhir);
+
+            return $jadwalMulai->timestamp <= $date->timestamp && $jadwalAkhir->timestamp >= $date->timestamp;
+        });
+
+        $ruang->map(function($value, $key) use ($date) {
+            $value->nama_user = $value->ruangPenggunaanKuliah()->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'))->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'))->whereStatus('approve')->first()->user->name;
+            $value->email_user = $value->ruangPenggunaanKuliah()->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'))->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'))->whereStatus('approve')->first()->user->email;
+            $value->username_user = $value->ruangPenggunaanKuliah()->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'))->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'))->whereStatus('approve')->first()->user->username;
+            $value->peminjam_nim = $value->ruangPenggunaanKuliah()->whereDate('jadwal_mulai', '<=', $date->format('Y-m-d'))->whereDate('jadwal_akhir', '>=', $date->format('Y-m-d'))->whereStatus('approve')->first()->peminjam_nim;
+
+            return $value;
+        });
+
         $data = [
             'title' => 'Ruangan Terpakai',
             'type' => 'terpakai',
             'ruangs' => $ruang,
             'gedungs' => Gedung::all(),
+            'date' => $request->date,
             'gedung_id' => $request->has('gedung_id') ? $request->gedung_id : '',
             'search' => $request->has('search') ? $request->search : ''
         ];
@@ -202,9 +236,10 @@ class RuangController extends Controller
                 'jadwal_akhir' => Carbon::createFromFormat('Y-m-d H:i', $request->jadwal_akhir .' '. $request->waktu_selesai)->format('Y-m-d H:i:s'), 
                 'waktu_selesai' => Carbon::createFromFormat('Y-m-d H:i', $request->jadwal_akhir .' '. $request->waktu_selesai)->format('Y-m-d H:i:s'), 
                 'peminjam_nim' => $request->nim,
-                'foto_selesai' => 'default.png',
+                'foto_selesai' => null,
+                'user_id' => auth()->user()->id
             ]);
-            RuangPenggunaanKuliah::create($request->only('ruang_id', 'program_studi_id', 'mata_kuliah_id', 'dosen_id', 'jadwal_mulai', 'jadwal_akhir', 'peminjam_nim', 'waktu_pinjam', 'waktu_selesai', 'foto_selesai'));
+            RuangPenggunaanKuliah::create($request->only('ruang_id', 'program_studi_id', 'mata_kuliah_id', 'dosen_id', 'jadwal_mulai', 'jadwal_akhir', 'peminjam_nim', 'waktu_pinjam', 'waktu_selesai', 'foto_selesai', 'user_id'));
 
             return redirect()->route('peminjaman')->with('success', 'Peminjaman Ruangan Berhasil');
         } catch(Exception $e) {

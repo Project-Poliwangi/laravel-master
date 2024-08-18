@@ -13,13 +13,13 @@ return new class extends Migration {
         Schema::create('ruangs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('gedung_id');
-            $table->char('kode_bmn', 20);
-            $table->char('kode_qr', 150);
+            $table->char('kode_bmn', 20)->nullable();
+            $table->char('kode_qr', 150)->nullable();
             $table->char('nama', 30);
-            $table->integer('luas');
-            $table->integer('kapasitas');
-            $table->integer('lantai');
-            $table->char('foto', 100);
+            $table->integer('luas')->nullable();
+            $table->integer('kapasitas')->nullable();
+            $table->integer('lantai')->nullable();
+            $table->char('foto', 100)->nullable();
             $table->enum('jenis', [
                 'Interaktif Kelas',
                 'Classical Kelas',
@@ -29,7 +29,7 @@ return new class extends Migration {
                 'Ruang Rapat',
                 'Fasilitas OlahRaga',
                 'Aula',
-            ]);
+            ])->nullable();
 
             $table->timestamps();
         });

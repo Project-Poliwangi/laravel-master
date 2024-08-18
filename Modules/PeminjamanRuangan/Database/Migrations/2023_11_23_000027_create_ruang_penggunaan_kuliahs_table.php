@@ -21,9 +21,10 @@ return new class extends Migration {
             $table->char('peminjam_nim');
             $table->dateTime('waktu_pinjam');
             $table->dateTime('waktu_selesai');
-            $table->char('foto_selesai', 100);
+            $table->char('foto_selesai', 100)->nullable();
             $table->enum('status', ['pending', 'reject', 'approve'])->default('pending');
-
+            $table->foreignId('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

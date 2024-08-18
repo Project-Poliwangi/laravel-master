@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('pegawai', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->char('NIK', 50);
-            $table->date('tanggal_lahir');
+            $table->char('NIK', 50)->nullable();
+            $table->date('tanggal_lahir')->nullable();
             $table->char('nama', 200);
-            $table->char('nomor_induk', 20);
+            $table->char('nomor_induk', 20)->nullable();
             $table->enum('status', [
                 'PNS',
                 'PPPK',
@@ -23,13 +23,13 @@ return new class extends Migration {
                 'LB',
                 'Non Aktif',
                 'CPNS',
-            ]);
-            $table->char('telepon', 13);
-            $table->char('alamat', 200);
-            $table->char('email', 100);
-            $table->unsignedBigInteger('unit_id');
-            $table->char('KK');
-            $table->char('NPWP');
+            ])->nullable();
+            $table->char('telepon', 13)->nullable();
+            $table->char('alamat', 200)->nullable();
+            $table->char('email', 100)->nullable();
+            $table->unsignedBigInteger('unit_id')->nullable();
+            $table->char('KK')->nullable();
+            $table->char('NPWP')->nullable();
             $table->enum('jenis', ['Dosen', 'Tendik']);
             $table->unsignedBigInteger('user_id');
 

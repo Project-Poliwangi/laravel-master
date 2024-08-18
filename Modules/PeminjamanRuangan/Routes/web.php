@@ -21,9 +21,10 @@ use Modules\PeminjamanRuangan\Http\Controllers\Peminjaman\PeminjamanController;
 use Modules\PeminjamanRuangan\Http\Controllers\Penjadwalan\PenjadwalanController;
 use Modules\PeminjamanRuangan\Http\Controllers\Ruang\RuangController;
 
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'permission'])->group(function() {
     Route::prefix('home')->group(function() {
         Route::get('', [DashboardController::class, 'index'])->name('home.index');
+        Route::get('dokumen-bukti', [DashboardController::class, 'detailProof'])->name('home.proof-documents');
     });
 
     Route::prefix('kelola-peminjaman')->group(function() {
@@ -51,6 +52,8 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('{ruang}/delete', [KelolaRuanganController::class, 'destroy'])->name('ruang.delete');
         Route::post('{ruang}/update', [KelolaRuanganController::class, 'update'])->name('ruang.update');
         Route::get('{ruang}/edit', [KelolaRuanganController::class, 'edit'])->name('ruang.edit');
+        Route::get('sync', [KelolaRuanganController::class, 'sync'])->name('ruang.sync');
+        Route::get('print-pdf', [KelolaRuanganController::class, 'printPdf'])->name('ruang.print-pdf');
     });
     
     Route::prefix('kelola-mata-kuliah')->group(function() {
@@ -60,6 +63,7 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('{mataKuliah}/delete', [KelolaMataKuliahController::class, 'destroy'])->name('mata-kuliah.delete');
         Route::post('{mataKuliah}/update', [KelolaMataKuliahController::class, 'update'])->name('mata-kuliah.update');
         Route::get('{mataKuliah}/edit', [KelolaMataKuliahController::class, 'edit'])->name('mata-kuliah.edit');
+        Route::get('sync', [KelolaMataKuliahController::class, 'sync'])->name('mata-kuliah.sync');
     });
     
     Route::prefix('penjadwalan')->group(function() {
@@ -80,11 +84,12 @@ Route::middleware(['auth'])->group(function() {
         Route::get('pinjam/{ruang?}', [RuangController::class, 'createPeminjaman'])->name('ruang.create-peminjaman');
         Route::post('simpan-peminjaman', [RuangController::class, 'storePeminjaman'])->name('ruang.store-peminjaman');
     });
-});
 
-Route::prefix('peminjaman')->group(function() {
-    Route::get('', [PeminjamanController::class, 'index'])->name('peminjaman');
-    Route::delete('{peminjaman}/delete', [PeminjamanController::class, 'destroy'])->name('peminjaman.delete');
-    Route::post('{peminjaman}/update', [PeminjamanController::class, 'update'])->name('peminjaman.update');
-    Route::get('{peminjaman}/edit', [PeminjamanController::class, 'edit'])->name('peminjaman.edit');
+    Route::prefix('peminjaman')->group(function() {
+        Route::get('', [PeminjamanController::class, 'index'])->name('peminjaman');
+        Route::delete('{peminjaman}/delete', [PeminjamanController::class, 'destroy'])->name('peminjaman.delete');
+        Route::post('{peminjaman}/update', [PeminjamanController::class, 'update'])->name('peminjaman.update');
+        Route::get('{peminjaman}/edit', [PeminjamanController::class, 'edit'])->name('peminjaman.edit');
+        Route::post('{peminjaman}/upload', [PeminjamanController::class, 'upload'])->name('peminjaman.upload');
+    });
 });

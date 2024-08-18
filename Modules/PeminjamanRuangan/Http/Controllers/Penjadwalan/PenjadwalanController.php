@@ -2,7 +2,9 @@
 
 namespace Modules\PeminjamanRuangan\Http\Controllers\Penjadwalan;
 
+use Carbon\Carbon;
 use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -175,6 +177,54 @@ class PenjadwalanController extends Controller
         try {
             $jadwalKuliah->delete();
             return redirect()->route('penjadwalan')->with('success', 'Data penjadwalan berhasil dihapus');
+        } catch(Exception $e) {
+            echo response()->json($e->getMessage());
+        }
+    }
+
+    public function sync()
+    {
+        try {
+            init_set('max_execution_time', 10000);
+            $client = new Client([
+                'verify' => false
+            ]);
+
+            // get pegawai
+            $response = $client->request('GET', 'https://sit.poliwangi.ac.id/v2/api/v1/sitapi/pegawai?filter[staff]=4&paginate=false', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer '. env('SIT_TOKEN')
+                ],
+            ]);
+
+            if($response->getStatusCode() == 200) {
+                $data = [];
+                $items = json_decode($response->getBody()->getContents(), true);
+
+                foreach($items as $item) {
+                    $data[] = [
+                        'NIK' => null,
+                        'tanggal_lahir' => null,
+                        'nama' => $item['gelar_dpn'] . ' ' . $item['nama'] . ' ' . $item['gelar_blk'],
+                        'nomor_induk' => $item['nip'],
+                        'status' => null,
+                        'telepon' => null,
+                        'alamat' => null,
+                        'email' => null,
+                        'unit_id' => null,
+                        'KK' => null,
+                        'NPWP' => null,
+                        'jenis' => $item['staff'] == 4 ? 'Dosen' : 'Tendik',
+                        'user_id' => null,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
+                }
+                Pegawai::insert($data);
+            }
+
+
         } catch(Exception $e) {
             echo response()->json($e->getMessage());
         }

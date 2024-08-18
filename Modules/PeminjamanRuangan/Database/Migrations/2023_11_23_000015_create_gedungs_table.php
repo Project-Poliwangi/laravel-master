@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('gedungs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->char('kode', 20);
+            $table->char('kode', 20)->nullable();
             $table->char('nama', 30);
-            $table->char('lokasi', 50);
-            $table->char('foto', 100);
-            $table->integer('luas');
+            $table->char('lokasi', 50)->nullable();
+            $table->char('foto', 100)->nullable();
+            $table->integer('luas')->nullable();
 
             $table->timestamps();
         });

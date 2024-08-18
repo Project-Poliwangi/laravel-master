@@ -33,12 +33,13 @@ class AuthenticationTableSeeder extends Seeder
         $permissions = Permission::whereIn('name', [
             'adminlte.darkmode.toggle',
             'logout.perform',
-            'home.index',
+            'home.index', 'home.proof-documents',
             'login.show',
-            'penjadwalan',
-            'mata-kuliah.edit', 'mata-kuliah.update', 'mata-kuliah.delete', 'mata-kuliah.store', 'mata-kuliah.create', 'mata-kuliah',
-            'ruang.edit', 'ruang.update', 'ruang.delete', 'ruang.store', 'ruang.create', 'ruang',
-            'gedung.edit', 'gedung.update', 'gedung.delete', 'gedung.store', 'gedung.create', 'gedung',
+            'kelola-peminjaman.reject', 'kelola-peminjaman.accept', 'kelola-peminjaman.edit', 'kelola-peminjaman.update', 'kelola-peminjaman',
+            'gedung.edit', 'gedung.update', 'gedung.delete', 'gedung.store', 'gedung.create', 'gedung.sync', 'gedung',
+            'ruang.edit', 'ruang.update', 'ruang.delete', 'ruang.store', 'ruang.create', 'ruang.sync', 'ruang.print-pdf', 'ruang',
+            'mata-kuliah.edit', 'mata-kuliah.update', 'mata-kuliah.delete', 'mata-kuliah.store', 'mata-kuliah.create', 'mata-kuliah.sync', 'mata-kuliah',
+            'penjadwalan.edit', 'penjadwalan.update', 'penjadwalan.delete', 'penjadwalan.store', 'penjadwalan.create', 'penjadwalan',
         ])->pluck('id', 'id')->all();
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);
@@ -58,17 +59,10 @@ class AuthenticationTableSeeder extends Seeder
             'logout.perform',
             'home.index',
             'login.show',
-            'ruang.terpakai',
-            'ruang.tersedia',
-            'ruang.check',
-            'ruang.check-kode',
+            'peminjaman.edit', 'peminjaman.update', 'peminjaman.delete', 'peminjaman.upload', 'peminjaman',
+            'ruang.check', 'ruang.check-kode', 'ruang.tersedia', 'ruang.terpakai', 'ruang.detail', 'ruang.create-peminjaman', 'ruang.store-peminjaman',
         ])->pluck('id', 'id')->all();
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);
-    }
-
-    public function createPermissions()
-    {
-
     }
 }

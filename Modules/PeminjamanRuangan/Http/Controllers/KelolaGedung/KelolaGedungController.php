@@ -2,6 +2,7 @@
 
 namespace Modules\PeminjamanRuangan\Http\Controllers\KelolaGedung;
 
+use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\Renderable;
@@ -194,18 +195,44 @@ class KelolaGedungController extends Controller
             $client = new Client([
                 'verify' => false
             ]);
-            $response = $client->request('GET', 'https://sit.poliwangi.ac.id/v2/api/v1/sitapi/kuliah', [
+            $response = $client->request('GET', 'https://sit.poliwangi.ac.id/v2/api/v1/sitapi/ruang?paginate=false', [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer '. env('SIT_TOKEN')
                 ],
             ]);
 
-            $data = json_decode($response->getBody()->getContents(), true);
+            if($response->getStatusCode() == 200) {
+                $items = json_decode($response->getBody()->getContents(), true)['data'];
+                $data = [];
+    
+                foreach($items as $item) {
+                    // check dalam db apakah sudah ada data gedung yang sama
+                    $check = Gedung::where('nama', $item['ruang'])->count();
+                    // check dalam array data apakah ada data yang sama
+                    $exists = array_filter($data, function($data) use ($item) {
+                        return $data['nama'] == $item['ruang'];
+                    });
 
-            return response()->json(['data' => $data]);
+                    if($check == 0 && empty($exists)) {
+                        $data[] = [
+                            'kode' => null,
+                            'nama' => $item['ruang'],
+                            'lokasi' => null,
+                            'luas' => 0,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ];
+                    }
+                }
+
+                if(count($data) > 0) {
+                    Gedung::insert($data);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Berhasil memperbarui data.');
         } catch(Exception $e) {
-            // abort(500);
             return response()->json(['message' => $e->getMessage()]);
         }
     }

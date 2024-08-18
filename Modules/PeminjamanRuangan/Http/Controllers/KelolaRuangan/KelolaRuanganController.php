@@ -2,7 +2,10 @@
 
 namespace Modules\PeminjamanRuangan\Http\Controllers\KelolaRuangan;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -204,5 +207,77 @@ class KelolaRuanganController extends Controller
         } catch(Exception $e) {
             abort(500);
         }
+    }
+
+    public function sync()
+    {
+        try {
+            $client = new Client([
+                'verify' => false
+            ]);
+            $response = $client->request('GET', 'https://sit.poliwangi.ac.id/v2/api/v1/sitapi/ruang?paginate=false', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer '. env('SIT_TOKEN')
+                ],
+            ]);
+
+            if($response->getStatusCode() == 200) {
+                $items = json_decode($response->getBody()->getContents(), true)['data'];
+                $data = [];
+    
+                foreach($items as $item) {
+                    // check dalam db apakah sudah ada data gedung yang sama
+                    $check = Ruang::where('nama', $item['keterangan'])->count();
+                    // check dalam array data apakah ada data yang sama
+                    $exists = array_filter($data, function($data) use ($item) {
+                        return $data['nama'] == $item['ruang'];
+                    });
+
+                    if($check == 0 && empty($exists)) {
+                        // check gedung di database
+                        $gedung = Gedung::whereNama($item['ruang'])->first();
+
+                        // check jika gedung belum ada maka tambahkan gedung terlebih dahulu
+                        if(is_null($gedung)) {
+                            $gedung = Gedung::create([
+                                'nama' => $item['ruang'],
+                            ]);
+                        }
+                        
+                        // simpan data ruang ke dalam array
+                        $data[] = [
+                            'gedung_id' => $gedung->id,
+                            'kode_bmn' => $item['kode_ruang'],
+                            'kode_qr' => $item['nomor'],
+                            'nama' => $item['keterangan'],
+                            'luas' => 0,
+                            'kapasitas' => 0,
+                            'lantai' => null,
+                            'foto' => null,
+                            'jenis' => null,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ];
+                    }
+                }
+
+                // check jika jumlah data lebih dari 0 maka tambahkan ke database
+                if(count($data) > 0) {
+                    Ruang::insert($data);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Berhasil memperbarui data.');
+        } catch(Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function printPdf()
+    {
+        $ruangs = Ruang::all();
+        $pdf = Pdf::loadView('peminjamanruangan::kelola-ruangan.pdf.print', compact('ruangs'))->setPaper('a4', 'portrait')->setWarnings(false);
+        return $pdf->stream();
     }
 }

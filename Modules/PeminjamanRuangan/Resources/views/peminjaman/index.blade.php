@@ -56,6 +56,7 @@
                             <th style="white-space: nowrap;text-align: center">Jadwal Mulai</th>
                             <th style="white-space: nowrap;text-align: center">Jadwal Selesai</th>
                             <th style="white-space: nowrap;text-align: center">Keterangan</th>
+                            <th style="white-space: nowrap;text-align: center">Bukti</th>
                             <th style="white-space: nowrap;text-align: center" width="150">Aksi</th>
                         </thead>
                         <tbody>
@@ -73,15 +74,55 @@
                                         class="badge py-1 px-2 {{ $item->status == 'pending' ? 'bg-warning' : ($item->status == 'approve' ? 'bg-success' : 'bg-danger') }}">{{
                                         ucfirst($item->status) }}</span>
                                 </td>
+                                <td style="white-space:nowrap">
+                                    @if(!is_null($item->foto_selesai))
+                                    <a href="{{ asset('storage/images/uploads/'.$item->foto_selesai) }}" target="_blank"
+                                        class="btn btn-primary"><i class="fas fa-eye"></i> Lihat</a>
+                                    @else
+                                    <i class="text-danger">Belum ada bukti</i>
+                                    @endif
+                                </td>
                                 <td style="white-space:nowrap" width="150">
                                     <button class="btn btn-secondary btn-sm" data-toggle="modal"
                                         data-target="#myModal{{ $item->id }}"><i class="fas fa-eye"></i></button>
                                     @if($item->status == 'pending')
-                                    <a href="{{ route('peminjaman.edit', $item->id) }}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('peminjaman.edit', $item->id) }}"
+                                        class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
                                     <button class="btn btn-warning btn-sm" data-toggle="modal"
                                         data-target="#deleteModal{{ $item->id }}"><i
                                             class="fas fa-trash-alt"></i></button>
                                     @endif
+
+                                    @if($item->status == 'approve' && is_null($item->foto_selesai))
+                                    <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                        data-target="#uploadModal{{ $item->id }}" title="Upload Bukti"><i
+                                            class="fas fa-upload"></i></button>
+                                    @endif
+
+                                    <div class="modal fade" id="uploadModal{{ $item->id }}">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Upload Bukti</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{ route('peminjaman.upload', $item->id) }}"
+                                                        method="post" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label for="bukti">Bukti</label>
+                                                            <input type="file" name="bukti" id="bukti"
+                                                                class="form-control-file">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Upload</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="modal fade" id="deleteModal{{ $item->id }}" role="dialog">
                                         <div class="modal-dialog" role="document">
@@ -94,7 +135,8 @@
                                                         <h5 class="modal-title">Delete Permohonan?</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p>Data yang dihapus tidak dapat dikembalikan, anda yakin ingin
+                                                        <p>Data yang dihapus tidak dapat dikembalikan, anda yakin
+                                                            ingin
                                                             melanjutkan?</p>
                                                     </div>
                                                     <div class="modal-footer">
@@ -123,7 +165,8 @@
                                                                 <img src="{{ generateQrCode($item->ruang->kode_qr) }}"
                                                                     width="150" alt="">
                                                                 <div class="block text-center mt-2">{{
-                                                                    $item->ruang->kode_bmn }} - {{ $item->ruang->nama }}
+                                                                    $item->ruang->kode_bmn }} - {{
+                                                                    $item->ruang->nama }}
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -154,7 +197,8 @@
                                                         <tr>
                                                             <th>Dosen Pengampu</th>
                                                             <td>:</td>
-                                                            <td>{{ $item->pegawai->NIK }} - {{ $item->pegawai->nama }}
+                                                            <td>{{ $item->pegawai->NIK }} - {{ $item->pegawai->nama
+                                                                }}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -165,22 +209,34 @@
                                                         <tr>
                                                             <th>Jadwal</th>
                                                             <td>:</td>
-                                                            <td>{{ $item->jadwal_mulai }} - {{ $item->jadwal_akhir }}
+                                                            <td>{{ $item->jadwal_mulai }} - {{ $item->jadwal_akhir
+                                                                }}
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <th>Jam</th>
                                                             <td>:</td>
-                                                            <td>{{ $item->waktu_pinjam }} - {{ $item->waktu_selesai }}
+                                                            <td>{{ $item->waktu_pinjam }} - {{ $item->waktu_selesai
+                                                                }}
                                                             </td>
                                                         </tr>
+                                                        @if(!is_null($item->foto_selesai))
+                                                        <tr>
+                                                            <th>Bukti Peminjaman</th>
+                                                            <td>:</td>
+                                                            <td>
+                                                                <img src="{{ asset('storage/images/uploads/' . $item->foto_selesai) }}" width="150" alt="">
+                                                            </td>
+                                                        </tr>
+                                                        @endif
                                                     </table>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn btn-secondary" type="button"
                                                         data-dismiss="modal">Close</button>
                                                     @if($item->status == 'pending')
-                                                    <a href="{{ route('peminjaman.edit', $item->id) }}" class="btn btn-success"><i class="fas fa-edit"></i>
+                                                    <a href="{{ route('peminjaman.edit', $item->id) }}"
+                                                        class="btn btn-success"><i class="fas fa-edit"></i>
                                                         Edit</a>
                                                     @endif
                                                     {{-- <button class="btn btn-warning btn-sm text-white"
@@ -199,10 +255,12 @@
                                                                     @method('delete')
                                                                     @csrf
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title">Delete Permohonan?</h5>
+                                                                        <h5 class="modal-title">Delete Permohonan?
+                                                                        </h5>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        <p>Data yang dihapus tidak dapat dikembalikan,
+                                                                        <p>Data yang dihapus tidak dapat
+                                                                            dikembalikan,
                                                                             anda yakin ingin melanjutkan?</p>
                                                                     </div>
                                                                     <div class="modal-footer">

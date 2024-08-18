@@ -113,13 +113,15 @@
                                                         <tr>
                                                             <th>Kode Ruangan</th>
                                                             <td>:</td>
-                                                            <td class="text-center">
-                                                                <img src="{{ generateQrCode($item->ruang->kode_qr) }}"
-                                                                    width="150" alt="">
-                                                                <div class="block text-center mt-2">{{
-                                                                    $item->ruang->kode_bmn }} - {{ $item->ruang->nama }}
-                                                                </div>
+                                                            {{-- <td class="text-center"> --}}
+                                                                {{-- <img src="{{ generateQrCode($item->ruang->kode_qr) }}"
+                                                                    width="150" alt=""> --}}
+                                                                {{-- <div class="block text-center mt-2"> --}}
+                                                            <td>
+                                                                {{ $item->ruang->kode_bmn }} - {{ $item->ruang->nama }}
                                                             </td>
+                                                                {{-- </div>
+                                                            </td> --}}
                                                         </tr>
                                                         <tr>
                                                             <th>status</th>

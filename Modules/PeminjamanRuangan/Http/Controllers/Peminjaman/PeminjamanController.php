@@ -114,7 +114,7 @@ class PeminjamanController extends Controller
                 'jadwal_akhir' => Carbon::createFromFormat('Y-m-d H:i', $request->jadwal_akhir .' '. $request->waktu_selesai)->format('Y-m-d H:i:s'), 
                 'waktu_selesai' => Carbon::createFromFormat('Y-m-d H:i', $request->jadwal_akhir .' '. $request->waktu_selesai)->format('Y-m-d H:i:s'), 
                 'peminjam_nim' => $request->nim,
-                'foto_selesai' => 'default.png',
+                'foto_selesai' => null,
             ]);
             $peminjaman->update($request->only('ruang_id', 'program_studi_id', 'mata_kuliah_id', 'dosen_id', 'jadwal_mulai', 'jadwal_akhir', 'peminjam_nim', 'waktu_pinjam', 'waktu_selesai', 'foto_selesai'));
             DB::commit();
@@ -132,6 +132,28 @@ class PeminjamanController extends Controller
             return redirect()->route('peminjaman')->with('success', 'Permohonan berhasil di hapus');
         } catch(Exception $e) {
             echo response()->json($e->getMessage());
+        }
+    }
+
+    public function upload(Request $request, RuangPenggunaanKuliah $peminjaman)
+    {
+        $request->validate([
+            'bukti' => 'required|mimes:png,jpg,jpeg|max:2048',
+        ]);
+
+        try {
+            DB::beginTransaction();
+            $file = $request->file('bukti');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/images/uploads'), $fileName);
+            $peminjaman->update([
+                'foto_selesai' => $fileName
+            ]);
+            DB::commit();
+
+            return redirect()->route('peminjaman')->with('success', 'Bukti peminjaman berhasil di upload');
+        } catch(Exception $e) {
+            return response()->json($e->getMessage());
         }
     }
 }

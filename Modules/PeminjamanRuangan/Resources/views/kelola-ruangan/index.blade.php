@@ -9,8 +9,10 @@
                     <h4 style="font-weight: bold" class="my-2">{{ strtoupper($title) }}</h4>
                 </div>
                 <div class="col-sm-6 col-12 text-right">
-                    <a href="{{ route('ruang.create') }}" class="btn btn-info btn-sm my-2"><i class="fas fa-sync-alt"></i>
+                    <a href="{{ route('ruang.sync') }}" class="btn btn-info btn-sm my-2"><i class="fas fa-sync-alt"></i>
                         Sinkronisasi Ruangan</a>
+                    <a href="{{ route('ruang.print-pdf') }}" class="btn btn-secondary btn-sm my-2"><i class="fas fa-sync-alt"></i>
+                        Cetak QR Code</a>
                     <a href="{{ route('ruang.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
                         Tambah Ruangan</a>
                 </div>

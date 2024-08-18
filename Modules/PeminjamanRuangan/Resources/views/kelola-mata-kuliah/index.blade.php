@@ -9,8 +9,8 @@
                     <h4 style="font-weight: bold" class="my-2">{{ strtoupper($title) }}</h4>
                 </div>
                 <div class="col-sm-6 col-12 text-right">
-                    <a href="{{ route('mata-kuliah.create') }}" class="btn btn-info btn-sm my-2"><i class="fas fa-sync-alt"></i>
-                        Sinkronisasi Mata Kuliah</a>
+                    {{-- <a href="{{ route('mata-kuliah.sync') }}" class="btn btn-info btn-sm my-2"><i class="fas fa-sync-alt"></i>
+                        Sinkronisasi Mata Kuliah</a> --}}
                     <a href="{{ route('mata-kuliah.create') }}" class="btn btn-primary btn-sm my-2"><i class="fas fa-plus"></i>
                         Tambah Mata Kuliah</a>
                 </div>
