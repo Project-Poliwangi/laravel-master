@@ -4,6 +4,7 @@ namespace Modules\Pengadaan\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Pengadaan\Database\Seeders\MenuModulPengadaanTableSeeder;
 
 class PengadaanDatabaseSeeder extends Seeder
 {
@@ -16,6 +17,7 @@ class PengadaanDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
+        $this->call(MenuModulPengadaanTableSeeder::class);
+        $this->call(CreateUserModulPengadaanTableSeeder::class);
     }
 }
