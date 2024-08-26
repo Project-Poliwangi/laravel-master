@@ -99,68 +99,80 @@ class Pengadaan extends Model
     // }
 
     public function checkAndUpdateStatus()
-    {
-        // Periksa apakah pengadaan memiliki relasi dengan subPerencanaan
-        if (!$this->subPerencanaan) {
-            return;
+{
+    // Periksa apakah pengadaan memiliki relasi dengan subPerencanaan
+    if (!$this->subPerencanaan) {
+        return;
+    }
+
+    $subPerencanaan = $this->subPerencanaan;
+    $currentDate = now()->toDateString(); // Ambil tanggal saat ini dalam format Y-m-d
+
+    // Cek tipe dari rencana_mulai
+    $rencanaMulai = $subPerencanaan->rencana_mulai;
+    if (is_string($rencanaMulai)) {
+        // Jika rencana_mulai adalah string, gunakan langsung
+        $rencanaMulai = $rencanaMulai;
+    } else {
+        // Jika bukan string, ubah menjadi string
+        $rencanaMulai = $rencanaMulai->toDateString();
+    }
+
+    // Cek apakah status null
+    if (!$this->status) {
+        // Jika status null, set status default "Belum dalam periode"
+        $statusRecord = Status::where('nama_status', 'Belum dalam periode')->first();
+        if ($statusRecord) {
+            $this->status_id = $statusRecord->id;
+            $this->save();
         }
+        return;
+    }
 
-        $subPerencanaan = $this->subPerencanaan;
-        $currentDate = now()->toDateString(); // Ambil tanggal saat ini dalam format Y-m-d
-
-        // Cek tipe dari rencana_mulai
-        $rencanaMulai = $subPerencanaan->rencana_mulai;
-        if (is_string($rencanaMulai)) {
-            // Jika rencana_mulai adalah string, gunakan langsung
-            $rencanaMulai = $rencanaMulai;
-        } else {
-            // Jika bukan string, ubah menjadi string
-            $rencanaMulai = $rencanaMulai->toDateString();
-        }
-
-        // Cek apakah tanggal saat ini sudah sama atau lebih besar dari tanggal rencana mulai
-        if ($currentDate >= $rencanaMulai) {
-            if ($this->status->nama_status === 'Pemenuhan Dokumen') {
+    // Cek apakah tanggal saat ini sudah sama atau lebih besar dari tanggal rencana mulai
+    if ($currentDate >= $rencanaMulai) {
+        if ($this->status->nama_status === 'Pemenuhan Dokumen') {
+            // Update tanggal status
+            if (!$this->tanggal_status_1) {
+                $this->tanggal_status_1 = $currentDate;
+            }
+            // Periksa apakah dokumen pemilihan penyedia telah diunggah oleh PP
+            if ($this->dokumen_pemilihan_penyedia) {
+                $status = 'Pemilihan Penyedia';
                 // Update tanggal status
-                if (!$this->tanggal_status_1) {
-                    $this->tanggal_status_1 = $currentDate;
-                }
-                // Periksa apakah dokumen pemilihan penyedia telah diunggah oleh PP
-                if ($this->dokumen_pemilihan_penyedia) {
-                    $status = 'Pemilihan Penyedia';
-                    // Update tanggal status
-                    if (!$this->tanggal_status_2) {
-                        $this->tanggal_status_2 = $currentDate;
-                    }
-                }
-            } elseif ($this->status->nama_status === 'Pemilihan Penyedia') {
-                // Periksa apakah dokumen kontrak telah diunggah oleh PPK
-                if ($this->dokumen_kontrak) {
-                    $status = 'Kontrak';
-                    // Update tanggal status
-                    if (!$this->tanggal_status_3) {
-                        $this->tanggal_status_3 = $currentDate;
-                    }
-                }
-            } elseif ($this->status->nama_status === 'Kontrak') {
-                // Periksa apakah dokumen serah terima telah diunggah oleh PPK
-                if ($this->dokumen_serah_terima) {
-                    $status = 'Serah Terima';
-                    // Update tanggal status
-                    if (!$this->tanggal_status_4) {
-                        $this->tanggal_status_4 = $currentDate;
-                    }
+                if (!$this->tanggal_status_2) {
+                    $this->tanggal_status_2 = $currentDate;
                 }
             }
-        }
+        } elseif ($this->status->nama_status === 'Pemilihan Penyedia') {
+            // Periksa apakah dokumen kontrak telah diunggah oleh PPK
+            if ($this->dokumen_kontrak) {
+                $status = 'Kontrak';
+                // Update tanggal status
+                if (!$this->tanggal_status_3) {
+                    $this->tanggal_status_3 = $currentDate;
+                }
+            }
+        } elseif ($this->status->nama_status === 'Kontrak') {
+            // Periksa apakah dokumen serah terima telah diunggah oleh PPK
+            if ($this->dokumen_serah_terima) {
+                $status = 'Serah Terima';
+                // Update tanggal status
+                if (!$this->tanggal_status_4) {
+                    $this->tanggal_status_4 = $currentDate;
+                }
+            }
+        } 
+    }
 
-        // Temukan status berdasarkan nama dan simpan perubahan
-        if (isset($status)) {
-            $statusRecord = Status::where('nama_status', $status)->first();
-            if ($statusRecord) {
-                $this->status_id = $statusRecord->id;
-                $this->save();
-            }
+    // Temukan status berdasarkan nama dan simpan perubahan
+    if (isset($status)) {
+        $statusRecord = Status::where('nama_status', $status)->first();
+        if ($statusRecord) {
+            $this->status_id = $statusRecord->id;
+            $this->save();
         }
     }
+}
+
 }

@@ -117,7 +117,7 @@ class PPKController extends Controller
         }
 
         // Get SubPerencanaan records where ppk_id matches Pegawai's id
-        $subPerencanaan = SubPerencanaan::where('ppk_id', $pegawai->id)->paginate(10);
+        $subPerencanaan = SubPerencanaan::where('ppk_id', $pegawai->id)->get();
 
         foreach ($subPerencanaan as $unit) {
             if ($unit->pengadaan) {

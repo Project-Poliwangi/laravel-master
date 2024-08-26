@@ -14,6 +14,31 @@
                     <h4 class="text-center">Daftar Pengadaan</h4>
                 </div>
                 <div class="card-body" style="font-size: 14px;">
+                    <!-- Form untuk filter berdasarkan tahun anggaran -->
+                    <form method="GET" action="{{ url('/unit/daftarpengadaan') }}" class="form-inline mb-3">
+                        <div class="form-group mr-2">
+                            <label for="tahun_anggaran" class="mr-2">Tahun Anggaran:</label>
+                            <select id="tahun_anggaran" name="tahun_anggaran" class="form-control">
+                                <option value="">Semua Tahun</option>
+                                @for ($year = date('Y'); $year >= 2011; $year--)
+                                    <option value="{{ $year }}" {{ $year == $tahunAnggaran ? 'selected' : '' }}>
+                                        {{ $year }}
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="form-group mr-2">
+                            <label for="verifikasi" class="mr-2">Status Verifikasi:</label>
+                            <select id="verifikasi" name="verifikasi" class="form-control">
+                                <option value="">Semua</option>
+                                <option value="terverifikasi" {{ $verifikasi == 'terverifikasi' ? 'selected' : '' }}>
+                                    Terverifikasi</option>
+                                <option value="belum_verifikasi" {{ $verifikasi == 'belum_verifikasi' ? 'selected' : '' }}>
+                                    Belum Terverifikasi</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </form>
                     <div class="table-responsive">
                         <table id="myTable" class="table table-striped table-bordered">
                             <thead>
@@ -35,11 +60,12 @@
                                         <input type="text" placeholder="Sumber" class="form-control text-center"
                                             id="sumber-search">
                                     </th>
-                                    <th><select id="status-filter" class="form-control">
+                                    <th>
+                                        <select id="status-filter" class="form-control">
                                             <option value="">Semua Status</option>
-                                            <option value="Belum dalam periode">Belum dalam periode</option>
+                                            <option value="belum dalam periode">Belum Dalam Periode</option>
                                             @foreach ($status as $statuses)
-                                                <option value="{{ $statuses }}">{{ $statuses->nama_status }}
+                                                <option value="{{ $statuses->nama_status }}">{{ $statuses->nama_status }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -76,7 +102,7 @@
                                             @else
                                                 <span class="badge badge-default">Belum dalam periode</span>
                                             @endif
-                                        </td>
+                                        </td>                                        
                                         <td class="text-center">
                                             <div class="btn-group" role="group">
                                                 <button
@@ -84,7 +110,7 @@
                                                     title="Detail" class="btn btn-info btn-sm mr-1">
                                                     <i class="fas fa-eye" aria-hidden="true"></i>
                                                 </button>
-                            
+
                                                 @if (isset($unit->pengadaan) &&
                                                         isset($unit->pengadaan->status) &&
                                                         in_array($unit->pengadaan->status->nama_status, ['Pemenuhan Dokumen']))
@@ -98,7 +124,7 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                            
+
                         </table>
                     </div>
                 </div>
@@ -172,22 +198,20 @@
                 initComplete: function() {
                     this.api().columns().every(function(index) {
                         let column = this;
-                        let input = $(column.header()).find('input'); // Ambil input di thead
-                        let select = $(column.header()).find('select'); // Ambil select di thead
+                        let input = $(column.header()).find('input');
+                        let select = $(column.header()).find('select');
 
-                        // Filter untuk input teks di kolom Kegiatan, Pagu, dan Sumber
-                        if (input.length) { // Hilangkan pengecualian untuk kolom Pagu
+                        if (input.length) {
                             input.on('keyup change clear', function() {
                                 let val = $(this).val();
                                 column.search(val ? val : '', false, false).draw();
                             });
                         }
 
-                        // Filter untuk select dropdown (Status)
                         if (select.length) {
                             select.on('change', function() {
                                 let val = $.fn.dataTable.util.escapeRegex($(this)
-                                    .val());
+                            .val());
                                 column.search(val ? val : '', false, false).draw();
                             });
                         }

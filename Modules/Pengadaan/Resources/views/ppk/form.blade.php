@@ -125,14 +125,19 @@
 
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="rencana_bayar"
-                                                    class="control-label">{{ 'Rencana Bayar' }}</label>
-                                                <input class="form-control" name="rencana_bayar" type="date"
-                                                    id="rencana_bayar"
-                                                    value="{{ isset($subPerencanaan->rencana_bayar) ? $subPerencanaan->rencana_bayar : old('rencana_bayar') }}" {{ $disabled }}>
+                                                <label for="rencana_bayar" class="form-label">{{ 'Rencana Bayar' }}</label>
+                                                @php
+                                                    // Dapatkan tanggal saat ini
+                                                    $currentDate = now();
+                                                    // Tentukan batas minimum untuk bulan ini
+                                                    $minDate = $currentDate->startOfMonth()->toDateString();
+                                                @endphp
+                                                <input class="form-control" name="rencana_bayar" type="date" id="rencana_bayar"
+                                                    value="{{ isset($subPerencanaan->rencana_bayar) ? $subPerencanaan->rencana_bayar : old('rencana_bayar') }}"
+                                                    min="{{ $minDate }}">
                                                 {!! $errors->first('rencana_bayar', '<p class="text-danger">:message</p>') !!}
                                             </div>
-                                        </div>
+                                        </div>   
 
                                         <div class="col-md-4">
                                             <div class="form-group">

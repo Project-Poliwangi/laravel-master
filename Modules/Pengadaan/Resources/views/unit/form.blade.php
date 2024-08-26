@@ -89,11 +89,18 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="rencana_bayar" class="form-label">{{ 'Rencana Bayar' }}</label>
+                                            @php
+                                                // Dapatkan tanggal saat ini
+                                                $currentDate = now();
+                                                // Tentukan batas minimum untuk bulan ini
+                                                $minDate = $currentDate->startOfMonth()->toDateString();
+                                            @endphp
                                             <input class="form-control" name="rencana_bayar" type="date" id="rencana_bayar"
-                                                value="{{ isset($subPerencanaan->rencana_bayar) ? $subPerencanaan->rencana_bayar : old('rencana_bayar') }}">
+                                                value="{{ isset($subPerencanaan->rencana_bayar) ? $subPerencanaan->rencana_bayar : old('rencana_bayar') }}"
+                                                min="{{ $minDate }}">
                                             {!! $errors->first('rencana_bayar', '<p class="text-danger">:message</p>') !!}
                                         </div>
-                                    </div>
+                                    </div>                                    
                                 
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -116,24 +123,23 @@
                                 <div class="row mb-4">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="dokumen_kak" class="form-label">{{ 'Dokumen KAK' }}</label>
-                                            <input type="file" name="dokumen_kak" class="form-control-file"
-                                                id="dokumen_kak">
-                                            <small class="form-text text-muted">*Format PDF dengan maksimal ukuran file
-                                                10 MB</small>
+                                            <div class="d-flex align-items-center">
+                                                <label for="dokumen_kak" class="form-label mb-0">{{ 'Dokumen KAK' }}</label>
+                                                <small class="form-text text-danger ml-2">*Wajib dilampirkan</small>
+                                            </div>
+                                            <input type="file" name="dokumen_kak" class="form-control-file" id="dokumen_kak">
+                                            <small class="form-text text-muted">*Format PDF dengan maksimal ukuran file 10 MB</small>
                                             @if (isset($pengadaan->dokumen_kak))
                                                 <p class="mt-2">Dokumen KAK sudah ada:
-                                                    <a href="{{ asset('storage/dokumen_kak/' . $pengadaan->dokumen_kak) }}"
-                                                        target="_blank" class="btn btn-link">Lihat Dokumen</a>
+                                                    <a href="{{ asset('storage/dokumen_kak/' . $pengadaan->dokumen_kak) }}" target="_blank" class="btn btn-link">Lihat Dokumen</a>
                                                 </p>
-                                                <input type="hidden" name="existing_dokumen_kak"
-                                                    value="{{ $pengadaan->dokumen_kak }}">
+                                                <input type="hidden" name="existing_dokumen_kak" value="{{ $pengadaan->dokumen_kak }}">
                                             @endif
                                             @if ($errors->has('dokumen_kak'))
                                                 <p class="text-danger">{{ $errors->first('dokumen_kak') }}</p>
                                             @endif
                                         </div>
-                                    </div>
+                                    </div>                                    
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="dokumen_hps" class="form-label">{{ 'Dokumen HPS' }}</label>

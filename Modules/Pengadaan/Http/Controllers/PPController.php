@@ -27,24 +27,36 @@ class PPController extends Controller
 
     public function daftarpengadaan(Request $request)
     {
-        // Get the logged-in user
+        // Ambil user yang sedang login
         $user = Auth::user();
         $pegawaisId = $user->pegawais_id;
-
-        // Get the Pegawai associated with the logged-in user
+    
+        // Ambil data Pegawai yang terkait dengan user yang login
         $pegawai = Pegawai::find($pegawaisId);
-
-        // Check if Pegawai exists
+    
+        // Periksa jika data Pegawai ada
         if (!$pegawai) {
             return redirect()->back()->withErrors(['message' => 'Data pegawai tidak ditemukan.']);
         }
-
-        // Get SubPerencanaan records where ppk_id matches Pegawai's id
-        $subPerencanaan = SubPerencanaan::where('pp_id', $pegawai->id)->paginate(15);
+    
+        // Ambil SubPerencanaan yang sesuai dengan pp_id Pegawai dan sudah diverifikasi oleh PPK
+        $subPerencanaan = SubPerencanaan::where('pp_id', $pegawai->id)
+            ->whereHas('pengadaan', function ($query) {
+                // Filter pengadaan yang sudah diverifikasi oleh PPK dan memiliki catatan
+                $query->whereNotNull('catatan')
+                      ->where('status_id', function ($subQuery) {
+                          $subQuery->select('id')
+                                   ->from('pengadaan_status')
+                                   ->where('nama_status', 'Pemenuhan Dokumen');
+                      });
+            })
+            ->get();
+    
         $status = Status::all();
-
+    
         return view('pengadaan::pp.daftarpengadaan', compact('subPerencanaan', 'status'));
     }
+    
 
     /**
      * Show the form for creating a new resource.

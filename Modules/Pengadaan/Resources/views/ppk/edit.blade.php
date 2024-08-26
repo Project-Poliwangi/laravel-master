@@ -12,13 +12,11 @@
                 </div>
 
                 @php
-                    $disabled = in_array($pengadaan->status->nama_status, [
-                        'Pemilihan Penyedia',
-                        'Kontrak',
-                        'Serah Terima',
-                    ])
-                        ? 'disabled'
-                        : '';
+                    $disabled =
+                        $pengadaan->status &&
+                        in_array($pengadaan->status->nama_status, ['Pemilihan Penyedia', 'Kontrak', 'Serah Terima'])
+                            ? 'disabled'
+                            : '';
                 @endphp
 
                 <form id="ppk-edit" method="POST" action="{{ url('ppk/update/' . $subPerencanaan->id) }}"
