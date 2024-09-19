@@ -12,6 +12,7 @@ use Modules\Pengadaan\Entities\Pengadaan;
 use Illuminate\Contracts\Support\Renderable;
 use Modules\Pengadaan\Entities\JenisPengadaan;
 use Modules\Pengadaan\Entities\SubPerencanaan;
+use Modules\Pengadaan\Entities\MetodePengadaan;
 
 class DirekturController extends Controller
 {
@@ -21,92 +22,89 @@ class DirekturController extends Controller
      */
     public function index()
     {
-        // RINGKASAN TOTAL PENGADAAN
-        // Mendapatkan tahun saat ini
+        // Mengimpor Carbon untuk mendapatkan tahun saat ini
         $currentYear = Carbon::now()->year;
-
+    
         // Menghitung total pengadaan
         $totalPengadaan = Pengadaan::count();
-
+    
         // Menghitung pengadaan baru dalam tahun ini
         $pengadaanBaru = Pengadaan::whereYear('created_at', $currentYear)->count();
-
+    
         // Menghitung pengadaan yang selesai dalam tahun ini
-        $pengadaanSelesai = Pengadaan::where('status_id', 5) // Status 5 untuk "Serah Terima"
+        $pengadaanSelesai = Pengadaan::where('status_id', 4) // Status 4 untuk "Selesai"
             ->whereYear('updated_at', $currentYear)
             ->count();
-
-        // Mengambil semua jenis pengadaan
+    
+        // Mengambil semua jenis pengadaan, status pengadaan, dan metode pengadaan
         $jenisPengadaans = JenisPengadaan::all();
-        // Mengambil semua status pengadaan
         $pengadaanStatuses = Status::all();
-
+        $metodePengadaans = MetodePengadaan::all();
+    
         // Menghitung jumlah pengadaan berdasarkan jenis
         $jenisPengadaanData = SubPerencanaan::select('jenis_pengadaan_id')
             ->selectRaw('count(*) as count')
             ->groupBy('jenis_pengadaan_id')
             ->get()
             ->pluck('count', 'jenis_pengadaan_id');
-
+    
         // Menghitung jumlah pengadaan berdasarkan status
         $pengadaanStatusData = Pengadaan::select('status_id')
             ->selectRaw('count(*) as count')
             ->groupBy('status_id')
             ->get()
             ->pluck('count', 'status_id');
-
+    
+        // Menghitung jumlah pengadaan berdasarkan metode
+        $metodePengadaanData = SubPerencanaan::select('metode_pengadaan_id')
+            ->selectRaw('count(*) as count')
+            ->groupBy('metode_pengadaan_id')
+            ->get()
+            ->pluck('count', 'metode_pengadaan_id');
+    
         // Memastikan setiap jenis pengadaan ada dalam data, meskipun nilainya nol
-        $jenisPengadaanChart = [];
-        foreach ($jenisPengadaans as $jenis) {
-            $jenisPengadaanChart[] = [
+        $jenisPengadaanChart = $jenisPengadaans->map(function($jenis) use ($jenisPengadaanData) {
+            return [
                 'label' => $jenis->nama_jenis,
                 'count' => $jenisPengadaanData->get($jenis->id, 0),
             ];
-        }
-
+        });
+    
         // Memastikan setiap status pengadaan ada dalam data, meskipun nilainya nol
-        $pengadaanStatusChart = [];
-        foreach ($pengadaanStatuses as $status) {
-            $pengadaanStatusChart[] = [
+        $pengadaanStatusChart = $pengadaanStatuses->map(function($status) use ($pengadaanStatusData) {
+            return [
                 'label' => $status->nama_status,
                 'count' => $pengadaanStatusData->get($status->id, 0),
             ];
-        }
-
-        // Mengambil semua unit pengadaan beserta jumlah pengadaan melalui sub_perencanaan
-        // $units = Unit::with(['perencanaan.subperencanaan.pengadaan'])->get();
-
-        // $unitNames = [];
-        // $unitCounts = [];
-
-        // foreach ($units as $unit) {
-        //     $unitNames[] = $unit->nama;
-        //     // Menghitung jumlah pengadaan untuk setiap unit
-        //     $count = 0;
-        //     if ($unit->perencanaan) {
-        //         foreach ($unit->perencanaan as $perencanaan) {
-        //             if ($perencanaan->subperencanaan) {
-        //                 foreach ($perencanaan->subperencanaan as $subPerencanaan) {
-        //                     if ($subPerencanaan->pengadaan) {
-        //                         $count += $subPerencanaan->pengadaan->count();
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     $unitCounts[] = (int) $count; // Konversi ke integer
-        // }
-
-        return view('pengadaan::direktur.dashboard', compact('jenisPengadaanChart', 'pengadaanStatusChart', 'totalPengadaan', 'pengadaanBaru', 'pengadaanSelesai'));
-    }
+        });
+    
+        // Memastikan setiap metode pengadaan ada dalam data, meskipun nilainya nol
+        $metodePengadaanChart = $metodePengadaans->map(function($metode) use ($metodePengadaanData) {
+            return [
+                'label' => $metode->nama_metode,
+                'count' => $metodePengadaanData->get($metode->id, 0),
+            ];
+        });
+    
+        // Mengirimkan data ke view
+        return view('pengadaan::direktur.dashboard', compact(
+            'jenisPengadaanChart',
+            'pengadaanStatusChart',
+            'metodePengadaanChart',
+            'totalPengadaan',
+            'pengadaanBaru',
+            'pengadaanSelesai'
+        ));
+    }    
 
 
     public function daftarpengadaan(Request $request)
     {
         // Mengambil semua data pengadaan
-        $pengadaans = Pengadaan::with(['subperencanaan.jenispengadaans', 'status'])->get();
+        $subPerencanaan = SubPerencanaan::all();
+        $status = Status::all();
 
-        return view('pengadaan::direktur.daftarpengadaan', compact('pengadaans'));
+        return view('pengadaan::direktur.daftarpengadaan', compact('subPerencanaan', 'status'));
     }
 
     public function permohonandiproses()
@@ -145,12 +143,23 @@ class DirekturController extends Controller
      */
     public function show($id)
     {
-        $subPerencanaan = SubPerencanaan::with(['perencanaans', 'pengadaan'])->find($id);
+        $subPerencanaan = SubPerencanaan::with(['perencanaan', 'pengadaan'])->find($id);
         if (!$subPerencanaan) {
             return response()->json(['message' => 'SubPerencanaan tidak ditemukan'], 404);
         }
 
-        return view('pengadaan::direktur.show', compact('subPerencanaan'));
+         // Ambil Pengadaan berdasarkan ID SubPerencanaan
+         $pengadaan = Pengadaan::where('subperencanaan_id', $id)->first();
+
+         // Status default jika tidak ada dalam database
+         $status = 0; // Misalnya status 0 untuk 'Belum Dalam Periode'
+ 
+         // Cek status yang ada di database
+         if ($pengadaan && $pengadaan->status_id && in_array($pengadaan->status_id, [1, 2, 3, 4])) {
+             $status = $pengadaan->status_id;
+         }
+
+        return view('pengadaan::direktur.show', compact('subPerencanaan', 'status'));
     }
 
     /**

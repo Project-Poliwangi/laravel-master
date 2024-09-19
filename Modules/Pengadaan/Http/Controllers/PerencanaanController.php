@@ -20,23 +20,7 @@ class PerencanaanController extends Controller
 
     public function daftarperencanaan(Request $request)
     { 
-        // Search
-        $query = Perencanaan::query();
-        $perPage = 10;
-
-        if ($request->has('search') && !empty($request->get('search'))) {
-            $search = $request->get('search');
-            $query->where(function($q) use ($search) {
-                $q->where('nama', 'LIKE', '%' . $search . '%')
-                  ->orWhere('kode', 'LIKE', '%' . $search . '%')
-                  ->orWhere('sumber', 'LIKE', '%' . $search . '%')
-                  ->orWhere('pagu', 'LIKE', '%' . $search . '%')
-                  ->orWhere('revisi', 'LIKE', '%' . $search . '%')
-                  ->orWhere('tahun', 'LIKE', '%' . $search . '%');
-            });
-        }
-
-        $perencanaans = $query->latest()->paginate($perPage);
+        $perencanaans = Perencanaan::all();
 
         return view('pengadaan::perencanaan.perencanaan', compact('perencanaans'));
     }
@@ -61,15 +45,14 @@ class PerencanaanController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'kode' => 'required|string|max:100',
-            'sumber' => 'required|in:RM,Hibah,BOPTN,PNBP,CF,PML',
-            'pagu' => 'required|integer',
+            'sumber' => 'required|in:RM,Hibah,BOPTN,PNP,CF,PML',
             'revisi' => 'required|integer',
             'tahun' => 'required|integer',
         ]);
 
         Perencanaan::create($request->all());
 
-        return redirect('/perencanaan/daftarperencanaan')->with('success', 'Perencanaan Pengadaan berhasil ditambahkan.');
+        return redirect('/perencanaan/daftarperencanaan')->with('success_message', 'Perencanaan Pengadaan berhasil ditambahkan.');
     }
 
     /**
@@ -90,10 +73,10 @@ class PerencanaanController extends Controller
      */
     public function edit($id)
     {
-        $perencanaans = Perencanaan::findOrFail($id); // Menggunakan singular untuk satu item
+        $perencanaan = Perencanaan::findOrFail($id); // Menggunakan singular untuk satu item
         $formMode = 'edit';
 
-        return view('pengadaan::perencanaan.edit', compact('perencanaans'))->with('formMode', 'edit');
+        return view('pengadaan::perencanaan.edit', compact('perencanaan'))->with('formMode', 'edit');
     }
 
     /**
@@ -110,8 +93,7 @@ class PerencanaanController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'kode' => 'required|string|max:100',
-            'sumber' => 'required|in:RM,Hibah,BOPTN,PNBP,CF,PML',
-            'pagu' => 'required|integer',
+            'sumber' => 'required|in:RM,Hibah,BOPTN,PNP,CF,PML',
             'revisi' => 'required|integer',
             'tahun' => 'required|integer',
         ]);

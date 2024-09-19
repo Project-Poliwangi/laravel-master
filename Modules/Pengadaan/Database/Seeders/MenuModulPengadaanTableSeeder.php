@@ -89,51 +89,6 @@ class MenuModulPengadaanTableSeeder extends Seeder
             'active' => serialize(['ppk/daftarpengadaan','ppk/daftarpengadaan*']),
         ]);
 
-        $menuppk = Menu::create([
-            'modul' => 'Pengadaan',
-            'label' => 'Dokumen',
-            'url' => '',
-            'can' => serialize(['ppk']),
-            'icon' => 'fas fa-folder',
-            'urut' => 3,
-            'parent_id' => 0,
-            'active' => serialize(['pengadaan']),
-        ]);
-        if($menuppk){
-            Menu::create([
-                'modul' => 'Pengadaan',
-                'label' => 'Penetapan',
-                'url' => 'ppk/penetapan',
-                'can' => serialize(['ppk']),
-                'icon' => 'far fa-file',
-                'urut' => 1,
-                'parent_id' => $menuppk->id,
-                'active' => serialize(['ppk/penetapan','ppk/penetapan*']),
-            ]);
-
-            Menu::create([
-                'modul' => 'Pengadaan',
-                'label' => 'Kontrak',
-                'url' => 'ppk/kontrak',
-                'can' => serialize(['ppk']),
-                'icon' => 'far fa-file',
-                'urut' => 2,
-                'parent_id' => $menuppk->id,
-                'active' => serialize(['ppk/kontrak','ppk/kontrak*']),
-            ]);
-
-            Menu::create([
-                'modul' => 'Pengadaan',
-                'label' => 'Serah Terima',
-                'url' => 'ppk/serahterima',
-                'can' => serialize(['ppk']),
-                'icon' => 'far fa-file',
-                'urut' => 3,
-                'parent_id' => $menuppk->id,
-                'active' => serialize(['ppk/serahterima','ppk/serahterima*']),
-            ]);
-        }
-
         // Menu Unit/Jurusan
         Menu::create([
             'modul' => 'Pengadaan',

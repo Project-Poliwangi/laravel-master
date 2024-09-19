@@ -1,38 +1,54 @@
 @extends('adminlte::page')
-@section('title', 'Tambah Program Pengadaan')
+
+@section('title', 'Tambah Sub Perencanaan')
+
 @section('content_header')
-    <h1 class="m-0 text-dark text-center">Program/Kegiatan Pengadaan</h1>
+    <h1 class="m-0 text-dark"></h1>
 @stop
+
 @section('content')
-    <div class="page-heading">
-        <div class="page-title">
-            <div class="row">
-                <div class="col-12 col-md-12 order-md-1 order-last">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-10 col-md-10 order-md-1 order-last">
 
-                    <form method="POST" action="{{ url('/subperencanaan/store') }}" accept-charset="UTF-8"
-                        class="form-horizontal" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-
-                        @include ('pengadaan::subperencanaan.form', [
-                            'formMode' => $formMode,
-                            'jenispengadaans' => $jenispengadaans,
-                            'perencanaans' => $perencanaans,
-                            'units' => $units,
-                            'ppk' => $ppk
-                        ])
-                    </form>
+                <div class="card-header bg-dark">
+                    <h5 class="text-center">Formulir Tambah Sub Perencanaan</h5>
                 </div>
+
+                <form id="subperencanaan-form" method="POST" action="{{ url('/subperencanaan/store') }}" accept-charset="UTF-8" class="form-horizontal"
+                    enctype="multipart/form-data">
+                    {{ csrf_field() }}
+
+                    @include ('pengadaan::subperencanaan.form', [
+                        'formMode' => $formMode,
+                    ])
+                </form>
             </div>
         </div>
     </div>
-@endsection 
+@endsection
 
-@section('css')
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-@stop
-
-@section('js')
+@push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-@stop
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('subperencanaan-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin mengirimkan data ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, kirim!',
+                cancelButtonText: 'Tidak, batalkan'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit(); // Submit the form if confirmed
+                }
+            });
+        });
+    </script>
+@endpush

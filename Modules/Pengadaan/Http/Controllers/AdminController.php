@@ -17,7 +17,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $documents = Document::paginate(10);
+        $documents = Document::all();
+
         return view('pengadaan::admin.keloladokumen', compact('documents'));
     }
 
@@ -27,7 +28,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        $formMode = 'create';
+        return view('pengadaan::admin.create', compact('formMode'));
     }
 
     /**
@@ -37,7 +39,27 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        // 
+        // Validasi data
+        $validatedData = $request->validate([
+            'nama_dokumen' => 'string|max:255',
+            'deskripsi' => 'nullable|string',
+            'file' => 'nullable|mimes:doc,docx,xls,xlsx|max:10240',
+        ]);
+
+        // Proses file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('storage/dokumen_template'), $fileName);
+            $validatedData['file'] = $fileName;
+        }
+
+        // Simpan data ke database
+        $document = new Document();
+        $document->fill($validatedData);
+        $document->save();
+
+         return redirect('/admin/keloladokumen')->with('success', 'Dokumen berhasil ditambahkan.');
     }
 
     /**
@@ -47,20 +69,7 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        $documents = Document::findOrFail($id);
-
-        // Validasi bahwa file adalah tipe doc atau docx
-        $fileExtension = pathinfo($documents->file, PATHINFO_EXTENSION);
-        if ($fileExtension !== 'doc' && $fileExtension !== 'docx') {
-            abort(404);
-        }
-
-        // Ambil path ke file dokumen
-        $filePath = public_path('storage/dokumen_template/' . $documents->file);
-
-        // Kembalikan response untuk menampilkan file
-        return response()->file($filePath);
-        // return view('pengadaan::admin.show', compact('documents'));
+        // 
     }
 
     /**
@@ -70,9 +79,10 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
+        $formMode = 'edit';
         $documents = Document::findOrFail($id);
 
-        return view('pengadaan::admin.edit', compact('documents'));
+        return view('pengadaan::admin.edit', compact('formMode','documents'));
     }
 
     /**
@@ -115,6 +125,8 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $documents = Document::findOrFail($id);
+        $documents->delete();
+        return redirect('/admin/keloladokumen')->with('success_message', 'Berhasil dihapus!');
     }
 }

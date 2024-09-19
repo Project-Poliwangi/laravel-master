@@ -17,7 +17,7 @@ class CreatePengadaanDocumentsTable extends Migration
             $table->id();
             $table->string('nama_dokumen');
             $table->string('file');
-            $table->text('description')->nullable(); // optional description
+            $table->text('deskripsi')->nullable(); // optional description
 
             $table->timestamps();
         });

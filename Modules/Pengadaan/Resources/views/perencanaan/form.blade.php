@@ -8,31 +8,37 @@
                         <div class="form-body">
                             <div class="row">
                                 {{-- Nama --}}
-                                <div class="col-md-4">
+                                <div class="col-md-12 form-group">
                                     <label for="nama" class="control-label">{{ 'Nama' }}</label>
-                                </div>
-                                <div class="col-md-8 form-group">
                                     <input class="form-control" name="nama" type="text" id="nama" required
                                         value="{{ isset($perencanaans->nama) ? $perencanaans->nama : old('nama') }}">
+                                    {!! $errors->first('nama', '<p class="help-block">:message</p>') !!}
                                 </div>
 
                                 {{-- Kode --}}
-                                <div class="col-md-4">
+                                <div class="col-md-6 form-group">
                                     <label for="kode" class="control-label">{{ 'Kode' }}</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input class="form-control" name="kode" type="text" id="kode" required
+                                    <input class="form-control" name="kode" type="number" id="kode" required
                                         value="{{ isset($perencanaans->kode) ? $perencanaans->kode : old('kode') }}">
+                                    {!! $errors->first('kode', '<p class="help-block">:message</p>') !!}
+                                </div>
+
+                                {{-- Revisi --}}
+                                <div class="col-md-6 form-group">
+                                    <label for="revisi" class="control-label">{{ 'Revisi' }}</label>
+                                    <input class="form-control" name="revisi" type="number" id="revisi" required
+                                        value="{{ isset($perencanaans->revisi) ? $perencanaans->revisi : old('revisi') }}">
                                 </div>
 
                                 {{-- Sumber --}}
-                                <div class="col-md-4">
+                                <div class="col-md-6 form-group">
                                     <label for="sumber" class="control-label">{{ 'Sumber' }}</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <select name="sumber" id="sumber" required class="form-control"> 
+                                    <select name="sumber" id="sumber" required class="form-control">
                                         <option value="" disabled selected>--- Pilih Sumber Pengadaan ---
                                         </option>
+                                        <option value="PNP"
+                                            {{ isset($perencanaans->sumber) ? ($perencanaans->sumber == 'PNP' ? 'selected' : '') : (old('sumber') == 'PNP' ? 'selected' : '') }}>
+                                            PNP</option>
                                         <option value="RM"
                                             {{ isset($perencanaans->sumber) ? ($perencanaans->sumber == 'RM' ? 'selected' : '') : (old('sumber') == 'RM' ? 'selected' : '') }}>
                                             RM</option>
@@ -42,9 +48,6 @@
                                         <option value="BOPTN"
                                             {{ isset($perencanaans->sumber) ? ($perencanaans->sumber == 'BOPTN' ? 'selected' : '') : (old('sumber') == 'BOPTN' ? 'selected' : '') }}>
                                             BOPTN</option>
-                                        <option value="PNBP"
-                                            {{ isset($perencanaans->sumber) ? ($perencanaans->sumber == 'PNBP' ? 'selected' : '') : (old('sumber') == 'PNBP' ? 'selected' : '') }}>
-                                            PNBP</option>
                                         <option value="CF"
                                             {{ isset($perencanaans->sumber) ? ($perencanaans->sumber == 'CF' ? 'selected' : '') : (old('sumber') == 'CF' ? 'selected' : '') }}>
                                             CF</option>
@@ -52,33 +55,21 @@
                                             {{ isset($perencanaans->sumber) ? ($perencanaans->sumber == 'PML' ? 'selected' : '') : (old('sumber') == 'PML' ? 'selected' : '') }}>
                                             PML</option>
                                     </select>
-                                </div>
-
-                                {{-- Pagu --}}
-                                <div class="col-md-4">
-                                    <label for="pagu" class="control-label">{{ 'Pagu' }}</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input class="form-control" name="pagu" type="number" id="pagu" required
-                                        value="{{ isset($perencanaans->pagu) ? $perencanaans->pagu : old('pagu') }}">
-                                </div>
-
-                                {{-- Revisi --}}
-                                <div class="col-md-4">
-                                    <label for="revisi" class="control-label">{{ 'Revisi' }}</label>
-                                </div>
-                                <div class="col-md-8 form-group">
-                                    <input class="form-control" name="revisi" type="number" id="revisi" required
-                                        value="{{ isset($perencanaans->revisi) ? $perencanaans->revisi : old('revisi') }}">
+                                    
                                 </div>
 
                                 {{-- Tahun --}}
-                                <div class="col-md-4">
+                                <div class="col-md-6 form-group {{ $errors->has('tahun') ? 'has-error' : '' }}">
                                     <label for="tahun" class="control-label">{{ 'Tahun' }}</label>
-                                </div>
-                                <div class="col-md-8 form-group {{ $errors->has('tahun') ? 'has-error' : '' }}">
-                                    <input class="form-control" name="tahun" type="number" id="tahun"
-                                        value="{{ isset($perencanaans->tahun) ? $perencanaans->tahun : old('tahun') }}">
+                                    <select class="form-control" name="tahun" id="tahun" required>
+                                        @for ($year = date('Y'); $year >= date('Y') - 10; $year--)
+                                            <option value="{{ $year }}"
+                                                {{ isset($perencanaans->tahun) && $perencanaans->tahun == $year ? 'selected' : '' }}>
+                                                {{ $year }}
+                                            </option>
+                                        @endfor
+                                    </select>
+                                    {!! $errors->first('tahun', '<p class="help-block">:message</p>') !!}
                                 </div>
 
                                 {{-- Submit Button --}}

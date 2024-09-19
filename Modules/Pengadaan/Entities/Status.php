@@ -16,9 +16,9 @@ class Status extends Model
         'nama_status',
     ];
 
-    // Relasi ke Model SubPerencanaan
-    public function subPerencanaan()
+    // Relasi ke Model Pengadaan
+    public function pengadaan()
     {
-        return $this->hasMany(SubPerencanaan::class, 'status_id');
+        return $this->hasMany(Pengadaan::class, 'status_id');
     }
 }
